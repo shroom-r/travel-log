@@ -4,6 +4,11 @@ import { Router } from "@angular/router";
 import { AuthService } from "../auth.service";
 import { AuthRequest } from "../auth-request.model";
 
+enum PageMode {
+  login = "login",
+  createAccount = "createAccount",
+}
+
 @Component({
   selector: "app-login-page",
   templateUrl: "./login-page.component.html",
@@ -25,8 +30,16 @@ export class LoginPageComponent {
    */
   loginError?: string;
 
+  //Set pageMode to default value = login
+  pageMode: PageMode = PageMode.login;
+  submitButtonText: string;
+  changeModeLinkText: string;
+
   constructor(private auth: AuthService, private router: Router) {
     this.authRequestInput = {};
+    this.pageMode = PageMode.login;
+    this.submitButtonText = "Log in";
+    this.changeModeLinkText = "Create account";
   }
 
   /**
@@ -52,5 +65,18 @@ export class LoginPageComponent {
           error: (err) => (this.loginError = err.message),
         });
     }
+  }
+
+  switchPageMode() {
+    if (this.pageMode === PageMode.login) {
+      this.pageMode = PageMode.createAccount;
+      this.submitButtonText = "Create account";
+      this.changeModeLinkText = "Back to login page";
+    } else {
+      this.pageMode = PageMode.login;
+      this.submitButtonText = "Log in";
+      this.changeModeLinkText = "Create account";
+    }
+
   }
 }

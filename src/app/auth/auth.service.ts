@@ -68,6 +68,7 @@ export class AuthService {
       })
     );
   }
+  
 
   /**
    * Logs out a user and emit an empty AuthResponse

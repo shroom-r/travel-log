@@ -1,5 +1,6 @@
 <div>
-  <div id="loginFormContainer" class="shadow p-3 col-4 col-xl-3 row-3 position-absolute top-50 start-50 translate-middle">
+  <div id="loginFormContainer"
+    class="shadow p-3 col-4 col-xl-3 row-3 position-absolute top-50 start-50 translate-middle">
     <form class="h-100 w-100" #loginForm="ngForm" (submit)="onSubmit(loginForm)">
       <div class="mb-3">
         <label form="username" class="form-label">Username</label>
@@ -19,11 +20,14 @@
       </div>
 
       <div>
-        <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Log in</button>
-        <span class="m-3"><a href="">Create new account</a></span>
+        <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">{{ submitButtonText }}</button>
+        <span class="m-3"><a type="button" href="javascript:void(0)" (click)="switchPageMode()">{{ changeModeLinkText }}</a></span>
         <p class="form-text" *ngIf="loginError">
           Unable to log in. See the log for more information.
         </p>
+      </div>
+      <div>
+        Page mode : {{ pageMode }}
       </div>
     </form>
   </div>
