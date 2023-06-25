@@ -3,9 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthModule } from './auth/auth.module';
 import { DummyPageComponent } from './dummy-page/dummy-page.component';
+import { ApiTokenInterceptorService } from "./auth/api-token-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,13 @@ import { DummyPageComponent } from './dummy-page/dummy-page.component';
     HttpClientModule,
     AuthModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiTokenInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
