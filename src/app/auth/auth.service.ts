@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, ReplaySubject } from "rxjs";
+import { Observable, ReplaySubject, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map, tap } from "rxjs/operators";
 import { User } from "../users/user.model";
@@ -65,8 +65,9 @@ export class AuthService {
       map((response) => {
         this.authenticated$.next(response);
         return response.user;
+        
       })
-    );
+    );    
   }
   
 

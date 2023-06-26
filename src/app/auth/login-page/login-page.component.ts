@@ -3,6 +3,7 @@ import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../auth.service";
 import { AuthRequest } from "../auth-request.model";
+import { RegisterAccount } from "../register-account.service";
 
 enum PageMode {
   login = "login",
@@ -34,12 +35,18 @@ export class LoginPageComponent {
   pageMode: PageMode = PageMode.login;
   submitButtonText: string;
   changeModeLinkText: string;
+  pageTitle: string;
 
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(private auth: AuthService, private registerAccount: RegisterAccount, private router: Router) {
     this.authRequestInput = {};
     this.pageMode = PageMode.login;
     this.submitButtonText = "Log in";
     this.changeModeLinkText = "Create account";
+    this.pageTitle = "Log in to TravelLog";
+  }
+
+  setDefaultValues() {
+    
   }
 
   /**
@@ -51,20 +58,43 @@ export class LoginPageComponent {
       // Hide any previous login error.
       this.loginError = undefined;
 
-      // Perform the authentication request to the API.
-      // Since the login$() method requires an AuthRequest param, but
-      // our authRequestInput has optional properties, we need to convert it
-      // to an new object that matches the AuthRequest type.
-      this.auth
-        .login$({
-          password: this.authRequestInput.password ?? "",
-          username: this.authRequestInput.username ?? "",
-        })
-        .subscribe({
-          next: () => this.router.navigateByUrl("/"),
-          error: (err) => (this.loginError = err.message),
-        });
+      switch (this.pageMode) {
+        case PageMode.login:
+          this.login();
+          break;
+        case PageMode.createAccount:
+          this.createAccount();
+      }
     }
+  }
+
+  login() {
+    // Perform the authentication request to the API.
+    // Since the login$() method requires an AuthRequest param, but
+    // our authRequestInput has optional properties, we need to convert it
+    // to an new object that matches the AuthRequest type.
+    this.auth
+      .login$({
+        password: this.authRequestInput.password ?? "",
+        username: this.authRequestInput.username ?? "",
+      })
+      .subscribe({
+        next: () => this.router.navigateByUrl("/d"),
+        error: (err) => (this.loginError = err.message),
+      });
+  }
+
+  createAccount() {
+    console.log("Account creation request");
+    this.registerAccount
+      .registerAccount$({
+        name: this.authRequestInput.username ?? "",
+        password: this.authRequestInput.password ?? ""
+      })
+      .subscribe({
+        next: () => this.router.navigateByUrl("/"),
+        error: (err) => (this.loginError = err.message),
+      });
   }
 
   switchPageMode() {
@@ -72,10 +102,12 @@ export class LoginPageComponent {
       this.pageMode = PageMode.createAccount;
       this.submitButtonText = "Create account";
       this.changeModeLinkText = "Back to login page";
+      this.pageTitle = "Create a new account"
     } else {
       this.pageMode = PageMode.login;
       this.submitButtonText = "Log in";
       this.changeModeLinkText = "Create account";
+      this.pageTitle = "Log in to TravelLog"
     }
 
   }
