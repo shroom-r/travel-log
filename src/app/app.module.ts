@@ -7,11 +7,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthModule } from './auth/auth.module';
 import { DummyPageComponent } from './dummy-page/dummy-page.component';
 import { ApiTokenInterceptorService } from "./auth/api-token-interceptor.service";
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DummyPageComponent
+    DummyPageComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
