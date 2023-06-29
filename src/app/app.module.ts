@@ -10,6 +10,7 @@ import { ApiTokenInterceptorService } from "./auth/api-token-interceptor.service
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TripsOnMapPageComponent } from './trips-on-map-page/trips-on-map-page.component';
 import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.component';
+import { ListPlacesComponent } from './list-places/list-places.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.c
     DummyPageComponent,
     NavBarComponent,
     TripsOnMapPageComponent,
-    AllMyTripsPageComponent
+    AllMyTripsPageComponent,
+    ListPlacesComponent
   ],
   imports: [
     BrowserModule,
