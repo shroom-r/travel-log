@@ -14,7 +14,7 @@ const routes: Routes = [
     path: "dummy",
     component: DummyPageComponent,
     //Prevent access to this page to unauthenticated users
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
   },
 ];
 

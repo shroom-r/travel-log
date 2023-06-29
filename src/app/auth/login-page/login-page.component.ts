@@ -79,7 +79,7 @@ export class LoginPageComponent {
         username: this.authRequestInput.username ?? "",
       })
       .subscribe({
-        next: () => this.router.navigateByUrl("/d"),
+        next: () => this.router.navigateByUrl("/"),
         error: (err) => (this.loginError = err.message),
       });
   }
