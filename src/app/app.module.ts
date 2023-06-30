@@ -11,6 +11,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TripsOnMapPageComponent } from './trips-on-map-page/trips-on-map-page.component';
 import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.component';
 import { ListPlacesComponent } from './list-places/list-places.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ListPlacesComponent } from './list-places/list-places.component';
     NavBarComponent,
     TripsOnMapPageComponent,
     AllMyTripsPageComponent,
-    ListPlacesComponent
+    ListPlacesComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

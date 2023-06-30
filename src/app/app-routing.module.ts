@@ -5,6 +5,7 @@ import { DummyPageComponent } from './dummy-page/dummy-page.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { TripsOnMapPageComponent } from './trips-on-map-page/trips-on-map-page.component';
 import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   //{ path: "", redirectTo: "dummy", pathMatch: "full" },
@@ -34,7 +35,7 @@ const routes: Routes = [
     ]
   },
 
-  { path: '**', component: DummyPageComponent /*PageNotFoundComponent TBD !!*/ }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
