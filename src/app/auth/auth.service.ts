@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { Observable, ReplaySubject, of } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { map, tap } from "rxjs/operators";
-import { User } from "../users/user.model";
-import { AuthRequest } from "./auth-request.model";
-import { AuthResponse } from "./auth-response.model";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map, tap } from 'rxjs/operators';
+import { User } from '../users/user.model';
+import { AuthRequest } from './auth-request.model';
+import { AuthResponse } from './auth-response.model';
+import { environment } from 'src/environments/environment';
 
 // Add a constant for the storage key in the LocalStorage
-const AUTH_STORAGE_KEY = "travel-log-auth";
+const AUTH_STORAGE_KEY = 'travel-log-auth';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthService {
   /**
@@ -46,6 +46,10 @@ export class AuthService {
     return this.authenticated$.pipe(map((auth) => auth?.user));
   }
 
+  getUserId(): Observable<string | undefined> {
+    return (this.authenticated$.pipe(map((auth) => auth?.user.id)))
+  }
+
   /**
    * Retrieves the token string from the latest AuthResponse value
    */
@@ -57,19 +61,19 @@ export class AuthService {
    * Logs in a user with the provided AuthRequest object and emits the received AuthResponse if successful.
    */
   login$(authRequest: AuthRequest): Observable<User> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth`, authRequest).pipe(
-      // The tap operator allows you to do something with an observable's emitted value
-      // and emit it again unaltered.
-      // In our case, we just store this AuthResponse in the localStorage
-      tap((response) => this.#saveAuth(response)),
-      map((response) => {
-        this.authenticated$.next(response);
-        return response.user;
-        
-      })
-    );    
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth`, authRequest)
+      .pipe(
+        // The tap operator allows you to do something with an observable's emitted value
+        // and emit it again unaltered.
+        // In our case, we just store this AuthResponse in the localStorage
+        tap((response) => this.#saveAuth(response)),
+        map((response) => {
+          this.authenticated$.next(response);
+          return response.user;
+        })
+      );
   }
-  
 
   /**
    * Logs out a user and emit an empty AuthResponse

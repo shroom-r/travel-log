@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CreateNewTripService {
+export class TripService {
 
   constructor(private http: HttpClient) {}
 
@@ -17,4 +17,10 @@ export class CreateNewTripService {
       tap((response) => {return response;})
     )
   }
+
+  getUserTrips(userId: string) : Observable<TripResponse[]> {
+    return this.http.get<TripResponse[]>(`${environment.apiUrl}/trips?user=${userId}`).pipe(
+      tap((response) => {return response;})
+    )
+  } 
 }
