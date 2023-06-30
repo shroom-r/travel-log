@@ -1,22 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TripCreationRequest } from './trip-creation-request.model';
 import { Observable, tap } from 'rxjs';
-import { TripResponse } from './trip-response.model';
+import { PlaceCreationRequest } from './place-creation-request.model';
+import { PlaceResponse } from './place-response.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TripService {
-  apiUrlTrips = `${environment.apiUrl}/trips`;
+export class PlacesService {
+  apiUrlPlaces = `${environment.apiUrl}/places`;
   constructor(private http: HttpClient) {}
 
-  createTrip(
-    tripCreationRequest: TripCreationRequest
-  ): Observable<TripResponse> {
+  createPlace(
+    placeCreationRequest: PlaceCreationRequest
+  ): Observable<PlaceResponse> {
     return this.http
-      .post<TripResponse>(this.apiUrlTrips, tripCreationRequest)
+      .post<PlaceResponse>(this.apiUrlPlaces, placeCreationRequest)
       .pipe(
         tap((response) => {
           return response;
@@ -24,9 +24,9 @@ export class TripService {
       );
   }
 
-  getUserTrips(userId: string): Observable<TripResponse[]> {
+  getPlacesOfTrip(tripId: string): Observable<PlaceResponse[]> {
     return this.http
-      .get<TripResponse[]>(this.apiUrlTrips + `?user=${userId}`)
+      .get<PlaceResponse[]>(this.apiUrlPlaces + `?trip=${tripId}`)
       .pipe(
         tap((response) => {
           return response;

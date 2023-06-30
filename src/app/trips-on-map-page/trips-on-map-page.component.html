@@ -1,2 +1,10 @@
 <app-nav-bar></app-nav-bar>
 <p>trips-on-map-page works!</p>
+<ul *ngIf="placesByTrip">
+  <li *ngFor="let trip of placesByTrip">
+    Title : {{ trip.tripId }}<br>
+    Places : {{ trip.places }}
+    <!--Id : {{ trip.id }}<br>
+    places: {{trip.placesCount }}-->
+  </li>
+</ul>

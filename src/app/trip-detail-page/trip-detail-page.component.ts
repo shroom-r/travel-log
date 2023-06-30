@@ -3,6 +3,7 @@ import { TripService } from '../trips/trip.service';
 import { TripCreationRequest } from '../trips/trip-creation-request.model';
 import { AuthService } from '../auth/auth.service';
 import { Observable, map } from 'rxjs';
+import { TripResponse } from '../trips/trip-response.model';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -10,12 +11,14 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./trip-detail-page.component.scss'],
 })
 export class TripDetailPageComponent {
-  tripsList: any;
-  constructor(
-    private tripService: TripService,
-    private auth: AuthService
-  ) {
+  tripsList: TripResponse[] = [];
+
+  constructor(private tripService: TripService, private auth: AuthService) {
     this.getTripsList();
+    /*this.createNewTrip({
+      title: 'TestTrip2Title',
+      description: 'blablabla'
+    });*/
   }
 
   createNewTrip(trip: TripCreationRequest) {
@@ -28,13 +31,10 @@ export class TripDetailPageComponent {
   getTripsList() {
     this.auth.getUserId().subscribe((userId) => {
       if (userId) {
-        console.log(userId);
-        this.tripService.getUserTrips(userId).subscribe(
-          (trips) => {console.log(trips)}
-        );
+        this.tripService.getUserTrips(userId).subscribe((trips) => {
+          this.tripsList = trips;
+        });
       }
     });
   }
-
-  getTrips() {}
 }
