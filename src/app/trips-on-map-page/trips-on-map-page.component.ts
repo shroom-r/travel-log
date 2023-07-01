@@ -6,9 +6,9 @@ import { PlacesService } from '../places/places.service';
 import { PlaceResponse } from '../places/place-response.model';
 
 type PlacesByTrip = {
-  tripId?: string,
-  places?: PlaceResponse[]
-}
+  tripId?: string;
+  places?: PlaceResponse[];
+};
 
 @Component({
   selector: 'app-trips-on-map-page',
@@ -18,6 +18,7 @@ type PlacesByTrip = {
 export class TripsOnMapPageComponent {
   tripsList: TripResponse[] = [];
   placesByTrip: PlacesByTrip[] = [];
+  placesList: PlaceResponse[] = [];
 
   constructor(
     private tripService: TripService,
@@ -41,14 +42,34 @@ export class TripsOnMapPageComponent {
   getPlaces() {
     for (let trip of this.tripsList) {
       var tripId = trip.id;
-      this.placesByTrip.push({tripId: tripId});
-      this.placesService.getPlacesOfTrip(tripId).subscribe((places) => {
-        for (let place of places) {
-          var index = this.placesByTrip.map(trip => trip.tripId).indexOf(place.tripId);
-          this.placesByTrip[index].places?.push(place);
-        }
-      });
+      this.placesService
+        .getPlacesOfTrip(tripId)
+        .subscribe((places) => {
+          this.mapPlacesToplacesByTrip(places);
+        });
     }
   }
 
+  mapPlacesToplacesByTrip(placesArray: PlaceResponse[]) {
+    var tripId : string;
+    var index: number;
+    for (let place of placesArray) {
+      //For each place in placesArray
+      //Get trip id 
+      tripId = place.tripId;
+      //If tripId doesn't exist in placesByTrip, create it
+      if (!this.placesByTrip.map(el => el.tripId).includes(tripId)) {
+        this.placesByTrip.push({tripId: tripId});
+      }
+      //get index of corresponding trip
+      index = this.placesByTrip.map(el => el.tripId).indexOf(tripId);
+      //create array for places if it doesn't exist
+      if (!this.placesByTrip[index].places) {
+        this.placesByTrip[index].places = [];
+      }
+      //adds places to corresponding trip
+      this.placesByTrip[index].places?.push(place);
+    }
+    console.log(this.placesByTrip);
+  }
 }

@@ -3,7 +3,13 @@
 <ul *ngIf="placesByTrip">
   <li *ngFor="let trip of placesByTrip">
     Title : {{ trip.tripId }}<br>
-    Places : {{ trip.places }}
+    Places : 
+  <ul>
+    <li *ngFor="let place of trip.places">
+      {{ place.name }}
+    </li>
+  </ul>
+    
     <!--Id : {{ trip.id }}<br>
     places: {{trip.placesCount }}-->
   </li>
