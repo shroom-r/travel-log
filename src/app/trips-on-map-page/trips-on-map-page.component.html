@@ -1,16 +1,3 @@
 <app-nav-bar></app-nav-bar>
-<p>trips-on-map-page works!</p>
-<ul *ngIf="placesByTrip">
-  <li *ngFor="let trip of placesByTrip">
-    Title : {{ trip.tripId }}<br>
-    Places : 
-  <ul>
-    <li *ngFor="let place of trip.places">
-      {{ place.name }}
-    </li>
-  </ul>
-    
-    <!--Id : {{ trip.id }}<br>
-    places: {{trip.placesCount }}-->
-  </li>
-</ul>
+<p>List of places by trip from list-trips-and-places component</p>
+<app-list-trips-and-places></app-list-trips-and-places>

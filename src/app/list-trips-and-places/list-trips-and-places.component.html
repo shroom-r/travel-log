@@ -1,0 +1,15 @@
+<p>list-trips-and-places works!</p>
+<ul *ngIf="placesByTrip">
+  <li *ngFor="let trip of placesByTrip">
+    Title : {{ trip.trip?.title }}<br>
+    Places : 
+  <ul>
+    <li *ngFor="let place of trip.places">
+      {{ place.name }}
+    </li>
+  </ul>
+    
+    <!--Id : {{ trip.id }}<br>
+    places: {{trip.placesCount }}-->
+  </li>
+</ul>
