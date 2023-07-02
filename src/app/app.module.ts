@@ -16,6 +16,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.component';
 import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-and-places.component';
+import { TileComponent } from './all-my-trips-page/tile/tile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-
     PageNotFoundComponent,
     TripDetailPageComponent,
     PlaceDetailPageComponent,
-    ListTripsAndPlacesComponent
+    ListTripsAndPlacesComponent,
+    TileComponent
   ],
   imports: [
     BrowserModule,
