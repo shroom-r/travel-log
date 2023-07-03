@@ -33,8 +33,11 @@ export class ListTripsAndPlacesComponent {
       if (userId) {
         this.tripService.getUserTrips(userId).subscribe((trips) => {
           this.tripsList = trips;
+          console.log(this.tripsList);
+          this.mapTripsToPlacesByTrip();
           this.getPlaces();
         });
+        
       }
     });
   }
@@ -45,25 +48,25 @@ export class ListTripsAndPlacesComponent {
       this.placesService
         .getPlacesOfTrip(tripId)
         .subscribe((places) => {
-          this.mapPlacesToplacesByTrip(places);
+          this.mapPlacesToPlacesByTrip(places);
         });
     }
   }
 
-  mapPlacesToplacesByTrip(placesArray: PlaceResponse[]) {
+  mapTripsToPlacesByTrip() {
+    for (let trip of this.tripsList) {
+      //push every trip to placesByTrip
+      this.placesByTrip.push({trip: trip});
+    }
+  }
+
+  mapPlacesToPlacesByTrip(placesArray: PlaceResponse[]) {
     var tripId : string;
     var index: number;
     for (let place of placesArray) {
       //For each place in placesArray
       //Get trip id 
       tripId = place.tripId;
-      //If tripId doesn't exist in placesByTrip, create it
-      if (!this.placesByTrip.map(el => el.trip?.id).includes(tripId)) {
-        //Get trip from trips array
-        var indexOfTrip = this.tripsList.map(el => el.id).indexOf(tripId);
-        var trip = this.tripsList[indexOfTrip];
-        this.placesByTrip.push({trip: trip});
-      }
       //get index of corresponding trip
       index = this.placesByTrip.map(el => el.trip?.id).indexOf(tripId);
       //create array for places if it doesn't exist
@@ -73,5 +76,6 @@ export class ListTripsAndPlacesComponent {
       //adds places to corresponding trip
       this.placesByTrip[index].places?.push(place);
     }
+    console.log(this.placesByTrip);
   }
 }

@@ -17,6 +17,7 @@ import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.com
 import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.component';
 import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-and-places.component';
 import { TileComponent } from './all-my-trips-page/tile/tile.component';
+import { TripFormComponent } from './trip-form/trip-form.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TileComponent } from './all-my-trips-page/tile/tile.component';
     TripDetailPageComponent,
     PlaceDetailPageComponent,
     ListTripsAndPlacesComponent,
-    TileComponent
+    TileComponent,
+    TripFormComponent
   ],
   imports: [
     BrowserModule,
