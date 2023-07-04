@@ -4,6 +4,7 @@ import { TripCreationRequest } from '../trips/trip-creation-request.model';
 import { AuthService } from '../auth/auth.service';
 import { Observable, map } from 'rxjs';
 import { TripResponse } from '../trips/trip-response.model';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -12,13 +13,18 @@ import { TripResponse } from '../trips/trip-response.model';
 })
 export class TripDetailPageComponent {
   tripsList: TripResponse[] = [];
+  activeTripId?: string | null;
 
-  constructor(private tripService: TripService, private auth: AuthService) {
+  constructor(
+    private tripService: TripService,
+    private auth: AuthService,
+    private route: ActivatedRoute
+  ) {
     this.getTripsList();
-    /*this.createNewTrip({
-      title: 'TestTrip2Title',
-      description: 'blablabla'
-    });*/
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.activeTripId = params.get('tripId');
+      console.log(this.activeTripId);
+    });
   }
 
   createNewTrip(trip: TripCreationRequest) {

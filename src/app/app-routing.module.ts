@@ -35,8 +35,13 @@ const routes: Routes = [
         component: AllMyTripsPageComponent,
       },
       {
-        path: 'tripDetail',
+        path: 'tripDetail/:tripId',
         component: TripDetailPageComponent,
+      },
+      {//If path /tripDetail has no :tripId, redirects to /tripDetail/NewTrip which is special path to create a new trip
+        path: 'tripDetail',
+        pathMatch: 'full',
+        redirectTo: 'tripDetail/NewTrip'
       },
       {
         path: 'placeDetail',
