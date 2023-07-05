@@ -12,29 +12,30 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   styleUrls: ['./trip-detail-page.component.scss'],
 })
 export class TripDetailPageComponent {
-  tripsList: TripResponse[] = [];
-  activeTripId?: string | null;
+  //tripsList: TripResponse[] = [];
+  routeTripId?: string | null;
+  currentTrip?: TripResponse;
 
   constructor(
     private tripService: TripService,
-    private auth: AuthService,
+    //private auth: AuthService,
     private route: ActivatedRoute
   ) {
-    this.getTripsList();
+    //this.getTripsList();
     this.route.paramMap.subscribe((params: ParamMap) => {
-      this.activeTripId = params.get('tripId');
-      console.log(this.activeTripId);
+      this.routeTripId = params.get('tripId');
+      console.log(this.routeTripId);
     });
   }
 
-  createNewTrip(trip: TripCreationRequest) {
+  /*createNewTrip(trip: TripCreationRequest) {
     this.tripService.createTrip(trip).subscribe({
       next: (response) => console.log(response),
       error: (err) => console.log(err),
     });
-  }
+  }*/
 
-  getTripsList() {
+  /*getTripsList() {
     this.auth.getUserId().subscribe((userId) => {
       if (userId) {
         this.tripService.getUserTrips(userId).subscribe((trips) => {
@@ -42,9 +43,21 @@ export class TripDetailPageComponent {
         });
       }
     });
+  }*/
+
+  getTrip() {
+    if (this.routeTripId) {
+      this.tripService.getTripById(this.routeTripId).subscribe({
+        next: (response) => {this.currentTrip = response;},
+        error: (err) => {
+          alert(`Le trip ID ${this.routeTripId} n'existe pas.`);
+          //REDIRECT TO /tripDetail/
+        },
+      });
+    }
   }
 
-  tripCreated() {
-
+  tripCreated(trip: TripResponse) {
+    this.currentTrip = trip;
   }
 }

@@ -11,7 +11,7 @@ import { TripResponse } from '../trips/trip-response.model';
   styleUrls: ['./trip-form.component.scss'],
 })
 export class TripFormComponent implements OnInit {
-  currentTrip?: TripResponse;
+  @Input() currentTrip?: TripResponse;
   tripTitle?: string;
   tripDescription?: string;
   formMode: FormMode = FormMode.New;
@@ -67,7 +67,7 @@ export class TripFormComponent implements OnInit {
             description: this.tripDescription,
           })
           .subscribe((response) => {
-            this.currentTrip = response;
+            //this.currentTrip = response;
             this.tripCreated.emit(response);
           });
         //Après la création du voyage, récupérer le voyage et changer le mode du formulaire en "Modification".
