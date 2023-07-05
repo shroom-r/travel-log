@@ -13,12 +13,12 @@ type PlacesByTrip = {
 @Component({
   selector: 'app-list-trips-and-places',
   templateUrl: './list-trips-and-places.component.html',
-  styleUrls: ['./list-trips-and-places.component.scss']
+  styleUrls: ['./list-trips-and-places.component.scss'],
 })
 export class ListTripsAndPlacesComponent {
   tripsList: TripResponse[] = [];
-  placesByTrip: PlacesByTrip[] = [];
   placesList: PlaceResponse[] = [];
+  placesByTrip: PlacesByTrip[] = [];
 
   constructor(
     private tripService: TripService,
@@ -33,11 +33,9 @@ export class ListTripsAndPlacesComponent {
       if (userId) {
         this.tripService.getUserTrips(userId).subscribe((trips) => {
           this.tripsList = trips;
-          console.log(this.tripsList);
           this.mapTripsToPlacesByTrip();
           this.getPlaces();
         });
-        
       }
     });
   }
@@ -45,30 +43,28 @@ export class ListTripsAndPlacesComponent {
   getPlaces() {
     for (let trip of this.tripsList) {
       var tripId = trip.id;
-      this.placesService
-        .getPlacesOfTrip(tripId)
-        .subscribe((places) => {
-          this.mapPlacesToPlacesByTrip(places);
-        });
+      this.placesService.getPlacesOfTrip(tripId).subscribe((places) => {
+        this.mapPlacesToPlacesByTrip(places);
+      });
     }
   }
 
   mapTripsToPlacesByTrip() {
     for (let trip of this.tripsList) {
       //push every trip to placesByTrip
-      this.placesByTrip.push({trip: trip});
+      this.placesByTrip.push({ trip: trip });
     }
   }
 
   mapPlacesToPlacesByTrip(placesArray: PlaceResponse[]) {
-    var tripId : string;
+    var tripId: string;
     var index: number;
     for (let place of placesArray) {
       //For each place in placesArray
-      //Get trip id 
+      //Get trip id
       tripId = place.tripId;
       //get index of corresponding trip
-      index = this.placesByTrip.map(el => el.trip?.id).indexOf(tripId);
+      index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
       //create array for places if it doesn't exist
       if (!this.placesByTrip[index].places) {
         this.placesByTrip[index].places = [];
@@ -76,6 +72,5 @@ export class ListTripsAndPlacesComponent {
       //adds places to corresponding trip
       this.placesByTrip[index].places?.push(place);
     }
-    console.log(this.placesByTrip);
   }
 }

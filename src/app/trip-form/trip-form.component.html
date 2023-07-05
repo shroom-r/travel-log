@@ -1,5 +1,5 @@
-<div *ngIf="formMode==='Modification'">Trip ID: {{ currentTrip?.id }}</div>
-<div *ngIf="formMode==='New'">Create new trip</div>
+<div *ngIf="formMode === 'Modification'">Trip ID: {{ currentTrip?.id }}</div>
+<div *ngIf="formMode === 'New'">Create new trip</div>
 <button class="btn btn-link btn-sm" (click)="deleteTrip()">
   <i class="far fa-trash-alt"></i>
 </button>
@@ -13,6 +13,8 @@
       [(ngModel)]="tripTitle"
       #tripTitleInput="ngModel"
       required
+      minlength="3"
+      maxlength="100"
       name="Trip title"
     />
   </div>
@@ -25,6 +27,8 @@
       [(ngModel)]="tripDescription"
       #tripDescriptionInput="ngModel"
       required
+      minlength="5"
+      maxlength="50000"
       name="Trip description"
     />
   </div>
@@ -36,7 +40,5 @@
   >
     Save
   </button>
-  <div style="margin-left: 10px">
-    [TEMP]Current mode : {{ formMode }}
-  </div>
+  <div style="margin-left: 10px">[TEMP]Current mode : {{ formMode }}</div>
 </form>
