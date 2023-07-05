@@ -2,6 +2,7 @@
 <ul *ngIf="placesByTrip">
   <li *ngFor="let trip of placesByTrip">
     Title : {{ trip.trip?.title }}<br>
+    TripId : {{trip.trip?.id}}<br>
     Places : 
   <ul>
     <li *ngFor="let place of trip.places">

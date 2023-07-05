@@ -1,4 +1,8 @@
-<div>Trip ID: {{ tripId }}</div>
+<div *ngIf="formMode==='Modification'">Trip ID: {{ currentTrip?.id }}</div>
+<div *ngIf="formMode==='New'">Create new trip</div>
+<button class="btn btn-link btn-sm" (click)="deleteTrip()">
+  <i class="far fa-trash-alt"></i>
+</button>
 <form #tripForm="ngForm">
   <div class="form-group">
     <label for="tripTitleInput">Title</label>
@@ -30,7 +34,7 @@
     [disabled]="tripForm.invalid"
     (click)="submitForm()"
   >
-    Submit
+    Save
   </button>
   <div style="margin-left: 10px">
     [TEMP]Current mode : {{ formMode }}
