@@ -41,7 +41,7 @@ const routes: Routes = [
       {//If path /tripDetail has no :tripId, redirects to /tripDetail/NewTrip which is special path to create a new trip
         path: 'tripDetail',
         pathMatch: 'full',
-        redirectTo: 'tripDetail/NewTrip'
+        redirectTo: 'tripDetail/'
       },
       {
         path: 'placeDetail',
