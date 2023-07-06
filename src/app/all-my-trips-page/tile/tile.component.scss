@@ -1,0 +1,23 @@
+ul{
+  display: flex;
+  flex-wrap: wrap;
+}
+li {
+  list-style-type: none;
+}
+.card{
+  width: 400px;
+}
+.card-body {
+  margin: 5px;
+  border-style: groove;
+  border-width: 1px;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+.fit-picture{
+  max-width: 100%;
+}
+.card-body:hover{
+  background-color: azure;
+}
