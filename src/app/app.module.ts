@@ -18,7 +18,6 @@ import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.
 import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-and-places.component';
 import { TileComponent } from './all-my-trips-page/tile/tile.component';
 import { TripFormComponent } from './trip-form/trip-form.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     AuthModule,
     FormsModule,
-    FontAwesomeModule,
   ],
   providers: [
     {
