@@ -24,12 +24,14 @@ export class TripFormComponent implements OnInit, OnChanges {
   tripDescription?: string;
   formMode?: FormMode;
   @Input() tripId?: string | null;
-  @Output() tripCreated: EventEmitter<TripResponse>;
+  @Output() tripUpdated: EventEmitter<TripResponse>;
+  @Output() tripDeleted: EventEmitter<null>;
 
   constructor(private tripService: TripService) {
-    this.tripCreated = new EventEmitter();
+    this.tripUpdated = new EventEmitter();
+    this.tripDeleted = new EventEmitter();
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     this.initForm();
   }
@@ -54,6 +56,8 @@ export class TripFormComponent implements OnInit, OnChanges {
     this.formMode = mode;
     switch (mode) {
       case FormMode.New:
+        this.tripTitle = '';
+        this.tripDescription = '';
         break;
       case FormMode.Modification:
         this.tripTitle = this.currentTrip?.title;
@@ -83,17 +87,31 @@ export class TripFormComponent implements OnInit, OnChanges {
           })
           .subscribe((response) => {
             //this.currentTrip = response;
-            this.tripCreated.emit(response);
+            this.tripUpdated.emit(response);
           });
-        //Après la création du voyage, récupérer le voyage et changer le mode du formulaire en "Modification".
-        //Pour ça il faut émettre un evenement au parent pour dire que le voyage a été créé. Dans l'évènement, passer au parent le voyage pour ne pas avoir à le recharger
       } else if (this.formMode === FormMode.Modification) {
         //Mettre ici le service pour modifier un trip existant. Mais pour ça il faut récupérer l'ID du trip en cours
+        if (this.currentTrip) {
+          this.tripService
+            .updateTrip(this.currentTrip.id, {
+              title: this.tripTitle,
+              description: this.tripDescription,
+            })
+            .subscribe((response) => {
+              //this.currentTrip = response;
+              this.tripUpdated.emit(response);
+            });
+        }
       }
     }
   }
 
   deleteTrip() {
     console.log('DELETION');
+    if (this.currentTrip) {
+      this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
+        this.tripDeleted.emit();
+      });
+    }
   }
 }

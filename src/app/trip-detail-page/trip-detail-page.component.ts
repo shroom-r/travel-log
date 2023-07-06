@@ -15,7 +15,7 @@ export class TripDetailPageComponent {
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.routeTripId = params.get('tripId');
@@ -32,14 +32,19 @@ export class TripDetailPageComponent {
         },
         error: (err) => {
           alert(`Le trip ID ${this.routeTripId} n'existe pas.`);
-          this.router.navigate(['tripDetail/'])
+          this.router.navigate(['tripDetail/']);
         },
       });
     }
   }
 
-  tripCreated(trip: TripResponse) {
+  tripUpdated(trip: TripResponse) {
     this.currentTrip = trip;
     this.router.navigate(['tripDetail/' + this.currentTrip.id]);
+  }
+
+  tripDeleted() {
+    this.currentTrip = undefined;
+    this.router.navigate(['tripDetail/']);
   }
 }

@@ -1,8 +1,8 @@
 <div *ngIf="formMode === 'Modification'">Trip ID: {{ currentTrip?.id }}</div>
 <div *ngIf="formMode === 'New'">Create new trip</div>
-<button class="btn btn-link btn-sm" (click)="deleteTrip()">
+<button *ngIf="formMode === 'Modification'" class="btn btn-link btn-sm" (click)="deleteTrip()">
   <!--<i class="far fa-trash-alt"></i>-->
-  Delete(A REMPLACER par icone font awesome)
+  Delete trip (A REMPLACER par icone font awesome)
 </button>
 <form #tripForm="ngForm">
   <div class="form-group">
