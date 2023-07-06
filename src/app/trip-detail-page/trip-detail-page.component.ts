@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TripService } from '../trips/trip.service';
 import { TripResponse } from '../trips/trip-response.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -17,7 +18,7 @@ export class TripDetailPageComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.route.paramMap.subscribe((params: ParamMap) => {
+    this.route.paramMap.pipe(tap(console.log)).subscribe((params) => {
       this.routeTripId = params.get('tripId');
       this.getTrip();
     });
@@ -40,7 +41,7 @@ export class TripDetailPageComponent {
 
   tripUpdated(trip: TripResponse) {
     this.currentTrip = trip;
-    this.router.navigate(['tripDetail/' + this.currentTrip.id]);
+    this.router.navigate([this.currentTrip.id], { relativeTo: this.route });
   }
 
   tripDeleted() {
