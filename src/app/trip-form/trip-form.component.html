@@ -1,9 +1,22 @@
-<div *ngIf="formMode === 'Modification'">Trip ID: {{ currentTrip?.id }}</div>
-<div *ngIf="formMode === 'New'">Create new trip</div>
-<button class="btn btn-link btn-sm" (click)="deleteTrip()">
-  <!--<i class="far fa-trash-alt"></i>-->
-  Delete(A REMPLACER par icone font awesome)
-</button>
+<div class="d-flex justify-content-between align-items-center">
+  <div *ngIf="formMode === 'Modification'">Trip ID: {{ currentTrip?.id }}</div>
+  <div *ngIf="formMode === 'New'">Create new trip</div>
+  <div>
+    <button
+      *ngIf="formMode === 'Modification'"
+      class="btn btn-link btn-sm"
+      (click)="deleteTrip()"
+    >
+      <fa-icon
+      class="text-danger"
+        [icon]="faTrash"
+        style="font-size: 20px;"
+        title="Delete trip"
+        alt="Delete trip"
+      ></fa-icon>
+    </button>
+  </div>
+</div>
 <form #tripForm="ngForm">
   <div class="form-group">
     <label for="tripTitleInput">Title</label>

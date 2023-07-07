@@ -1,17 +1,15 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { FormMode } from '../forms/form-mode.model';
 import { TripService } from '../trips/trip.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { TripResponse } from '../trips/trip-response.model';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-trip-form',
@@ -19,17 +17,15 @@ import { TripResponse } from '../trips/trip-response.model';
   styleUrls: ['./trip-form.component.scss'],
 })
 export class TripFormComponent implements OnInit, OnChanges {
+  faTrash = faTrash;
+
   @Input() currentTrip?: TripResponse;
   tripTitle?: string;
   tripDescription?: string;
   formMode?: FormMode;
-  @Input() tripId?: string | null;
-  @Output() tripCreated: EventEmitter<TripResponse>;
 
-  constructor(private tripService: TripService) {
-    this.tripCreated = new EventEmitter();
-  }
-  
+  constructor(private tripService: TripService, private router: Router) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     this.initForm();
   }
@@ -39,13 +35,9 @@ export class TripFormComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    //Call different initialization if tripIp is has value or is empty string'
-    //If empty, it's a new trip so set New mode
     if (this.currentTrip) {
-      //INITIALIZE IN MODIFICATION MODE HERE
       this.initializeMode(FormMode.Modification);
     } else {
-      //INITIALIZE IN NEW MODE HERE
       this.initializeMode(FormMode.New);
     }
   }
@@ -54,6 +46,8 @@ export class TripFormComponent implements OnInit, OnChanges {
     this.formMode = mode;
     switch (mode) {
       case FormMode.New:
+        this.tripTitle = '';
+        this.tripDescription = '';
         break;
       case FormMode.Modification:
         this.tripTitle = this.currentTrip?.title;
@@ -82,18 +76,29 @@ export class TripFormComponent implements OnInit, OnChanges {
             description: this.tripDescription,
           })
           .subscribe((response) => {
-            //this.currentTrip = response;
-            this.tripCreated.emit(response);
+            this.router.navigate(['tripDetail/' + response.id]);
           });
-        //Après la création du voyage, récupérer le voyage et changer le mode du formulaire en "Modification".
-        //Pour ça il faut émettre un evenement au parent pour dire que le voyage a été créé. Dans l'évènement, passer au parent le voyage pour ne pas avoir à le recharger
       } else if (this.formMode === FormMode.Modification) {
-        //Mettre ici le service pour modifier un trip existant. Mais pour ça il faut récupérer l'ID du trip en cours
+        if (this.currentTrip) {
+          this.tripService
+            .updateTrip(this.currentTrip.id, {
+              title: this.tripTitle,
+              description: this.tripDescription,
+            })
+            .subscribe((response) => {
+              this.router.navigate(['tripDetail/' + response.id]);
+            });
+        }
       }
     }
   }
 
   deleteTrip() {
     console.log('DELETION');
+    if (this.currentTrip) {
+      this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
+        this.router.navigate(['allMyTrips/']);
+      });
+    }
   }
 }

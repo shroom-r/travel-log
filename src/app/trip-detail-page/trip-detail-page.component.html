@@ -1,5 +1,4 @@
 <app-nav-bar></app-nav-bar>
-<p>trip-detail-page works!</p>
 <div class="container-fluid" style="border: 1px solid black">
   <div class="mx-2 h-100 row">
     <div class="col-6 border">
@@ -7,11 +6,13 @@
     </div>
     <div class="col-6 border">
       <div class="m-1">
-        <app-trip-form [currentTrip]="this.currentTrip" (tripCreated)="tripCreated($event)"></app-trip-form>
+        <app-trip-form [currentTrip]="this.currentTrip"></app-trip-form>
       </div>
     </div>
     <div class="col-6 border">
-      <div class="m-1"><app-list-places></app-list-places></div>
+      <div class="m-1">
+        <app-list-places [currentTrip]="this.currentTrip"></app-list-places>
+      </div>
     </div>
     <div class="col-6 border">
       <div class="m-1">test</div>

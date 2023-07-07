@@ -1,6 +1,5 @@
-<p>list-places works!</p>
+<h3>Places list</h3>
+<button class="mt-2 btn btn-primary">Add place</button>
 <ul>
-  <li>test1</li>
-  <li>test2</li>
-  <li>test3</li>
+  <li *ngFor="let place of places">{{ place.name }}</li>
 </ul>
