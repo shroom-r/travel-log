@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TripService } from '../trips/trip.service';
 import { TripResponse } from '../trips/trip-response.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -15,9 +16,9 @@ export class TripDetailPageComponent {
   constructor(
     private tripService: TripService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {
-    this.route.paramMap.subscribe((params: ParamMap) => {
+    this.route.paramMap.pipe(tap(console.log)).subscribe((params) => {
       this.routeTripId = params.get('tripId');
       this.getTrip();
     });
@@ -32,14 +33,19 @@ export class TripDetailPageComponent {
         },
         error: (err) => {
           alert(`Le trip ID ${this.routeTripId} n'existe pas.`);
-          this.router.navigate(['tripDetail/'])
+          this.router.navigate(['tripDetail/']);
         },
       });
     }
   }
 
-  tripCreated(trip: TripResponse) {
+  tripUpdated(trip: TripResponse) {
     this.currentTrip = trip;
-    this.router.navigate(['tripDetail/' + this.currentTrip.id]);
+    this.router.navigate([this.currentTrip.id], { relativeTo: this.route });
+  }
+
+  tripDeleted() {
+    this.currentTrip = undefined;
+    this.router.navigate(['tripDetail/']);
   }
 }

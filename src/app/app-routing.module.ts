@@ -8,6 +8,7 @@ import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.c
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.component';
 import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.component';
+import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
 
 const routes: Routes = [
   //{ path: "", redirectTo: "dummy", pathMatch: "full" },
@@ -35,18 +36,24 @@ const routes: Routes = [
         component: AllMyTripsPageComponent,
       },
       {
+        path: 'newTrip',
+        component: CreateTripPageComponent
+      },
+      {
         path: 'tripDetail/:tripId',
         component: TripDetailPageComponent,
       },
-      {//If path /tripDetail has no :tripId, redirects to /tripDetail/NewTrip which is special path to create a new trip
-        path: 'tripDetail',
-        pathMatch: 'full',
-        redirectTo: 'tripDetail/'
-      },
+      // {
+      //   path: 'tripDetail',
+      //   children: [
+      //     { path: '', component: TripDetailPageComponent },
+      //     { path: ':tripId', component: TripDetailPageComponent },
+      //   ],
+      // },
       {
         path: 'placeDetail',
         component: PlaceDetailPageComponent,
-      }
+      },
     ],
   },
   { path: '**', component: PageNotFoundComponent },
