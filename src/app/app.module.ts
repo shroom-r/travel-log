@@ -18,11 +18,8 @@ import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.
 import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-and-places.component';
 import { TileComponent } from './all-my-trips-page/tile/tile.component';
 import { TripFormComponent } from './trip-form/trip-form.component';
-<<<<<<< HEAD
-=======
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
->>>>>>> trip-form
 
 @NgModule({
   declarations: [
@@ -46,6 +43,7 @@ import { CreateTripPageComponent } from './create-trip-page/create-trip-page.com
     HttpClientModule,
     AuthModule,
     FormsModule,
+    FontAwesomeModule
   ],
   providers: [
     {
