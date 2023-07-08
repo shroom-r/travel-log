@@ -10,6 +10,7 @@ import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
 import { Geolocation } from '../../utils/geolocation';
 import { faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-list-places',
@@ -45,7 +46,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   addPlace(): void {
-
+    console.log("click");
   }
 
   modifyPlace() {}
