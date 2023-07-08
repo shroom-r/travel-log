@@ -10,6 +10,7 @@ import { TripService } from '../trips/trip.service';
 import { Router } from '@angular/router';
 import { TripResponse } from '../trips/trip-response.model';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Geolocation } from 'src/utils/geolocation';
 
 @Component({
   selector: 'app-trip-form',
@@ -31,6 +32,7 @@ export class TripFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    // Geolocation.getCurrentPosition().then(console.log).catch(console.error);
     this.initForm();
   }
 

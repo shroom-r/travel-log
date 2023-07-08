@@ -1,0 +1,9 @@
+<div class="container p-0 w-100 h-100">
+    <div
+      class="leaflet-map"
+      leaflet
+      [leafletOptions]="mapOptions"
+      (leafletMapReady)="onMapReady($event)"
+      [leafletLayers]="mapMarkers"
+    ></div>
+</div>
