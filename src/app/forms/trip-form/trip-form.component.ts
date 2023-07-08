@@ -5,10 +5,10 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { FormMode } from '../forms/form-mode.model';
-import { TripService } from '../trips/trip.service';
+import { FormMode } from '../form-mode.model';
+import { TripService } from '../../trips/trip.service';
 import { Router } from '@angular/router';
-import { TripResponse } from '../trips/trip-response.model';
+import { TripResponse } from '../../trips/trip-response.model';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Geolocation } from 'src/utils/geolocation';
 

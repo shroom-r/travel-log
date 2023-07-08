@@ -17,7 +17,7 @@ import { TripDetailPageComponent } from './trip-detail-page/trip-detail-page.com
 import { PlaceDetailPageComponent } from './place-detail-page/place-detail-page.component';
 import { ListTripsAndPlacesComponent } from './list-trips-and-places/list-trips-and-places.component';
 import { TileComponent } from './all-my-trips-page/tile/tile.component';
-import { TripFormComponent } from './trip-form/trip-form.component';
+import { TripFormComponent } from './forms/trip-form/trip-form.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
