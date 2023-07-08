@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TripResponse } from '../../trips/trip-response.model';
 import { PlaceResponse } from '../../places/place-response.model';
 import { TripService } from '../../trips/trip.service';
 import { AuthService } from '../../auth/auth.service';
 import { PlacesService } from '../../places/places.service';
 import { Router } from '@angular/router';
+import { Geolocation } from '../../../utils/geolocation';
 
 
 type PlacesByTrip = {
@@ -17,7 +18,7 @@ type PlacesByTrip = {
   templateUrl: './tile.component.html',
   styleUrls: ['./tile.component.scss']
 })
-export class TileComponent {
+export class TileComponent implements OnInit{
 
   // construire une tuile qui sera utilisée pour présenter chaque trip
   // on doit afficher au minimum un titre et une description
@@ -35,6 +36,10 @@ export class TileComponent {
     this.title = 'titre Tuile';
     this.tripDescription = 'Description du trip';
     this.getTripsList();
+  }
+
+  ngOnInit(): void {
+    Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   seeDetail(tripId? :string) {

@@ -8,6 +8,7 @@ import {
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
+import { Geolocation } from '../../utils/geolocation';
 
 @Component({
   selector: 'app-list-places',
@@ -26,6 +27,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.places = [];
     this.getPlaces();
+    Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   getPlaces() {
@@ -37,5 +39,9 @@ export class ListPlacesComponent implements OnInit, OnChanges {
           response.forEach((place) => this.places?.push(place));
         });
     }
+  }
+
+  addPlace(): void {
+
   }
 }
