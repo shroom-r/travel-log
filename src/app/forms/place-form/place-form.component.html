@@ -1,1 +1,15 @@
-<p>place-form works!</p>
+<form [formGroup] ="placeForm" ="onSubmit()">
+  <label for="place-name">Name: </label>
+  <input id="place-name" type="text" formControlName="placeName" minlength="3" maxlength="100" required>
+
+  <label for="place-description">Description: </label>
+  <input id="place-description" type="text" formControlName="placeDescription" minlength="5" maxlength="50000" required>
+
+  <label for="picUrl">Picture URL: </label>
+  <input id="picUrl" type="text" formControlName="picUrl" minlength="10" maxlength="500">
+
+
+
+  <p>Complete the form to submit.</p>
+  <button type="submit" [disabled]="!placeForm.valid">Submit</button>
+</form>
