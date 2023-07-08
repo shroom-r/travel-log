@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { TripDetailPageComponent } from './pages/trip-detail-page/trip-detail-page.component';
 import { PlaceDetailPageComponent } from './pages/place-detail-page/place-detail-page.component';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
+import { CreatePlacePageComponent } from './pages/create-place-page/create-place-page.component';
 
 const routes: Routes = [
   //{ path: "", redirectTo: "dummy", pathMatch: "full" },
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: 'newTrip',
         component: CreateTripPageComponent
+      },
+      {
+        path: 'addPlace',
+        component: CreatePlacePageComponent
       },
       {
         path: 'tripDetail/:tripId',
