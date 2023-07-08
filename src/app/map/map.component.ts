@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MapOptions, latLng, tileLayer, Map, Marker, marker } from 'leaflet';
 import { defaultIcon } from './default-marker';
+import { TripResponse } from '../trips/trip-response.model';
+import { PlaceResponse } from '../places/place-response.model';
 
 @Component({
   selector: 'app-map',
@@ -11,6 +13,7 @@ export class MapComponent {
   mapOptions: MapOptions;
   mapMarkers: Marker[];
   #map?: Map;
+  @Input() currentTrip?: TripResponse;
 
   constructor() {
     this.mapOptions = {
@@ -36,5 +39,21 @@ export class MapComponent {
       const center = this.#map?.getCenter();
       console.log(`Map moved to ${center?.lng}, ${center?.lat}`);
     })
+    this.getPlaces();
+  }
+
+  getPlaces() {
+    //Get places
+    var places: PlaceResponse[] = [];
+    //SERVICE TO GET PLACES HERE.............................
+    this.showPlacesOnMap(places);
+  }
+
+  showPlacesOnMap(places: PlaceResponse[]) {
+    //FOR EACHE PLACE IN PLACES
+
+    //GET COORDINATES
+
+    //PUSH THEM TO MAPMARKERS INSIDE MARKER OBJECTS
   }
 }

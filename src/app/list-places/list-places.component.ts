@@ -18,7 +18,7 @@ import { faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class ListPlacesComponent implements OnInit, OnChanges {
   faPencil = faPencil;
-  faSquarePlus = faSquarePlus
+  faSquarePlus = faSquarePlus;
 
   places?: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;

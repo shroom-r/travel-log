@@ -24,6 +24,7 @@ export class TripFormComponent implements OnInit, OnChanges {
   tripTitle?: string;
   tripDescription?: string;
   formMode?: FormMode;
+  formTitle?: string;
 
   constructor(private tripService: TripService, private router: Router) {}
 
@@ -50,10 +51,12 @@ export class TripFormComponent implements OnInit, OnChanges {
       case FormMode.New:
         this.tripTitle = '';
         this.tripDescription = '';
+        this.formTitle = 'Create a new trip';
         break;
       case FormMode.Modification:
         this.tripTitle = this.currentTrip?.title;
         this.tripDescription = this.currentTrip?.description;
+        this.formTitle = 'Modify trip informations';
         break;
       default:
         break;
