@@ -4,7 +4,7 @@ import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { DummyPageComponent } from './dummy-page/dummy-page.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { TripsOnMapPageComponent } from './pages/trips-on-map-page/trips-on-map-page.component';
-import { AllMyTripsPageComponent } from './all-my-trips-page/all-my-trips-page.component';
+import { AllMyTripsPageComponent } from './pages/all-my-trips-page/all-my-trips-page.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { TripDetailPageComponent } from './pages/trip-detail-page/trip-detail-page.component';
 import { PlaceDetailPageComponent } from './pages/place-detail-page/place-detail-page.component';
