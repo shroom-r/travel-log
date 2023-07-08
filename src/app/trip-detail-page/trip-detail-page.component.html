@@ -1,21 +1,77 @@
-<app-nav-bar></app-nav-bar>
-<div class="container-fluid" style="border: 1px solid black">
-  <div class="mx-2 h-100 row">
-    <div class="col-6 border">
-      <div class="m-1">test</div>
-    </div>
-    <div class="col-6 border">
-      <div class="m-1">
-        <app-trip-form [currentTrip]="this.currentTrip"></app-trip-form>
+<div style="height: 100vh; width: 100vw">
+  <div class="container-fluid p-0 h-100 d-flex flex-column">
+    <app-nav-bar></app-nav-bar>
+    <div class="flex-grow-1">
+      <div class="container-fluid p-0 h-100" style="border: 1px solid black">
+        <div class="row w-100 m-0 h-100 align-content-center">
+          <div
+            style="height: 40%"
+            class="overflow-auto col-6 border d-flex align-items-center"
+          >
+            <div class="m-1">test</div>
+          </div>
+          <div
+            style="height: 40%"
+            class="overflow-auto col-6 border d-flex flex-column"
+          >
+            <!-- <h3 class="mb-0">Trip title and description</h3> -->
+            <div class="d-flex align-items-center flex-grow-1">
+              <div class="ms-1 h-100 me-10 w-75">
+                <app-trip-form [currentTrip]="this.currentTrip"></app-trip-form>
+              </div>
+            </div>
+          </div>
+          <div
+            style="height: 60%"
+            class="overflow-auto col-6 border d-flex flex-column"
+          >
+            <div class="d-flex align-items-center flex-grow-1">
+              <div class="ms-1 h-100 me-10 w-100">
+                <app-list-places
+                  [currentTrip]="this.currentTrip"
+                ></app-list-places>
+              </div>
+            </div>
+          </div>
+          <div
+            style="height: 60%"
+            class="p-2 col-6 border d-flex align-items-center"
+          >
+            <div class="m-1 h-100 w-100">
+              <app-map class="p-0"></app-map>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="col-6 border">
-      <div class="m-1">
-        <app-list-places [currentTrip]="this.currentTrip"></app-list-places>
-      </div>
-    </div>
-    <div class="col-6 border">
-      <div class="m-1">test</div>
     </div>
   </div>
 </div>
+<!--<div style="height: 100vh; width: 100vw">
+  <div class="container-fluid d-flex  p-0">
+    <div class="column">
+      
+      <div class="container-fluid d-flex p-0 flex-grow-1" style="border: 1px solid black">
+        <div class="row w-100 m-0">
+          <div class="col-6 border">
+            <div class="m-1">test</div>
+          </div>
+          <div class="col-6 border">
+            <div class="m-1">
+              <app-trip-form [currentTrip]="this.currentTrip"></app-trip-form>
+            </div>
+          </div>
+          <div class="col-6 border">
+            <div class="m-1">
+              <app-list-places
+                [currentTrip]="this.currentTrip"
+              ></app-list-places>
+            </div>
+          </div>
+          <div class="col-6 border">
+            <div class="m-1 w-100"><app-map></app-map></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->

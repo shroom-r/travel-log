@@ -20,6 +20,8 @@ import { TileComponent } from './all-my-trips-page/tile/tile.component';
 import { TripFormComponent } from './trip-form/trip-form.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CreateTripPageComponent } from './create-trip-page/create-trip-page.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { CreateTripPageComponent } from './create-trip-page/create-trip-page.com
     ListTripsAndPlacesComponent,
     TileComponent,
     TripFormComponent,
-    CreateTripPageComponent
+    CreateTripPageComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,8 @@ import { CreateTripPageComponent } from './create-trip-page/create-trip-page.com
     HttpClientModule,
     AuthModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    LeafletModule
   ],
   providers: [
     {

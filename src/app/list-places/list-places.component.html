@@ -1,5 +1,10 @@
 <h3>Places list</h3>
 <button class="mt-2 btn btn-primary">Add place</button>
 <ul>
-  <li *ngFor="let place of places">{{ place.name }}</li>
+  <li *ngFor="let place of places">
+    <div class="container border">
+      <h5 class="m-0">{{ place.name }}</h5>
+      <div class="text-truncate">{{ place.description }}</div>
+    </div>
+  </li>
 </ul>
