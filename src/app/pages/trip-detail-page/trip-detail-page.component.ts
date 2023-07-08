@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TripService } from '../trips/trip.service';
-import { TripResponse } from '../trips/trip-response.model';
+import { TripService } from '../../trips/trip.service';
+import { TripResponse } from '../../trips/trip-response.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { tap } from 'rxjs';
 

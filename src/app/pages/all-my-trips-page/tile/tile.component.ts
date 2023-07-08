@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TripResponse } from '../../trips/trip-response.model';
-import { PlaceResponse } from '../../places/place-response.model';
-import { TripService } from '../../trips/trip.service';
-import { AuthService } from '../../auth/auth.service';
-import { PlacesService } from '../../places/places.service';
+import { TripResponse } from '../../../trips/trip-response.model';
+import { PlaceResponse } from '../../../places/place-response.model';
+import { TripService } from '../../../trips/trip.service';
+import { AuthService } from '../../../auth/auth.service';
+import { PlacesService } from '../../../places/places.service';
 import { Router } from '@angular/router';
-import { Geolocation } from '../../../utils/geolocation';
+import { Geolocation } from '../../../../utils/geolocation';
 
 
 type PlacesByTrip = {
