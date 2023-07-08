@@ -9,6 +9,7 @@ import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
 import { Geolocation } from '../../utils/geolocation';
+import { faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-list-places',
@@ -16,6 +17,9 @@ import { Geolocation } from '../../utils/geolocation';
   styleUrls: ['./list-places.component.scss'],
 })
 export class ListPlacesComponent implements OnInit, OnChanges {
+  faPencil = faPencil;
+  faSquarePlus = faSquarePlus
+
   places?: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
@@ -44,4 +48,6 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   addPlace(): void {
 
   }
+
+  modifyPlace() {}
 }
