@@ -20,21 +20,20 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   faPencil = faPencil;
   faSquarePlus = faSquarePlus;
 
-  places?: PlaceResponse[] = [];
+  @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
   constructor(private placeService: PlacesService) {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.places = [];
     this.getPlaces();
   }
   ngOnInit(): void {
-    this.places = [];
     this.getPlaces();
     Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   getPlaces() {
+    this.places = [];
     if (this.currentTrip) {
       this.placeService
         .getPlacesOfTrip(this.currentTrip.id)

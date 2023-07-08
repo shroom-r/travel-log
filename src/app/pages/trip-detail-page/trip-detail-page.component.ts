@@ -3,6 +3,8 @@ import { TripService } from '../../trips/trip.service';
 import { TripResponse } from '../../trips/trip-response.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { PlacesService } from 'src/app/places/places.service';
+import { PlaceResponse } from 'src/app/places/place-response.model';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -12,15 +14,18 @@ import { tap } from 'rxjs';
 export class TripDetailPageComponent {
   routeTripId?: string | null;
   currentTrip?: TripResponse;
+  places: PlaceResponse[] = [];
 
   constructor(
     private tripService: TripService,
+    private placesService: PlacesService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.route.paramMap.pipe(tap(console.log)).subscribe((params) => {
       this.routeTripId = params.get('tripId');
       this.getTrip();
+      this.getPlaces();
     });
   }
 
@@ -39,13 +44,16 @@ export class TripDetailPageComponent {
     }
   }
 
-  tripUpdated(trip: TripResponse) {
-    this.currentTrip = trip;
-    this.router.navigate([this.currentTrip.id], { relativeTo: this.route });
-  }
-
-  tripDeleted() {
-    this.currentTrip = undefined;
-    this.router.navigate(['tripDetail/']);
+  getPlaces() {
+    if (this.routeTripId) {
+      this.placesService
+        .getPlacesOfTrip(this.routeTripId)
+        .subscribe((response) => {
+          for (let place of response) {
+            this.places.push(place);
+            console.log(this.places);
+          }
+        });
+    }
   }
 }
