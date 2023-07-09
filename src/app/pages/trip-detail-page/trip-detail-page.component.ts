@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { TripService } from '../../trips/trip.service';
 import { TripResponse } from '../../trips/trip-response.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { Subject, tap } from 'rxjs';
 import { PlacesService } from 'src/app/places/places.service';
 import { PlaceResponse } from 'src/app/places/place-response.model';
+import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
 
 @Component({
   selector: 'app-trip-detail-page',
@@ -15,6 +16,8 @@ export class TripDetailPageComponent {
   routeTripId?: string | null;
   currentTrip?: TripResponse;
   places: PlaceResponse[] = [];
+  selectedPlaceCoordinates?: GeoJsonPoint;
+  selectPlaceToCenter: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
 
   constructor(
     private tripService: TripService,
@@ -22,7 +25,7 @@ export class TripDetailPageComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.route.paramMap.pipe(tap(console.log)).subscribe((params) => {
+    this.route.paramMap.subscribe((params) => {
       this.routeTripId = params.get('tripId');
       this.getTrip();
       this.getPlaces();
@@ -33,7 +36,6 @@ export class TripDetailPageComponent {
     if (this.routeTripId) {
       this.tripService.getTripById(this.routeTripId).subscribe({
         next: (response) => {
-          console.log(response);
           this.currentTrip = response;
         },
         error: (err) => {
@@ -51,9 +53,12 @@ export class TripDetailPageComponent {
         .subscribe((response) => {
           for (let place of response) {
             this.places.push(place);
-            console.log(this.places);
           }
         });
     }
+  }
+
+  centerPlaceOnMap(location: GeoJsonPoint) {
+    this.selectPlaceToCenter.next(location);
   }
 }

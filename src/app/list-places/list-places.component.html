@@ -17,6 +17,19 @@
           <h5 class="m-0">{{ place.name }}</h5>
           <div class="text-truncate">{{ place.description }}</div>
         </div>
+        
+        <button
+        class="btn btn-link btn-sm justify-content-end"
+        (click)="centerOnMap(place.location)"
+      >
+        <fa-icon
+          class="text-primary"
+          [icon]="faLocationCrossHair"
+          style="font-size: 20px"
+          title="Center on map"
+          alt="Center on map"
+        ></fa-icon>
+      </button>
         <button
           class="btn btn-link btn-sm justify-content-end"
           (click)="modifyPlace()"
@@ -25,8 +38,8 @@
             class="text-primary"
             [icon]="faPencil"
             style="font-size: 20px"
-            title="Delete trip"
-            alt="Delete trip"
+            title="Edit trip"
+            alt="Edit trip"
           ></fa-icon>
         </button>
       </div>

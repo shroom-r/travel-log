@@ -1,16 +1,19 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
 import { Geolocation } from '../../utils/geolocation';
-import { faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faLocationCrosshairs, faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
+import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 
 @Component({
   selector: 'app-list-places',
@@ -20,11 +23,16 @@ import { RouterLink } from '@angular/router';
 export class ListPlacesComponent implements OnInit, OnChanges {
   faPencil = faPencil;
   faSquarePlus = faSquarePlus;
+  faLocationCrossHair = faLocationCrosshairs;
 
   @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
-  constructor(private placeService: PlacesService) {}
+  @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
+
+  constructor(private placeService: PlacesService) {
+    this.centerOnMapClicked = new EventEmitter();
+  }
   ngOnChanges(changes: SimpleChanges): void {
     this.getPlaces();
   }
@@ -39,7 +47,6 @@ export class ListPlacesComponent implements OnInit, OnChanges {
       this.placeService
         .getPlacesOfTrip(this.currentTrip.id)
         .subscribe((response) => {
-          console.log(response);
           response.forEach((place) => this.places?.push(place));
         });
     }
@@ -50,4 +57,8 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   modifyPlace() {}
+
+  centerOnMap(placeLocation: GeoJsonPoint) {
+    this.centerOnMapClicked.emit(placeLocation);
+  }
 }

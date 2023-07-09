@@ -29,6 +29,7 @@
               <div class="ms-1 h-100 me-10 w-100">
                 <app-list-places
                   [currentTrip]="this.currentTrip"
+                  (centerOnMapClicked)="centerPlaceOnMap($event)"
                 ></app-list-places>
               </div>
             </div>
@@ -38,7 +39,7 @@
             class="p-2 col-6 border d-flex align-items-center"
           >
             <div class="m-1 h-100 w-100">
-              <app-map class="p-0" [currentTrip]="this.currentTrip"></app-map>
+              <app-map class="p-0" [currentTrip]="this.currentTrip" [centerMapOnLocationObservable]="selectPlaceToCenter.asObservable()"></app-map>
             </div>
           </div>
         </div>
