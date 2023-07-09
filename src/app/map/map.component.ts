@@ -6,7 +6,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { MapOptions, latLng, tileLayer, Map, Marker, marker } from 'leaflet';
+import { MapOptions, latLng, tileLayer, Map, Marker, marker, latLngBounds } from 'leaflet';
 import { defaultIcon } from './default-marker';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlaceResponse } from '../places/place-response.model';
@@ -41,7 +41,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       center: latLng(46.778186, 6.641524),
     };
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentTrip']) {
       this.getPlaces();
@@ -98,13 +98,28 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         lastPlace?.location.coordinates[0],
       ]);
     }
+    //Calculate zoom bounds :
+    //Get max an min values of Latitude and longitude
+    var lngArray: number[] = [];
+    var latArray: number[] = [];
+    for (let place of this.places) {
+      lngArray.push(place.location.coordinates[0]);
+      latArray.push(place.location.coordinates[1]);
+    }
+    var minLat = Math.min(...latArray);
+    var maxLat = Math.max(...latArray);
+    var minLng = Math.min(...lngArray);
+    var maxLng = Math.max(...lngArray);
+    var bounds = latLngBounds(latLng(minLat, minLng), latLng(maxLat, maxLng));
+    console.log(bounds);
+    this.#map?.fitBounds(bounds);
   }
 
   centerMapOnLocation(location: GeoJsonPoint) {
     if (location) {
       var lng = location.coordinates[0];
       var lat = location.coordinates[1];
-      this.#map?.setView([lat, lng]);
+      this.#map?.setView([lat, lng], 13);
       this.selectedPlaceCoordinates = undefined;
     }
   }
