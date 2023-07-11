@@ -1,10 +1,11 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { TripService } from '../trips/trip.service';
 import { PlacesService } from '../places/places.service';
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search-bar',
@@ -18,20 +19,30 @@ export class SearchBarComponent {
   searchedPlaces: PlaceResponse[] = [];
   searchedTrips: TripResponse[] = [];
 
+  @Output() searchTripsAndPlaces: EventEmitter<string>;
+
+  // gotTripsFromApi: Subject<TripResponse[]> = new Subject<TripResponse[]>();
+  // gotPlacesFromApi: Subject<PlaceResponse[]> = new Subject<PlaceResponse[]>();
+
   constructor(
     private tripService: TripService,
     private placeService: PlacesService,
     private router: Router,
-  ) {}
+  ) {
+    this.searchTripsAndPlaces = new EventEmitter();
+  }
 
-  searchTripsAndPlaces() {
+  search() {
     this.router.navigate(['/tripsOnMap']);
-    this.tripService.searchTripBySearchValue(this.searchValues).subscribe((response) => {
-      console.log(response);
-    });
-    this.placeService.searchPlaceBySearchValue(this.searchValues).subscribe((response) => {
-      console.log(response);
-    })
-    console.log(this.searchValues);
+    this.searchTripsAndPlaces.emit(this.searchValues);
+    // this.tripService.searchTripBySearchValue(this.searchValues).subscribe((response) => {
+    //   // this.gotTripsFromApi.next(response);
+    //   console.log(response);
+    // });
+    // this.placeService.searchPlaceBySearchValue(this.searchValues).subscribe((response) => {
+    //   // this.gotPlacesFromApi.next(response);
+    //   console.log(response);
+    // })
+    // console.log(this.searchValues);
   }
 }
