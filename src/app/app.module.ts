@@ -25,6 +25,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './map/map.component';
 import { PlaceFormComponent } from './forms/place-form/place-form.component';
 import { CreatePlacePageComponent } from './pages/create-place-page/create-place-page.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { CreatePlacePageComponent } from './pages/create-place-page/create-place
     MapComponent,
     PlaceFormComponent,
     CreatePlacePageComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,

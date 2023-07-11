@@ -1,0 +1,27 @@
+<div>
+  <form #searchForm="ngForm" class="w-100">
+    <div class="form-group d-flex">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchValues"
+        #tripTitleInput="ngModel"
+        required
+        name="Search"
+      /><button
+        type="submit"
+        class="btn btn-link btn-sm"
+        [disabled]="searchForm.invalid"
+        (click)="searchTripsAndPlaces()"
+      >
+        <fa-icon
+          class="text-primary"
+          [icon]="faMagnifyingGlass"
+          style="font-size: 20px"
+          title="Search"
+          alt="Search"
+        ></fa-icon>
+      </button>
+    </div>
+  </form>
+</div>

@@ -34,6 +34,23 @@ export class PlacesService {
     console.log("update place");
   }
 
+  searchPlaceBySearchValue(searchValue: string): Observable<PlaceResponse[]> {
+    //Build querystring
+    //Split searchValue and pass it to array
+    var searchValuesArray = [];
+    searchValuesArray = searchValue.split(' ');
+    //Loop through array to build query string. Delete last '&' after loop completed
+    var queryString = '?';
+    for (let value of searchValuesArray) {
+      queryString += `search=${value}&`;
+    }
+    queryString = queryString.slice(0, -1);
+    return this.http.get<PlaceResponse[]>(this.apiUrlPlaces + queryString).pipe(
+      tap((response) => {
+        return response;
+      })
+    );
+  }
 
   getPlacesOfTrip(tripId: string): Observable<PlaceResponse[]> {
     return this.http

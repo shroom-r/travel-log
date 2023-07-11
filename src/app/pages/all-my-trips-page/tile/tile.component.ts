@@ -39,7 +39,7 @@ export class TileComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    Geolocation.getCurrentPosition().then(console.log).catch(console.error);
+    //Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   seeDetail(tripId? :string) {
