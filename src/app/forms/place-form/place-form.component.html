@@ -1,15 +1,20 @@
-<form [formGroup] ="placeForm" ="onSubmit()">
-  <label for="place-name">Name: </label>
-  <input id="place-name" type="text" formControlName="placeName" minlength="3" maxlength="100" required>
+<div class="form-group">
+  <form [formGroup] ="placeForm" ="onSubmit()">
+    <div classe="input-name">
+    <label for="place-name">Name: </label>
+    <input id="place-name" type="text" formControlName="placeName" minlength="3" maxlength="100" required>
+    </div>
+  <div class="input-description">
+    <label for="place-description">Description: </label>
+    <input id="place-description" type="text" formControlName="placeDescription" minlength="5" maxlength="50000" required>
+  </div>
+    <div clas="input-pictureUrl">
+    <label for="picUrl">Picture URL: </label>
+    <input id="picUrl" type="text" formControlName="picUrl" minlength="10" maxlength="500">
+  </div>
 
-  <label for="place-description">Description: </label>
-  <input id="place-description" type="text" formControlName="placeDescription" minlength="5" maxlength="50000" required>
 
-  <label for="picUrl">Picture URL: </label>
-  <input id="picUrl" type="text" formControlName="picUrl" minlength="10" maxlength="500">
-
-
-
-  <p>Complete the form to submit.</p>
-  <button type="submit" [disabled]="!placeForm.valid">Submit</button>
-</form>
+    <p>Complete the form to submit.</p>
+    <button type="submit" [disabled]="!placeForm.valid">Submit</button>
+  </form>
+  </div>

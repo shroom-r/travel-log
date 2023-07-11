@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-start align-items-center">
   <h3 class="m-0">Places list</h3>
-  <button class="btn btn-link btn-sm" routerLink="/addPlace"><fa-icon
+  <button class="btn btn-link btn-sm" routerLink="/newPlace"><fa-icon
     class="text-primary"
     [icon]="faSquarePlus"
     style="font-size: 20px"
-    title="Add Place"
-    alt="Add Place"
+    title="New place"
+    alt="Add a new place"
 
   ></fa-icon></button>
 </div>
@@ -17,7 +17,7 @@
           <h5 class="m-0">{{ place.name }}</h5>
           <div class="text-truncate">{{ place.description }}</div>
         </div>
-        
+
         <button
         class="btn btn-link btn-sm justify-content-end"
         (click)="centerOnMap(place.location)"
@@ -32,7 +32,7 @@
       </button>
         <button
           class="btn btn-link btn-sm justify-content-end"
-          (click)="modifyPlace()"
+          (click)="updatePlace()"
         >
           <fa-icon
             class="text-primary"

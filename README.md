@@ -13,5 +13,21 @@ Projet MA-RAD | CAS-DAR | DFA
   - la page trip-detail
 - CSS des tuiles
 - Reprendre CSS des pages pour l'affichage général
+- afficher la tuile en attendant le chargement de la photo (asynchrone)
+
 
 ### page trip-detail
+
+
+
+### place form
+
+- à tester
+- fait un formulaire reactiv selon doc angular
+
+
+### create-place
+
+- fait
+- n'arrive pas à accéder et donc voir le formulaire
+

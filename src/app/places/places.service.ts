@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { PlaceCreationRequest } from './place-creation-request.model';
 import { PlaceResponse } from './place-response.model';
 import { environment } from 'src/environments/environment';
+// import { PlaceUpdateRequest } from './place-update-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class PlacesService {
   apiUrlPlaces = `${environment.apiUrl}/places`;
   constructor(private http: HttpClient) {}
+
 
   createPlace(
     placeCreationRequest: PlaceCreationRequest
@@ -23,6 +25,15 @@ export class PlacesService {
         })
       );
   }
+
+  deletePlace() {
+    console.log("delete a place");
+  }
+
+  updatePlace() {
+    console.log("update place");
+  }
+
 
   getPlacesOfTrip(tripId: string): Observable<PlaceResponse[]> {
     return this.http

@@ -52,11 +52,13 @@ export class ListPlacesComponent implements OnInit, OnChanges {
     }
   }
 
-  addPlace(): void {
-    console.log("click");
+  newPlace(): void {
+    console.log("click, new place on liste-places");
   }
 
-  modifyPlace() {}
+  updatePlace() {
+    console.log("updateplace on list-places");
+  }
 
   centerOnMap(placeLocation: GeoJsonPoint) {
     this.centerOnMapClicked.emit(placeLocation);

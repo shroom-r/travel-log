@@ -100,6 +100,7 @@ export class TripFormComponent implements OnInit, OnChanges {
 
   deleteTrip() {
     console.log('DELETION');
+    confirm("Are you sur to delete?");
     if (this.currentTrip) {
       this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
         this.router.navigate(['allMyTrips/']);

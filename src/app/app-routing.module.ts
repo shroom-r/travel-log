@@ -41,10 +41,6 @@ const routes: Routes = [
         component: CreateTripPageComponent
       },
       {
-        path: 'addPlace',
-        component: CreatePlacePageComponent
-      },
-      {
         path: 'tripDetail/:tripId',
         component: TripDetailPageComponent,
       },
@@ -58,6 +54,10 @@ const routes: Routes = [
       {
         path: 'placeDetail',
         component: PlaceDetailPageComponent,
+      },
+      {
+        path: 'newPlace',
+        component: CreatePlacePageComponent,
       },
     ],
   },
