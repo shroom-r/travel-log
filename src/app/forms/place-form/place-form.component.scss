@@ -1,4 +1,16 @@
-.form-group{
-  display: flex;
-  flex-wrap: nowrap;
+
+h1, p, .form-group{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding: 5px;
+}
+
+div, label{
+  padding: 2px;
+}
+button{
+  margin-top: 10px;
+  width: 20%;
 }

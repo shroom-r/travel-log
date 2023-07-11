@@ -26,8 +26,16 @@ autre: include, à voir
 }
 
 */
-submit() {
-console.log("Envoi Formulaire, BINGO");
-}
+  submit() {
+  console.log("Envoi Formulaire, BINGO");
+  }
+
+  deletePlace() {
+    console.log("Delete Place");
+
+    confirm("Are you sur to delete?");
+
+  }
+
 
 }
