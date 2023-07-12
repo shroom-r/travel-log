@@ -4,7 +4,7 @@ import { TripService } from '../trips/trip.service';
 import { PlacesService } from '../places/places.service';
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnInit {
   faMagnifyingGlass = faMagnifyingGlass;
 
   searchValues: string = '';
@@ -28,13 +28,25 @@ export class SearchBarComponent {
     private tripService: TripService,
     private placeService: PlacesService,
     private router: Router,
+    private route: ActivatedRoute
   ) {
     this.searchTripsAndPlaces = new EventEmitter();
   }
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.searchValues = params['search'];
+    });
+    if (this.searchValues) {
+      this.searchTripsAndPlaces.emit(this.searchValues);
+    }
+  }
 
   search() {
-    this.router.navigate(['/tripsOnMap']);
-    this.searchTripsAndPlaces.emit(this.searchValues);
+    debugger;
+    this.router.navigate(['/tripsOnMap'], {
+      queryParams: { search: this.searchValues },
+    });
+    // this.searchTripsAndPlaces.emit(this.searchValues);
     // this.tripService.searchTripBySearchValue(this.searchValues).subscribe((response) => {
     //   // this.gotTripsFromApi.next(response);
     //   console.log(response);

@@ -23,6 +23,8 @@ export class ListTripsAndPlacesComponent implements OnInit {
 
   @Input() searchValues?: Observable<string>;
 
+  currentlySearchedValues?: string;
+
   constructor(
     private tripService: TripService,
     private auth: AuthService,
@@ -37,21 +39,29 @@ export class ListTripsAndPlacesComponent implements OnInit {
   }
 
   getSearchedTripsAndPlaces(searchValues: string) {
-    this.tripService
-      .searchTripBySearchValue(searchValues)
-      .subscribe((response) => {
-        // for (let trip of response) {
-        //   this.tripsList.push(trip);
-        // }
-        this.mapTripsToPlacesByTrip(response);
-      });
-    this.placesService
-      .searchPlaceBySearchValue(searchValues)
-      .subscribe((response) => {
-        for (let place of response) {
-          this.placesList.push(place);
-        }
-      });
+    debugger;
+    //If the new searchValues is different thant the one stored, it means it's a new search so we can clear the array containing service responses
+    if (searchValues !== this.currentlySearchedValues) {
+      this.tripsList = [];
+      this.placesList = [];
+      this.placesByTrip = [];
+      this.currentlySearchedValues = searchValues;
+      this.tripService
+        .searchTripBySearchValue(searchValues)
+        .subscribe((response) => {
+          // for (let trip of response) {
+          //   this.tripsList.push(trip);
+          // }
+          this.mapTripsToPlacesByTrip(response);
+        });
+      this.placesService
+        .searchPlaceBySearchValue(searchValues)
+        .subscribe((response) => {
+          for (let place of response) {
+            this.placesList.push(place);
+          }
+        });
+    }
   }
 
   getTripsList() {
