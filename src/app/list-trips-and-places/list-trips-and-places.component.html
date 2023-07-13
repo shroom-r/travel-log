@@ -1,4 +1,5 @@
 <p>list-trips-and-places works!</p>
+<div>{{ this.currentlySearchedValues }}</div>
 <ul *ngIf="placesByTrip">
   <li *ngFor="let trip of placesByTrip">
     Title : {{ trip.trip?.title }}<br>

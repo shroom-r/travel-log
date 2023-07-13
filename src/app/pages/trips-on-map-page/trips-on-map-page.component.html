@@ -1,4 +1,4 @@
 <app-nav-bar (searchTripsAndPlaces)="search($event)"></app-nav-bar>
 <p>List of places by trip from list-trips-and-places component</p>
-  @Input() searchValues?:string;
-<app-list-trips-and-places [searchValues]="searchValuesSubject.asObservable()"></app-list-trips-and-places>
+ 
+<app-list-trips-and-places [searchValuesObservable]="searchValuesSubject.asObservable()"></app-list-trips-and-places>
