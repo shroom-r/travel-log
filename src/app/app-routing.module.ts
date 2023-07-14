@@ -27,7 +27,7 @@ const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'tripsOnMap' },
+      { path: '', pathMatch: 'full', redirectTo: 'allMyTrips' },
       {
         path: 'tripsOnMap',
         component: TripsOnMapPageComponent,
