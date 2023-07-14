@@ -1,15 +1,15 @@
 
 <ul *ngIf="placesByTrip">
   <li *ngFor="let trip of placesByTrip">
-    <div class="card" type="button" (click)="seeDetail(trip.trip?.id)" >
-      <img class="fit-picture" src="https://www.monaconatureencyclopedia.com/wp-content/uploads/2015/10/1_la_sterna_paradisaea_migra_da_un_polo_all_alto_coprendo_90.000_km_all_anno.jpg" alt="sterne">
+    <div class="card" style="width: 20rem;" type="button" (click)="seeDetail(trip.trip?.id)" >
+      <img style="height: 16rem; object-fit: contain;" class="" src="https://www.monaconatureencyclopedia.com/wp-content/uploads/2015/10/1_la_sterna_paradisaea_migra_da_un_polo_all_alto_coprendo_90.000_km_all_anno.jpg" alt="sterne">
       <div class="card-body">
         <h5 class="card-title">{{ trip.trip?.title }}</h5>
-        <p class="card-text">{{ trip.trip?.id }}</p>
-       <!--  <button type="button" class="btn btn-primary">Button</button> -->
+        <div class="card-text text-truncate">{{ trip.trip?.description }}</div>
+       <!--  
+        <button type="button" class="btn btn-primary">Button</button> -->
       </div>
     </div>
-
   </li>
 <!--
   <ul>
