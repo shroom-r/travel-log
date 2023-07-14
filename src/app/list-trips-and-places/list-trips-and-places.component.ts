@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlaceResponse } from '../places/place-response.model';
 import { TripService } from '../trips/trip.service';
@@ -31,6 +31,10 @@ export class ListTripsAndPlacesComponent implements OnInit {
   currentUserId?: string;
 
   @Input() searchValuesObservable?: Observable<string>;
+  @Output() newSearch: EventEmitter<void>;
+  @Output() showPlaceOnMap: EventEmitter<PlaceResponse>;
+  @Output() centerPlaceOnMap: EventEmitter<GeoJsonPoint>;
+  @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>;
 
   currentlySearchedValues?: string;
 
@@ -38,13 +42,19 @@ export class ListTripsAndPlacesComponent implements OnInit {
     private tripService: TripService,
     private placesService: PlacesService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.showPlaceOnMap = new EventEmitter<PlaceResponse>;
+    this.newSearch = new EventEmitter<void>;
+    this.centerPlaceOnMap = new EventEmitter<GeoJsonPoint>;
+    this.centerMapAroundPlaces = new EventEmitter<PlaceResponse[]>;
+  }
   ngOnInit(): void {
     this.auth
       .getUserId()
       .subscribe((response) => (this.currentUserId = response));
     this.searchValuesObservable?.subscribe((response) => {
       this.getSearchedTripsAndPlaces(response);
+      this.newSearch.emit();
     });
   }
 
@@ -126,6 +136,7 @@ export class ListTripsAndPlacesComponent implements OnInit {
           }
           //adds places to corresponding trip
           this.placesByTrip[index].places?.push(this.placesList[0]);
+          this.showPlaceOnMap.emit(this.placesList[0]);
           //Remove place from placesList
           var indexPlacesList = this.placesList
             .map((el) => el.id)
@@ -136,11 +147,25 @@ export class ListTripsAndPlacesComponent implements OnInit {
     }
   }
 
-  centerOnMap(locatiplaceLocation: GeoJsonPoint) {}
+  centerOnMap(placeLocation: GeoJsonPoint) {
+    this.centerPlaceOnMap.emit(placeLocation);
+  }
 
   updatePlace() {}
 
-  centerAroundPlaces(tripId?: string) {}
+  centerAroundPlaces(places?: PlaceResponse[]) {
+    this.centerMapAroundPlaces.emit(places);
+  }
+
+  centerSearchResults() {
+    var placesArray:PlaceResponse[] = [];
+    for (let trip of this.placesByTrip) {
+      if (trip.places?.length) {
+        placesArray = placesArray.concat(trip.places);
+      }
+    }
+    this.centerAroundPlaces(placesArray);
+  }
 
   updateTrip() {}
 }

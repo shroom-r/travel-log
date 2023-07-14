@@ -17,12 +17,12 @@ const routes: Routes = [
     path: 'login',
     component: LoginPageComponent,
   },
-  {
-    path: 'dummy',
-    component: DummyPageComponent,
-    //Prevent access to this page to unauthenticated users
-    canActivate: [authGuard],
-  },
+  // {
+  //   path: 'dummy',
+  //   component: DummyPageComponent,
+  //   //Prevent access to this page to unauthenticated users
+  //   canActivate: [authGuard],
+  // },
   {
     path: '',
     canActivate: [authGuard],
@@ -44,13 +44,6 @@ const routes: Routes = [
         path: 'tripDetail/:tripId',
         component: TripDetailPageComponent,
       },
-      // {
-      //   path: 'tripDetail',
-      //   children: [
-      //     { path: '', component: TripDetailPageComponent },
-      //     { path: ':tripId', component: TripDetailPageComponent },
-      //   ],
-      // },
       {
         path: 'placeDetail',
         component: PlaceDetailPageComponent,

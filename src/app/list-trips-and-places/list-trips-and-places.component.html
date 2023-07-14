@@ -1,15 +1,29 @@
-<h3>Search results</h3>
-
-<ul class="list-group" *ngIf="placesByTrip" style="width: 500px">
+<div class="d-flex">
+  <h3>Search results</h3>
+  <button
+  *ngIf="this.placesByTrip.length"
+    class="btn btn-link btn-sm justify-content-end"
+    (click)="centerSearchResults()"
+  >
+    <fa-icon
+      class="text-primary"
+      [icon]="faLocationCrossHair"
+      title="Center map around search results"
+      alt="Center map around search results"
+    ></fa-icon>
+  </button>
+</div>
+<ul class="list-group">
   <!--TEMPORARY WIDTH-->
   <li class="list-group-item" *ngFor="let trip of placesByTrip">
     <div class="d-flex">
       <div class="flex-grow-1">
         <small>Trip: </small>{{ trip.trip?.title }}<br />
       </div>
-      <button *ngIf="trip.places"
+      <button
+        *ngIf="trip.places"
         class="btn btn-link btn-sm justify-content-end"
-        (click)="centerAroundPlaces(trip.trip?.id)"
+        (click)="centerAroundPlaces(trip.places)"
       >
         <fa-icon
           class="text-primary"

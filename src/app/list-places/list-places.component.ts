@@ -38,7 +38,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.getPlaces();
-    Geolocation.getCurrentPosition().then(console.log).catch(console.error);
+    // Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   getPlaces() {

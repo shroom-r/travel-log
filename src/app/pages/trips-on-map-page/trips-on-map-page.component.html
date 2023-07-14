@@ -1,2 +1,37 @@
-<app-nav-bar (searchTripsAndPlaces)="search($event)"></app-nav-bar>
-<app-list-trips-and-places [searchValuesObservable]="searchValuesSubject.asObservable()"></app-list-trips-and-places>
+<div style="height: 100vh; width: 100vw; overflow: hidden">
+  <div class="d-flex flex-column h-100">
+    <div>
+      <app-nav-bar (searchTripsAndPlaces)="search($event)"></app-nav-bar>
+    </div>
+    <div class="d-flex col-12 flex-grow-1">
+      <div
+        class="col-4 p-2 overflow-auto"
+        style="max-height: 99%; max-width: 100%"
+      >
+        <div class="d-flex">
+          <app-list-trips-and-places
+            (centerPlaceOnMap)="centerPlaceOnMap($event)"
+            (newSearch)="newSearch()"
+            (showPlaceOnMap)="showPlaceOnMap($event)"
+            [searchValuesObservable]="searchValuesSubject.asObservable()"
+            (centerMapAroundPlaces)="centerMapAroundPlaces($event)"
+          ></app-list-trips-and-places>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="m-1 h-100 w-100">
+          <app-map
+            [centerMapAroundPlacesObservable]="
+              centerMapAroundPlacesSubject.asObservable()
+            "
+            [centerMapOnLocationObservable]="
+              centerPlaceOnMapSubject.asObservable()
+            "
+            [newSearchObservable]="newSearchSubject.asObservable()"
+            [showPlaceOnMapObservable]="showPlaceOnMapSubject.asObservable()"
+          ></app-map>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
