@@ -4,6 +4,12 @@ import { PlaceResponse } from '../places/place-response.model';
 import { TripService } from '../trips/trip.service';
 import { PlacesService } from '../places/places.service';
 import { Observable } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import {
+  faLocationCrosshairs,
+  faPencil,
+} from '@fortawesome/free-solid-svg-icons';
+import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 
 type PlacesByTrip = {
   trip?: TripResponse;
@@ -16,9 +22,13 @@ type PlacesByTrip = {
   styleUrls: ['./list-trips-and-places.component.scss'],
 })
 export class ListTripsAndPlacesComponent implements OnInit {
+  faPencil = faPencil;
+  faLocationCrossHair = faLocationCrosshairs;
+
   tripsList: TripResponse[] = [];
   placesList: PlaceResponse[] = [];
   placesByTrip: PlacesByTrip[] = [];
+  currentUserId?: string;
 
   @Input() searchValuesObservable?: Observable<string>;
 
@@ -26,11 +36,13 @@ export class ListTripsAndPlacesComponent implements OnInit {
 
   constructor(
     private tripService: TripService,
-    private placesService: PlacesService
-  ) {
-    // this.getTripsList();
-  }
+    private placesService: PlacesService,
+    private auth: AuthService
+  ) {}
   ngOnInit(): void {
+    this.auth
+      .getUserId()
+      .subscribe((response) => (this.currentUserId = response));
     this.searchValuesObservable?.subscribe((response) => {
       this.getSearchedTripsAndPlaces(response);
     });
@@ -49,9 +61,7 @@ export class ListTripsAndPlacesComponent implements OnInit {
           for (let trip of response) {
             this.tripsList.push(trip);
           }
-          console.log(this.tripsList);
           this.mapTrips();
-          // this.mapTripsToPlacesByTrip(response);
         });
       this.placesService
         .searchPlaceBySearchValue(searchValues)
@@ -59,118 +69,78 @@ export class ListTripsAndPlacesComponent implements OnInit {
           for (let place of response) {
             this.placesList.push(place);
           }
-          console.log(this.placesList);
           this.mapPlaces();
-          // this.mapPlacesToPlacesByTrip(response);
         });
     }
-  }
-
-  getTripsList() {
-    // this.auth.getUserId().subscribe((userId) => {
-    //   if (userId) {
-    //     this.tripService.getUserTrips(userId).subscribe((trips) => {
-    //       this.tripsList = trips;
-    //       this.mapTripsToPlacesByTrip();
-    //       this.getPlaces();
-    //     });
-    //   }
-    // });
-  }
-
-  getPlaces() {
-    // for (let trip of this.tripsList) {
-    //   var tripId = trip.id;
-    //   this.placesService.getPlacesOfTrip(tripId).subscribe((places) => {
-    //     this.mapPlacesToPlacesByTrip(places);
-    //   });
-    // }
   }
 
   mapTrips() {
-    debugger;
-    do {
-      var tripId = this.tripsList[0].id;
-      //check if trip exists (indexOf returns -1 if not add it)
-      var index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
-      if (index < 0) {
-        this.placesByTrip.push({ trip: this.tripsList[0] });
-      }
-      //Remove trip from tripsList
-      var indexTripsList = this.tripsList.map((el) => el.id).indexOf(tripId);
-      this.tripsList.splice(indexTripsList, 1);
-    } while (this.tripsList.length);
+    if (this.tripsList.length) {
+      do {
+        var tripId = this.tripsList[0].id;
+        //check if trip is owned by current user. If not, discard it
+        if (this.tripsList[0].userId === this.currentUserId) {
+          //check if trip exists (indexOf returns -1 if not add it)
+          var index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
+          if (index < 0) {
+            this.placesByTrip.push({ trip: this.tripsList[0] });
+          }
+          //Remove trip from tripsList
+          var indexTripsList = this.tripsList.map((el) => el.id).indexOf(tripId);
+          this.tripsList.splice(indexTripsList, 1);
+        } else {
+          //Remove trip from tripsList
+          var indexTripsList = this.tripsList.map((el) => el.id).indexOf(tripId);
+          this.tripsList.splice(indexTripsList, 1);
+        }
+      } while (this.tripsList.length);
+    }
   }
 
   mapPlaces() {
-    debugger;
-    do {
-      var tripId = this.placesList[0].tripId;
-      //check if trip exists (indexOf returns -1 if not get it from API, add it and start mapPlaces again)
-      var index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
-      if (index < 0) {
-        this.tripService.getTripById(tripId).subscribe((response) => {
-          this.tripsList.push(response);
-          this.mapTrips();
-          this.mapPlaces();
-        });
-        break;
-      } else {
-        if (!this.placesByTrip[index].places) {
-          this.placesByTrip[index].places = [];
-        }
-        //adds places to corresponding trip
-        this.placesByTrip[index].places?.push(this.placesList[0]);
-        //Remove place from placesList
-        var indexPlacesList = this.placesList
-          .map((el) => el.id)
-          .indexOf(this.placesList[0].id);
-        this.placesList.splice(indexPlacesList, 1);
-      }
-    } while (this.placesList.length);
-  }
-
-  mapTripsToPlacesByTrip(trips: TripResponse[]) {
-    console.log(trips);
-    for (let trip of trips) {
-      //Check if trip exists
-      var tripAlreadyExists = false;
-      for (let i = 0; i < this.placesByTrip.length; i++) {
-        if (this.placesByTrip[i].trip?.id === trip.id) {
-          tripAlreadyExists = true;
+    if (this.placesList.length) {
+      do {
+        var tripId = this.placesList[0].tripId;
+        //check if trip exists in placesByTrip (indexOf returns -1 if not get from place response and add it to this.tripsList)
+        var index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
+        if (index < 0) {
+          //Check if trip exists in placeResponse and if its userId matches current user. If not, discard it
+          if (
+            this.placesList[0].trip &&
+            this.placesList[0].trip.userId === this.currentUserId
+          ) {
+            this.tripsList.push(this.placesList[0].trip);
+            this.mapTrips();
+            this.mapPlaces();
+          } else {
+            //Remove current place from placesList if
+            var indexPlacesList = this.placesList
+              .map((el) => el.id)
+              .indexOf(this.placesList[0].id);
+            this.placesList.splice(indexPlacesList, 1);
+          }
           break;
+        } else {
+          if (!this.placesByTrip[index].places) {
+            this.placesByTrip[index].places = [];
+          }
+          //adds places to corresponding trip
+          this.placesByTrip[index].places?.push(this.placesList[0]);
+          //Remove place from placesList
+          var indexPlacesList = this.placesList
+            .map((el) => el.id)
+            .indexOf(this.placesList[0].id);
+          this.placesList.splice(indexPlacesList, 1);
         }
-      }
-      if (!tripAlreadyExists) {
-        this.placesByTrip.push({ trip: trip });
-      }
-    }
-    console.log(this.placesByTrip);
-  }
-
-  mapPlacesToPlacesByTrip(placesArray: PlaceResponse[]) {
-    var tripId: string;
-    var index: number;
-    for (let place of placesArray) {
-      //For each place in placesArray
-      //Get trip id
-      tripId = place.tripId;
-
-      //get index of corresponding trip. If index < 0 (means trip doesn't exist) we get it from API
-      index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
-      //create array for places if it doesn't exist
-      if (index < 0) {
-        this.tripService.getTripById(tripId).subscribe((response) => {
-          this.mapTripsToPlacesByTrip([response]);
-          this.mapPlacesToPlacesByTrip([place]);
-        });
-      } else {
-        if (!this.placesByTrip[index].places) {
-          this.placesByTrip[index].places = [];
-        }
-        //adds places to corresponding trip
-        this.placesByTrip[index].places?.push(place);
-      }
+      } while (this.placesList.length);
     }
   }
+
+  centerOnMap(locatiplaceLocation: GeoJsonPoint) {}
+
+  updatePlace() {}
+
+  centerAroundPlaces(tripId?: string) {}
+
+  updateTrip() {}
 }

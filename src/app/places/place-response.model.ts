@@ -1,3 +1,4 @@
+import { TripResponse } from "../trips/trip-response.model";
 import { GeoJsonPoint } from "./geoJsonPoint.model";
 
 export type PlaceResponse = {
@@ -11,4 +12,5 @@ export type PlaceResponse = {
   pictureUrl?: string,
   createdAt: string,
   updatedAt: string,
+  trip?: TripResponse
 }

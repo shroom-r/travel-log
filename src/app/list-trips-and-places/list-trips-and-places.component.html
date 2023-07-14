@@ -1,17 +1,67 @@
-<p>list-trips-and-places works!</p>
-<div>{{ this.currentlySearchedValues }}</div>
-<ul *ngIf="placesByTrip">
-  <li *ngFor="let trip of placesByTrip">
-    Title : {{ trip.trip?.title }}<br>
-    TripId : {{trip.trip?.id}}<br>
-    Places : 
-  <ul>
-    <li *ngFor="let place of trip.places">
-      {{ place.name }}
-    </li>
-  </ul>
-    
-    <!--Id : {{ trip.id }}<br>
-    places: {{trip.placesCount }}-->
+<h3>Search results</h3>
+
+<ul class="list-group" *ngIf="placesByTrip" style="width: 500px">
+  <!--TEMPORARY WIDTH-->
+  <li class="list-group-item" *ngFor="let trip of placesByTrip">
+    <div class="d-flex">
+      <div class="flex-grow-1">
+        <small>Trip: </small>{{ trip.trip?.title }}<br />
+      </div>
+      <button *ngIf="trip.places"
+        class="btn btn-link btn-sm justify-content-end"
+        (click)="centerAroundPlaces(trip.trip?.id)"
+      >
+        <fa-icon
+          class="text-primary"
+          [icon]="faLocationCrossHair"
+          title="Center map around places"
+          alt="Center map around places"
+        ></fa-icon>
+      </button>
+      <button
+        class="btn btn-link btn-sm justify-content-end"
+        (click)="updateTrip()"
+      >
+        <fa-icon
+          class="text-primary"
+          [icon]="faPencil"
+          title="Edit trip"
+          alt="Edit trip"
+        ></fa-icon>
+      </button>
+    </div>
+    <div *ngIf="trip.places" class="mt-1">
+      <ul class="list-group">
+        <li class="list-group-item py-1 px-2" *ngFor="let place of trip.places">
+          <div class="d-flex">
+            <div class="flex-grow-1">
+              <small>Place: </small>{{ place.name }}
+            </div>
+            <button
+              class="btn btn-link btn-sm justify-content-end"
+              (click)="centerOnMap(place.location)"
+            >
+              <fa-icon
+                class="text-primary"
+                [icon]="faLocationCrossHair"
+                title="Center on map"
+                alt="Center on map"
+              ></fa-icon>
+            </button>
+            <button
+              class="btn btn-link btn-sm justify-content-end"
+              (click)="updatePlace()"
+            >
+              <fa-icon
+                class="text-primary"
+                [icon]="faPencil"
+                title="Edit trip"
+                alt="Edit trip"
+              ></fa-icon>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
   </li>
 </ul>

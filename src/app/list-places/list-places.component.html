@@ -1,35 +1,36 @@
 <div class="d-flex justify-content-start align-items-center">
   <h3 class="m-0">Places list</h3>
-  <button class="btn btn-link btn-sm" routerLink="/newPlace"><fa-icon
-    class="text-primary"
-    [icon]="faSquarePlus"
-    style="font-size: 20px"
-    title="New place"
-    alt="Add a new place"
-
-  ></fa-icon></button>
+  <button class="btn btn-link btn-sm" routerLink="/newPlace">
+    <fa-icon
+      class="text-primary"
+      [icon]="faSquarePlus"
+      style="font-size: 20px"
+      title="New place"
+      alt="Add a new place"
+    ></fa-icon>
+  </button>
 </div>
-<ul>
-  <li *ngFor="let place of places">
+<ul class="list-group">
+  <li class="list-group-item py-1 px-2" *ngFor="let place of places">
     <div class="w100">
-      <div class="d-flex border">
+      <div class="d-flex">
         <div class="flex-grow-1 container w-75">
           <h5 class="m-0">{{ place.name }}</h5>
           <div class="text-truncate">{{ place.description }}</div>
         </div>
 
         <button
-        class="btn btn-link btn-sm justify-content-end"
-        (click)="centerOnMap(place.location)"
-      >
-        <fa-icon
-          class="text-primary"
-          [icon]="faLocationCrossHair"
-          style="font-size: 20px"
-          title="Center on map"
-          alt="Center on map"
-        ></fa-icon>
-      </button>
+          class="btn btn-link btn-sm justify-content-end"
+          (click)="centerOnMap(place.location)"
+        >
+          <fa-icon
+            class="text-primary"
+            [icon]="faLocationCrossHair"
+            style="font-size: 20px"
+            title="Center on map"
+            alt="Center on map"
+          ></fa-icon>
+        </button>
         <button
           class="btn btn-link btn-sm justify-content-end"
           (click)="updatePlace()"

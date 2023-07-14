@@ -45,6 +45,8 @@ export class PlacesService {
       queryString += `search=${value}&`;
     }
     queryString = queryString.slice(0, -1);
+    //Include trip object in reponse body so we can filter by trip
+    queryString += '&include=trip';
     return this.http.get<PlaceResponse[]>(this.apiUrlPlaces + queryString).pipe(
       tap((response) => {
         return response;
