@@ -1,17 +1,92 @@
-<p>list-trips-and-places works!</p>
-<div>{{ this.currentlySearchedValues }}</div>
-<ul *ngIf="placesByTrip">
-  <li *ngFor="let trip of placesByTrip">
-    Title : {{ trip.trip?.title }}<br>
-    TripId : {{trip.trip?.id}}<br>
-    Places : 
-  <ul>
-    <li *ngFor="let place of trip.places">
-      {{ place.name }}
-    </li>
-  </ul>
-    
-    <!--Id : {{ trip.id }}<br>
-    places: {{trip.placesCount }}-->
-  </li>
-</ul>
+<div class="d-flex mb-1 align-content-center">
+  <h3 class="m-0">Search results</h3>
+  <button
+    *ngIf="this.placesByTrip.length"
+    class="btn btn-link btn-sm justify-content-end"
+    (click)="centerSearchResults()"
+  >
+    <fa-icon
+      class="text-primary"
+      [icon]="faLocationCrossHair"
+      style="font-size: 20px;"
+      title="Center map around search results"
+      alt="Center map around search results"
+    ></fa-icon>
+  </button>
+</div>
+<div class="d-flex flex-column w-100 flex-grow-1" style="min-height: 0">
+  <div style="flex: 1; position: relative">
+    <div
+      style="position: absolute; left: 0; top: 0; right: 0; overflow-y: auto"
+    >
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let trip of placesByTrip">
+          <div class="d-flex">
+            <div class="flex-grow-1">
+              <small>Trip: </small>{{ trip.trip?.title }}<br />
+            </div>
+            <button
+              *ngIf="trip.places"
+              class="btn btn-link btn-sm justify-content-end"
+              (click)="centerAroundPlaces(trip.places)"
+            >
+              <fa-icon
+                class="text-primary"
+                [icon]="faLocationCrossHair"
+                title="Center map around places"
+                alt="Center map around places"
+              ></fa-icon>
+            </button>
+            <button
+              class="btn btn-link btn-sm justify-content-end"
+              (click)="updateTrip()"
+            >
+              <fa-icon
+                class="text-primary"
+                [icon]="faPencil"
+                title="Edit trip"
+                alt="Edit trip"
+              ></fa-icon>
+            </button>
+          </div>
+          <div *ngIf="trip.places" class="mt-1">
+            <ul class="list-group">
+              <li
+                class="list-group-item py-1 px-2"
+                *ngFor="let place of trip.places"
+              >
+                <div class="d-flex">
+                  <div class="flex-grow-1">
+                    <small>Place: </small>{{ place.name }}
+                  </div>
+                  <button
+                    class="btn btn-link btn-sm justify-content-end"
+                    (click)="centerOnMap(place.location)"
+                  >
+                    <fa-icon
+                      class="text-primary"
+                      [icon]="faLocationCrossHair"
+                      title="Center on map"
+                      alt="Center on map"
+                    ></fa-icon>
+                  </button>
+                  <button
+                    class="btn btn-link btn-sm justify-content-end"
+                    (click)="updatePlace()"
+                  >
+                    <fa-icon
+                      class="text-primary"
+                      [icon]="faPencil"
+                      title="Edit trip"
+                      alt="Edit trip"
+                    ></fa-icon>
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -6,32 +6,34 @@
     <div class="d-flex mr-auto align-items-center">
       <a class="navbar-brand">TravelLog</a>
       <ul class="navbar-nav me-auto mt-auto">
-        <li class="nav-item d-flex align-items-center">
+        <!-- <li class="nav-item d-flex align-items-center">
           <a class="nav-link" routerLink="/tripsOnMap" routerLinkActive="active"
             >TRIPS ON A MAP</a
           >
-        </li>
+        </li> -->
         <li class="nav-item d-flex align-items-center">
           <a class="nav-link" routerLink="/allMyTrips" routerLinkActive="active"
             >ALL MY TRIPS</a
           >
         </li>
-        <li class="nav-item d-flex align-items-center">
+        <!-- <li class="nav-item d-flex align-items-center">
           <a class="nav-link" routerLink="/dummy" routerLinkActive="active"
             >DUMMY</a
           >
-        </li>
+        </li> -->
         <li>
           <button
             type="button"
             class="btn btn-success m-2"
             routerLink="/newTrip"
           >
-            Create new trip
+            New trip
           </button>
         </li>
         <li class="d-flex align-items-center">
-          <app-search-bar (searchTripsAndPlaces)="search($event)"></app-search-bar>
+          <app-search-bar
+            (searchTripsAndPlaces)="search($event)"
+          ></app-search-bar>
         </li>
       </ul>
     </div>
