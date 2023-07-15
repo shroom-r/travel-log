@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { PlacesService } from 'src/app/places/places.service';
 import { Router } from '@angular/router';
-import { Geolocation } from 'src/utils/geolocation'; // pour localiser
-import { TripResponse } from '../../trips/trip-response.model'; // pour récupérer l'id du trip
+import { TripResponse } from '../../trips/trip-response.model';
 
 
 @Component({
@@ -10,55 +10,47 @@ import { TripResponse } from '../../trips/trip-response.model'; // pour récupé
   templateUrl: './place-form.component.html',
   styleUrls: ['./place-form.component.scss']
 })
-export class PlaceFormComponent implements OnInit {
-  placeForm = new FormGroup({
-    placeName: new FormControl(''),
-    placeDescription: new FormControl(''),
-  });
+export class PlaceFormComponent {
+  placeName = "";
+  placeDescription = "";
+  picUrl?: string;
+  errorMessage?: string;
 
-  // pour id du trip. Nécessaire?
-  @Input() currentTrip?: TripResponse;
-  id?: string;
+  @Input() tripId?: string;
 
-/*   constructor() {
 
-  }*/
-  // sert à quoi?
-  ngOnInit(): void {
-    
-  } 
-
-/* submit Form
-name
-description
-location
-tripID - provient de la page allmytrips ou du trip donc juste récupérer l'ID avec un hidden input.
-option: url image - charger un aperçu de l'image? thumbnail
-autre: include, à voir
-{
-"name": "place",
-"description": "a quelque part",
-}
- selon place-response
-  id: string,
-  href: string,
-  name: string,
-  description: string,
-  location: GeoJsonPoint,
-  tripHref: string,
-  tripId: string,
-  pictureUrl?: string,
-  createdAt: string,
-  updatedAt: string,
-*/
-  // test fonctionne
+  constructor(private placeService: PlacesService, private router: Router) {
+  }
   submit() {
-  console.log("Envoi Formulaire, BINGO");
+    if (this.placeName && this.placeDescription) {
+      console.log('It is functioning weri vell');
+      this.placeService.createPlace({
+        name: this.placeName,
+        description: this.placeDescription,
+        location: { type: "Point", coordinates: [-71.218, 46.801] },
+        tripId: this.tripId,
+        tripHref: "/api/trips/" + this.tripId,
+        pictureUrl: this.picUrl,
+      }).subscribe({
+        next: (response) => {
+          this.router.navigate(['placeDetail/' + response.id]);
+        },
+        error: (error) => {
+          console.error('Error occurred while creating the place:', error);
+          if (error.status === 422) {
+            this.errorMessage = 'Place name is already taken. Please choose a different name.' + error;
+          } else {
+            this.errorMessage = 'An error occurred while creating the place. Please try again later.' + error;
+          }
+        }
+      });
+    }
   }
 
-  // ajouter bouton
-  deletePlace() {
-    console.log("Delete Place");
-    confirm("Are you sur to delete?");
-  }
+  /*   deletePlace() {
+      console.log("Delete Place");
+      confirm("Are you sur to delete?");
+    }
+   */
+
 }

@@ -1,2 +1,30 @@
 <app-nav-bar></app-nav-bar>
-<p>place-detail-page works!</p>
+
+<app-error-message [message]="errorMessage"></app-error-message>
+
+<div *ngIf="place">
+  <h2>{{ place.name }}</h2>
+  <p>{{ place.description }}</p>
+  <div *ngIf="place.location">
+    <p>Location: {{ place.location }}</p>
+  </div>
+  <div *ngIf="place.pictureUrl">
+    <img [src]="place.pictureUrl" alt="Place Image">
+  </div>
+  <!-- Add more directives and HTML elements as needed -->
+</div>
+<!-- 
+    <ng-container *ngIf="place$ | async as place; else loading"> -->
+<!--commentaire Display the place details here -->
+<!--  <div>{{ place.name }}</div>
+  <div>{{ place.description }}</div> -->
+<!--commentaire Add other details as needed -->
+
+<!--  
+</ng-container>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>
+
+   -->

@@ -1,20 +1,28 @@
 <h1>Create a new place</h1>
 <p>Fill the form and submit</p>
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+<!-- DIV TO DELETE -->
+<div>
+  Trip ID: {{ tripId }}
+</div>
+
 <div class="form-group">
-  <form [formGroup] ="placeForm">
+  <form #placeForm="ngForm">
     <div classe="input-name">
-    <label for="place-name">Name: </label>
-    <!-- formControlName est juste -->
-    <input id="place-name" type="text" formControlName="placeName" minlength="3" maxlength="100" required>
+      <label for="placeName">Name: </label>
+      <input id="placeName" type="text" [(ngModel)]="placeName" name="placeName" minlength="3" maxlength="100" required>
     </div>
-  <div class="input-description">
-    <label for="place-description">Description: </label>
-    <input id="place-description" type="text" formControlName="placeDescription" minlength="5" maxlength="50000" required>
-  </div>
+    <div class="input-description">
+      <label for="placeDescription">Description: </label>
+      <input id="placeDescription" type="text" [(ngModel)]="placeDescription" name="placeDescription" minlength="5"
+        maxlength="50000" required>
+    </div>
     <div class="input-pictureUrl">
-    <label for="picUrl">Picture URL: </label>
-    <input id="picUrl" type="text" formControlName="picUrl" minlength="10" maxlength="500">
-  </div>
-    <button type="submit" [disabled]="!placeForm.valid">Submit</button>
+      <label for="picUrl">Picture URL: </label>
+      <input id="picUrl" type="text" [(ngModel)]="picUrl" name="picUrl" minlength="10" maxlength="500">
+    </div>
+    <button type="submit" [disabled]="placeForm.invalid" (click)="submit()">Submit</button>
   </form>
 </div>

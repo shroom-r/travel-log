@@ -23,7 +23,7 @@ Projet MA-RAD | CAS-DAR | DFA
 ### place form
 
 - à tester
-- fait un formulaire reactiv selon doc angular
+- fait un formulaire reactiv selon doc angular. En fait pas si facile, le template est plus adapté pour nous. A la lecture de la doc, cela sembler le contraire.
 
 
 ### create-place
@@ -31,3 +31,22 @@ Projet MA-RAD | CAS-DAR | DFA
 - fait
 - n'arrive pas à accéder et donc voir le formulaire
 
+## architecture
+
+Nous sommes partis dans l'optique de ne pas utiliser de modules car encore un peu abstrait même si nous en comprenons l'idée. Dans une optique de performance ou si le projet est plus grand et complexe, on ne pourrait y échapper.
+
+En revanche, nous avons vu qu'il y a vite beaucoup de composants et que pour se retrouver, il est utile d'avoir différents dossier.
+
+### utils
+
+pour des composants utilisés partout tels les messages d'erreurs.
+
+### auth
+
+pour gérer l'authentification et la connexion à l'API
+
+### pages
+
+pour les composants qui concernent les pages de notre application
+
+### etc ...

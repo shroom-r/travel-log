@@ -6,6 +6,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { PlacesService } from '../../../places/places.service';
 import { Router } from '@angular/router';
 import { Geolocation } from '../../../../utils/geolocation';
+import { forkJoin } from 'rxjs';
 
 
 type PlacesByTrip = {
@@ -18,7 +19,7 @@ type PlacesByTrip = {
   templateUrl: './tile.component.html',
   styleUrls: ['./tile.component.scss']
 })
-export class TileComponent implements OnInit{
+export class TileComponent implements OnInit {
 
   // construire une tuile qui sera utilisée pour présenter chaque trip
   // on doit afficher au minimum un titre et une description
@@ -28,11 +29,14 @@ export class TileComponent implements OnInit{
   placesList: PlaceResponse[] = [];
   placesByTrip: PlacesByTrip[] = [];
 
-  constructor(    private tripService: TripService,
+  loading: boolean = true;
+
+
+  constructor(private tripService: TripService,
     private auth: AuthService,
     private placesService: PlacesService,
     private router: Router
-    ) {
+  ) {
     this.title = 'titre Tuile';
     this.tripDescription = 'Description du trip';
     this.getTripsList();
@@ -42,16 +46,35 @@ export class TileComponent implements OnInit{
     //Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
-  seeDetail(tripId? :string) {
-    this.router.navigate(["tripDetail/"+tripId]);
+  seeDetail(tripId?: string) {
+    this.router.navigate(["tripDetail/" + tripId]);
   }
-
+  /* 
+    getTripsList() {
+      this.auth.getUserId().subscribe((userId) => {
+        if (userId) {
+          this.tripService.getUserTrips(userId).subscribe((trips) => {
+            this.tripsList = trips;
+            this.mapTripsToPlacesByTrip();
+            this.getPlaces();
+          });
+        }
+      });
+    }
+  
+    getPlaces() {
+      for (let trip of this.tripsList) {
+        var tripId = trip.id;
+        this.placesService.getPlacesOfTrip(tripId).subscribe((places) => {
+          this.mapPlacesToPlacesByTrip(places);
+        });
+      }
+    } */
   getTripsList() {
     this.auth.getUserId().subscribe((userId) => {
       if (userId) {
         this.tripService.getUserTrips(userId).subscribe((trips) => {
           this.tripsList = trips;
-          this.mapTripsToPlacesByTrip();
           this.getPlaces();
         });
       }
@@ -59,13 +82,18 @@ export class TileComponent implements OnInit{
   }
 
   getPlaces() {
-    for (let trip of this.tripsList) {
-      var tripId = trip.id;
-      this.placesService.getPlacesOfTrip(tripId).subscribe((places) => {
-        this.mapPlacesToPlacesByTrip(places);
+    const observables = this.tripsList.map((trip) =>
+      this.placesService.getPlacesOfTrip(trip.id)
+    );
+
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((places, index) => {
+        this.placesByTrip.push({ trip: this.tripsList[index], places });
       });
-    }
+      this.loading = false;
+    });
   }
+
 
   mapTripsToPlacesByTrip() {
     for (let trip of this.tripsList) {
@@ -92,3 +120,4 @@ export class TileComponent implements OnInit{
     }
   }
 }
+

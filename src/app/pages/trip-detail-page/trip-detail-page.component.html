@@ -15,6 +15,7 @@
             class="overflow-auto col-6 border d-flex flex-column"
           >
             <!-- <h3 class="mb-0">Trip title and description</h3> -->
+            <h3 class="mb-0">Trip ID: {{ currentTrip?.id }}</h3>
             <div class="d-flex align-items-center flex-grow-1">
               <div class="ms-1 h-100 me-10 w-75">
                 <app-trip-form [currentTrip]="this.currentTrip"></app-trip-form>

@@ -26,14 +26,18 @@ export class PlacesService {
       );
   }
 
-  deletePlace() {
+  deletePlace(placeId: string) {
     console.log("delete a place");
   }
 
-  updatePlace() {
+  updatePlace(placeId :string) {
     console.log("update place");
   }
 
+  getPlace(placeId: string): Observable<PlaceResponse> {
+    return this.http.get<PlaceResponse>(`${this.apiUrlPlaces}/${placeId}`);
+  }
+  
   searchPlaceBySearchValue(searchValue: string): Observable<PlaceResponse[]> {
     //Build querystring
     //Split searchValue and pass it to array
