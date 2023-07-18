@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { TripResponse } from '../../trips/trip-response.model';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Geolocation } from 'src/utils/geolocation';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-trip-form',
@@ -27,6 +28,7 @@ export class TripFormComponent implements OnInit, OnChanges {
   formTitle?: string;
   saveButtonText?: string;
   stateMessage?: string;
+  tripForm?: NgForm;
 
   constructor(private tripService: TripService, private router: Router) {}
 
@@ -75,7 +77,7 @@ export class TripFormComponent implements OnInit, OnChanges {
     }
   }
 
-  submitForm() {
+  submitForm(form: NgForm) {
     console.log('Form submit');
     if (this.tripTitle && this.tripDescription) {
       if (this.formMode === FormMode.New) {
@@ -100,13 +102,13 @@ export class TripFormComponent implements OnInit, OnChanges {
               next: (response) => {
                 this.stateMessage = 'Changes successfully saved !';
                 setTimeout(() => (this.stateMessage = ''), 2000);
+                form.resetForm(form.value);
                 this.router.navigate(['tripDetail/' + response.id]);
               },
               error: (error) => {
                 console.log(error);
                 this.stateMessage =
-                  'An error occured. Trip changes could not be saved.';
-                setTimeout(() => (this.stateMessage = ''), 4000);
+                  'An error occured. Trip changes could not be saved. Error message: ' + error.error.message;
               },
             });
         }
