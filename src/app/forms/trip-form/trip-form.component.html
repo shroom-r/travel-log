@@ -31,19 +31,19 @@
           name="Trip description"
         ></textarea>
       </div>
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center mt-2">
         <button
           type="submit"
-          class="mt-2 btn btn-primary"
-          [disabled]="tripForm.invalid"
+          class="btn btn-primary"
+          [disabled]="tripForm.invalid || (tripForm.pristine && formMode==='Modification')"
           (click)="submitForm()"
         >
-          Save
+          Save changes
         </button>
         <div>
           <button
             *ngIf="formMode === 'Modification'"
-            class="btn btn-link btn-sm"
+            class="btn btn-link btn-sm pe-0"
             (click)="deleteTrip()"
           >
             <fa-icon
@@ -55,8 +55,10 @@
             ></fa-icon>
           </button>
         </div>
+        <em *ngIf="stateMessage" class="ps-2">
+          {{ stateMessage }}
+        </em>
       </div>
-      <div style="margin-left: 10px">[TEMP]Current mode : {{ formMode }}</div>
     </form>
   </div>
 </div>

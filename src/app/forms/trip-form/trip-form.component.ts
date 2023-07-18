@@ -25,6 +25,8 @@ export class TripFormComponent implements OnInit, OnChanges {
   tripDescription?: string;
   formMode?: FormMode;
   formTitle?: string;
+  saveButtonText?: string;
+  stateMessage?: string;
 
   constructor(private tripService: TripService, private router: Router) {}
 
@@ -52,11 +54,13 @@ export class TripFormComponent implements OnInit, OnChanges {
         this.tripTitle = '';
         this.tripDescription = '';
         this.formTitle = 'Create a new trip';
+        this.saveButtonText = 'Save';
         break;
       case FormMode.Modification:
         this.tripTitle = this.currentTrip?.title;
         this.tripDescription = this.currentTrip?.description;
-        this.formTitle = 'Modify trip informations';
+        this.formTitle = 'Trip informations';
+        this.saveButtonText = 'Save changes';
         break;
       default:
         break;
@@ -75,6 +79,7 @@ export class TripFormComponent implements OnInit, OnChanges {
     console.log('Form submit');
     if (this.tripTitle && this.tripDescription) {
       if (this.formMode === FormMode.New) {
+        this.stateMessage = 'Creating trip ...';
         this.tripService
           .createTrip({
             title: this.tripTitle,
@@ -85,13 +90,24 @@ export class TripFormComponent implements OnInit, OnChanges {
           });
       } else if (this.formMode === FormMode.Modification) {
         if (this.currentTrip) {
+          this.stateMessage = 'Saving trip changes ...';
           this.tripService
             .updateTrip(this.currentTrip.id, {
               title: this.tripTitle,
               description: this.tripDescription,
             })
-            .subscribe((response) => {
-              this.router.navigate(['tripDetail/' + response.id]);
+            .subscribe({
+              next: (response) => {
+                this.stateMessage = 'Changes successfully saved !';
+                setTimeout(() => (this.stateMessage = ''), 2000);
+                this.router.navigate(['tripDetail/' + response.id]);
+              },
+              error: (error) => {
+                console.log(error);
+                this.stateMessage =
+                  'An error occured. Trip changes could not be saved.';
+                setTimeout(() => (this.stateMessage = ''), 4000);
+              },
             });
         }
       }
@@ -100,11 +116,13 @@ export class TripFormComponent implements OnInit, OnChanges {
 
   deleteTrip() {
     console.log('DELETION');
-    confirm("Are you sur to delete?");
-    if (this.currentTrip) {
-      this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
-        this.router.navigate(['allMyTrips/']);
-      });
+    var confirmDeletion = confirm('Are you sure you want to delete?');
+    if (confirmDeletion) {
+      if (this.currentTrip) {
+        this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
+          this.router.navigate(['allMyTrips/']);
+        });
+      }
     }
   }
 }
