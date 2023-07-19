@@ -7,7 +7,7 @@
   >
     <fa-icon
       class="text-primary"
-      [icon]="faLocationCrossHair"
+      [icon]="faExpand"
       style="font-size: 20px;"
       title="Center map around search results"
       alt="Center map around search results"
@@ -32,14 +32,14 @@
             >
               <fa-icon
                 class="text-primary"
-                [icon]="faLocationCrossHair"
+                [icon]="faExpand"
                 title="Center map around places"
                 alt="Center map around places"
               ></fa-icon>
             </button>
             <button
               class="btn btn-link btn-sm justify-content-end"
-              (click)="updateTrip()"
+              (click)="updateTrip(trip.trip?.id)"
             >
               <fa-icon
                 class="text-primary"
@@ -72,7 +72,7 @@
                   </button>
                   <button
                     class="btn btn-link btn-sm justify-content-end"
-                    (click)="updatePlace()"
+                    (click)="updatePlace(place.id)"
                   >
                     <fa-icon
                       class="text-primary"

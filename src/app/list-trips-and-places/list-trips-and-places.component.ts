@@ -8,8 +8,10 @@ import { AuthService } from '../auth/auth.service';
 import {
   faLocationCrosshairs,
   faPencil,
+  faExpand,
 } from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
+import { Router } from '@angular/router';
 
 type PlacesByTrip = {
   trip?: TripResponse;
@@ -24,6 +26,7 @@ type PlacesByTrip = {
 export class ListTripsAndPlacesComponent implements OnInit {
   faPencil = faPencil;
   faLocationCrossHair = faLocationCrosshairs;
+  faExpand = faExpand;
 
   tripsList: TripResponse[] = [];
   placesList: PlaceResponse[] = [];
@@ -41,12 +44,13 @@ export class ListTripsAndPlacesComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private placesService: PlacesService,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) {
-    this.showPlaceOnMap = new EventEmitter<PlaceResponse>;
-    this.newSearch = new EventEmitter<void>;
-    this.centerPlaceOnMap = new EventEmitter<GeoJsonPoint>;
-    this.centerMapAroundPlaces = new EventEmitter<PlaceResponse[]>;
+    this.showPlaceOnMap = new EventEmitter<PlaceResponse>();
+    this.newSearch = new EventEmitter<void>();
+    this.centerPlaceOnMap = new EventEmitter<GeoJsonPoint>();
+    this.centerMapAroundPlaces = new EventEmitter<PlaceResponse[]>();
   }
   ngOnInit(): void {
     this.auth
@@ -91,16 +95,22 @@ export class ListTripsAndPlacesComponent implements OnInit {
         //check if trip is owned by current user. If not, discard it
         if (this.tripsList[0].userId === this.currentUserId) {
           //check if trip exists (indexOf returns -1 if not add it)
-          var index = this.placesByTrip.map((el) => el.trip?.id).indexOf(tripId);
+          var index = this.placesByTrip
+            .map((el) => el.trip?.id)
+            .indexOf(tripId);
           if (index < 0) {
             this.placesByTrip.push({ trip: this.tripsList[0] });
           }
           //Remove trip from tripsList
-          var indexTripsList = this.tripsList.map((el) => el.id).indexOf(tripId);
+          var indexTripsList = this.tripsList
+            .map((el) => el.id)
+            .indexOf(tripId);
           this.tripsList.splice(indexTripsList, 1);
         } else {
           //Remove trip from tripsList
-          var indexTripsList = this.tripsList.map((el) => el.id).indexOf(tripId);
+          var indexTripsList = this.tripsList
+            .map((el) => el.id)
+            .indexOf(tripId);
           this.tripsList.splice(indexTripsList, 1);
         }
       } while (this.tripsList.length);
@@ -151,14 +161,12 @@ export class ListTripsAndPlacesComponent implements OnInit {
     this.centerPlaceOnMap.emit(placeLocation);
   }
 
-  updatePlace() {}
-
   centerAroundPlaces(places?: PlaceResponse[]) {
     this.centerMapAroundPlaces.emit(places);
   }
 
   centerSearchResults() {
-    var placesArray:PlaceResponse[] = [];
+    var placesArray: PlaceResponse[] = [];
     for (let trip of this.placesByTrip) {
       if (trip.places?.length) {
         placesArray = placesArray.concat(trip.places);
@@ -167,5 +175,15 @@ export class ListTripsAndPlacesComponent implements OnInit {
     this.centerAroundPlaces(placesArray);
   }
 
-  updateTrip() {}
+  updatePlace(placeId?: string) {
+    if (placeId) {
+      this.router.navigate(['placeDetail/' + placeId]);
+    }
+  }
+
+  updateTrip(tripId?: string) {
+    if (tripId) {
+      this.router.navigate(['tripDetail/' + tripId]);
+    }
+  }
 }
