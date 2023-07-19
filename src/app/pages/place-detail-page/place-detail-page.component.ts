@@ -22,7 +22,7 @@ export class PlaceDetailPageComponent implements OnDestroy {
   ) { }
 
   ngOnInit() {
-    const placeId = this.route.snapshot.paramMap.get('id');
+    const placeId = this.route.snapshot.paramMap.get('placeId');
     if (placeId) {
       this.placeService.getPlace(placeId)
         .pipe(takeUntil(this.destroy$))

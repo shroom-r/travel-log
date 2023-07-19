@@ -10,7 +10,11 @@ import {
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
-import { faLocationCrosshairs, faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLocationCrosshairs,
+  faPencil,
+  faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 import { Router } from '@angular/router';
 
@@ -51,12 +55,13 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   newPlace(): void {
-    console.log("click, new place on liste-places");
-    this.router.navigate(['/newPlace'], {queryParams: {tripId: this.currentTrip?.id}});
+    this.router.navigate(['newPlace'], {
+      queryParams: { tripId: this.currentTrip?.id },
+    });
   }
 
-  updatePlace() {
-    console.log("updateplace on list-places");
+  updatePlace(placeId: string) {
+    this.router.navigate(['placeDetail/' + placeId]);
   }
 
   centerOnMap(placeLocation: GeoJsonPoint) {
