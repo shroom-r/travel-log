@@ -18,7 +18,9 @@ export class TripDetailPageComponent {
   places: PlaceResponse[] = [];
   selectedPlaceCoordinates?: GeoJsonPoint;
   selectPlaceToCenter: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
-  centerMapAroundPlacesSubject: Subject<PlaceResponse[]> = new Subject<PlaceResponse[]>();
+  centerMapAroundPlacesSubject: Subject<PlaceResponse[]> = new Subject<
+    PlaceResponse[]
+  >();
   loadingTripState?: string;
 
   constructor(

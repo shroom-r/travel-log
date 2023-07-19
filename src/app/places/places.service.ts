@@ -13,7 +13,6 @@ export class PlacesService {
   apiUrlPlaces = `${environment.apiUrl}/places`;
   constructor(private http: HttpClient) {}
 
-
   createPlace(
     placeCreationRequest: PlaceCreationRequest
   ): Observable<PlaceResponse> {
@@ -27,17 +26,21 @@ export class PlacesService {
   }
 
   deletePlace(placeId: string) {
-    console.log("delete a place");
+    return this.http.delete(this.apiUrlPlaces + `/${placeId}`).pipe(
+      tap((response) => {
+        return response;
+      })
+    );
   }
 
-  updatePlace(placeId :string) {
-    console.log("update place");
+  updatePlace(placeId: string) {
+    console.log('update place');
   }
 
   getPlace(placeId: string): Observable<PlaceResponse> {
     return this.http.get<PlaceResponse>(`${this.apiUrlPlaces}/${placeId}`);
   }
-  
+
   searchPlaceBySearchValue(searchValue: string): Observable<PlaceResponse[]> {
     //Build querystring
     //Split searchValue and pass it to array

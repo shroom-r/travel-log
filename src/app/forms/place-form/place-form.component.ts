@@ -45,7 +45,7 @@ export class PlaceFormComponent {
         })
         .subscribe({
           next: (response) => {
-            this.router.navigate(['placeDetail/' + response.id]);
+            this.router.navigate(['tripDetail/' + response.tripId]);
           },
           error: (error) => {
             console.error('Error occurred while creating the place:', error);

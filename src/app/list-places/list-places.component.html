@@ -62,6 +62,18 @@
                   alt="Edit trip"
                 ></fa-icon>
               </button>
+              <button
+                class="btn btn-link btn-sm justify-content-end"
+                (click)="deletePlace(place.id)"
+              >
+                <fa-icon
+                  class="text-danger"
+                  [icon]="faTrash"
+                  style="font-size: 20px"
+                  title="Delete place"
+                  alt="Delete place"
+                ></fa-icon>
+              </button>
             </div>
           </div>
         </li>

@@ -15,6 +15,7 @@ import {
   faPencil,
   faSquarePlus,
   faExpand,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 import { Router } from '@angular/router';
@@ -29,12 +30,13 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   faSquarePlus = faSquarePlus;
   faLocationCrossHair = faLocationCrosshairs;
   faExpand = faExpand;
+  faTrash = faTrash;
 
   @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
   @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
-  @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>
+  @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>;
 
   constructor(private placeService: PlacesService, private router: Router) {
     this.centerOnMapClicked = new EventEmitter();
@@ -74,5 +76,21 @@ export class ListPlacesComponent implements OnInit, OnChanges {
 
   centerAroundAllPlaces() {
     this.centerMapAroundPlaces.emit(this.places);
+  }
+
+  deletePlace(placeId: string) {
+    var confirmDeletion = confirm('Are you sure you want to delete?');
+    if (confirmDeletion) {
+      if (placeId) {
+        this.placeService.deletePlace(placeId).subscribe({
+          next: () => {
+            this.places = this.places.filter((place) => place.id !== placeId);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+        });
+      }
+    }
   }
 }

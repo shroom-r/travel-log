@@ -29,8 +29,8 @@ export class TripService {
   //Delete a trip
   deleteTrip(tripId: string) {
     return this.http.delete(this.apiUrlTrips + `/${tripId}`).pipe(
-      tap((reponse) => {
-        return Response;
+      tap((response) => {
+        return response;
       })
     );
   }
