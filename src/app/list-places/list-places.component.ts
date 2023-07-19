@@ -10,10 +10,13 @@ import {
 import { PlaceResponse } from '../places/place-response.model';
 import { TripResponse } from '../trips/trip-response.model';
 import { PlacesService } from '../places/places.service';
-import { Geolocation } from '../../utils/geolocation';
-import { faLocationCrosshairs, faPencil, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
-import { RouterLink } from '@angular/router';
+import {
+  faLocationCrosshairs,
+  faPencil,
+  faSquarePlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-places',
@@ -30,7 +33,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
 
   @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
 
-  constructor(private placeService: PlacesService) {
+  constructor(private placeService: PlacesService, private router: Router) {
     this.centerOnMapClicked = new EventEmitter();
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -38,7 +41,6 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.getPlaces();
-    // Geolocation.getCurrentPosition().then(console.log).catch(console.error);
   }
 
   getPlaces() {
@@ -53,11 +55,13 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   newPlace(): void {
-    console.log("click, new place on liste-places");
+    this.router.navigate(['newPlace'], {
+      queryParams: { tripId: this.currentTrip?.id },
+    });
   }
 
-  updatePlace() {
-    console.log("updateplace on list-places");
+  updatePlace(placeId: string) {
+    this.router.navigate(['placeDetail/' + placeId]);
   }
 
   centerOnMap(placeLocation: GeoJsonPoint) {

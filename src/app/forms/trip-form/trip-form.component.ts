@@ -10,7 +10,6 @@ import { TripService } from '../../trips/trip.service';
 import { Router } from '@angular/router';
 import { TripResponse } from '../../trips/trip-response.model';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Geolocation } from 'src/utils/geolocation';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -22,6 +21,7 @@ export class TripFormComponent implements OnInit, OnChanges {
   faTrash = faTrash;
 
   @Input() currentTrip?: TripResponse;
+  @Input() loadingTripState?: string;
   tripTitle?: string;
   tripDescription?: string;
   formMode?: FormMode;
@@ -34,10 +34,14 @@ export class TripFormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initForm();
+    if (this.loadingTripState) {
+      this.showStateMessage(this.loadingTripState);
+    } else {
+      this.showStateMessage('');
+    }
   }
 
   ngOnInit(): void {
-    // Geolocation.getCurrentPosition().then(console.log).catch(console.error);
     this.initForm();
   }
 
@@ -49,9 +53,9 @@ export class TripFormComponent implements OnInit, OnChanges {
     }
   }
 
-  initializeMode(mode: FormMode) {
-    this.formMode = mode;
-    switch (mode) {
+  initializeMode(formMode: FormMode) {
+    this.formMode = formMode;
+    switch (formMode) {
       case FormMode.New:
         this.tripTitle = '';
         this.tripDescription = '';
@@ -69,60 +73,82 @@ export class TripFormComponent implements OnInit, OnChanges {
     }
   }
 
-  changeFormMode(mode: FormMode) {
-    if (mode === FormMode.New) {
-      this.formMode = FormMode.New;
-    } else if (mode === FormMode.Modification) {
-      this.formMode = FormMode.Modification;
+  submitForm(form: NgForm) {
+    if (this.formMode === FormMode.New) {
+      this.createTrip();
+    } else if (this.formMode === FormMode.Modification) {
+      this.updateTrip(form);
     }
   }
 
-  submitForm(form: NgForm) {
-    console.log('Form submit');
+  createTrip() {
     if (this.tripTitle && this.tripDescription) {
-      if (this.formMode === FormMode.New) {
-        this.stateMessage = 'Creating trip ...';
+      this.showStateMessage('Creating trip ...');
+      this.tripService
+        .createTrip({
+          title: this.tripTitle,
+          description: this.tripDescription,
+        })
+        .subscribe({
+          next: (response) => {
+            this.router.navigate(['tripDetail/' + response.id]);
+          },
+          error: (error) => {
+            this.showStateMessage(
+              `An error occured. Trip have not been created. Error message: ${error.error.message}`
+            );
+          },
+        });
+    }
+  }
+
+  updateTrip(form: NgForm) {
+    if (this.tripTitle && this.tripDescription) {
+      if (this.currentTrip) {
+        this.showStateMessage('Saving trip changes ...');
         this.tripService
-          .createTrip({
+          .updateTrip(this.currentTrip.id, {
             title: this.tripTitle,
             description: this.tripDescription,
           })
-          .subscribe((response) => {
-            this.router.navigate(['tripDetail/' + response.id]);
+          .subscribe({
+            next: (response) => {
+              this.showStateMessage('Changes successfully saved !', 2000);
+              form.resetForm(form.value);
+              this.router.navigate(['tripDetail/' + response.id]);
+            },
+            error: (error) => {
+              this.showStateMessage(
+                `An error occured. Trip changes could not be saved. Error message: ${error.error.message}`
+              );
+            },
           });
-      } else if (this.formMode === FormMode.Modification) {
-        if (this.currentTrip) {
-          this.stateMessage = 'Saving trip changes ...';
-          this.tripService
-            .updateTrip(this.currentTrip.id, {
-              title: this.tripTitle,
-              description: this.tripDescription,
-            })
-            .subscribe({
-              next: (response) => {
-                this.stateMessage = 'Changes successfully saved !';
-                setTimeout(() => (this.stateMessage = ''), 2000);
-                form.resetForm(form.value);
-                this.router.navigate(['tripDetail/' + response.id]);
-              },
-              error: (error) => {
-                console.log(error);
-                this.stateMessage =
-                  'An error occured. Trip changes could not be saved. Error message: ' + error.error.message;
-              },
-            });
-        }
       }
     }
   }
 
+  showStateMessage(message: string, time?: number) {
+    this.stateMessage = message;
+    if (time) {
+      setTimeout(() => {
+        this.stateMessage = '';
+      }, time);
+    }
+  }
+
   deleteTrip() {
-    console.log('DELETION');
     var confirmDeletion = confirm('Are you sure you want to delete?');
     if (confirmDeletion) {
       if (this.currentTrip) {
-        this.tripService.deleteTrip(this.currentTrip?.id).subscribe(() => {
-          this.router.navigate(['allMyTrips/']);
+        this.tripService.deleteTrip(this.currentTrip?.id).subscribe({
+          next: () => {
+            this.router.navigate(['allMyTrips/']);
+          },
+          error: (error) => {
+            this.showStateMessage(
+              `An error occured. Trip changes could not be saved. Error message: ${error.error.message}`
+            );
+          },
         });
       }
     }
