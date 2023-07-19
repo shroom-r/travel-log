@@ -45,7 +45,7 @@ const routes: Routes = [
         component: TripDetailPageComponent,
       },
       {
-        path: 'placeDetail',
+        path: 'placeDetail/:placeId',
         component: PlaceDetailPageComponent,
       },
       {
