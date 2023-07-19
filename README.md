@@ -1,7 +1,6 @@
 # travel-log
 Projet MA-RAD | CAS-DAR | DFA
 
-## TODO
 
 ### page all-my-trips
 
@@ -18,18 +17,18 @@ Projet MA-RAD | CAS-DAR | DFA
 
 ### page trip-detail
 
+- ~~bouton ajouter une place~~ -> ok
+- bouton modifier un place -> Not ok
 
 
 ### place form
 
-- à tester
-- fait un formulaire reactiv selon doc angular. En fait pas si facile, le template est plus adapté pour nous. A la lecture de la doc, cela sembler le contraire.
+- **Not ok**
+- formulaire fonctionne
+- problème avec submit. tripId n'est pas envoyé car pas connu. **TODO**  créer service pour avoir la response de trip et récupérer l'id du trip
 
-
-### create-place
-
-- fait
-- n'arrive pas à accéder et donc voir le formulaire
+fait un formulaire reactiv selon doc angular. En fait pas si facile, le template est plus adapté pour nous. A la lecture de la doc, cela sembler le contraire.
+ 
 
 ## architecture
 
@@ -40,6 +39,8 @@ En revanche, nous avons vu qu'il y a vite beaucoup de composants et que pour se 
 ### utils
 
 pour des composants utilisés partout tels les messages d'erreurs.
+- ajouter un service pour partager la response de trip **TODO**
+- ajouter un service pour partager la response de place **TODO**
 
 ### auth
 
