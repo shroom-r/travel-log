@@ -18,6 +18,7 @@ export class TripDetailPageComponent {
   places: PlaceResponse[] = [];
   selectedPlaceCoordinates?: GeoJsonPoint;
   selectPlaceToCenter: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
+  loadingTripState?: string;
 
   constructor(
     private tripService: TripService,
@@ -33,10 +34,12 @@ export class TripDetailPageComponent {
   }
 
   getTrip() {
+    this.loadingTripState = 'Loading trip...';
     if (this.routeTripId) {
       this.tripService.getTripById(this.routeTripId).subscribe({
         next: (response) => {
           this.currentTrip = response;
+          this.loadingTripState = '';
         },
         error: (err) => {
           alert(`Le trip ID ${this.routeTripId} n'existe pas.`);
