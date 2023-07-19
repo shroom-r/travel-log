@@ -18,6 +18,7 @@ export class TripDetailPageComponent {
   places: PlaceResponse[] = [];
   selectedPlaceCoordinates?: GeoJsonPoint;
   selectPlaceToCenter: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
+  centerMapAroundPlacesSubject: Subject<PlaceResponse[]> = new Subject<PlaceResponse[]>();
   loadingTripState?: string;
 
   constructor(
@@ -63,5 +64,9 @@ export class TripDetailPageComponent {
 
   centerPlaceOnMap(location: GeoJsonPoint) {
     this.selectPlaceToCenter.next(location);
+  }
+
+  centerMapAroundPlaces(places: PlaceResponse[]) {
+    this.centerMapAroundPlacesSubject.next(places);
   }
 }

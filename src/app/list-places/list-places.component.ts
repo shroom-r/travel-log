@@ -14,6 +14,7 @@ import {
   faLocationCrosshairs,
   faPencil,
   faSquarePlus,
+  faExpand,
 } from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 import { Router } from '@angular/router';
@@ -27,14 +28,17 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   faPencil = faPencil;
   faSquarePlus = faSquarePlus;
   faLocationCrossHair = faLocationCrosshairs;
+  faExpand = faExpand;
 
   @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
   @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
+  @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>
 
   constructor(private placeService: PlacesService, private router: Router) {
     this.centerOnMapClicked = new EventEmitter();
+    this.centerMapAroundPlaces = new EventEmitter();
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.getPlaces();
@@ -66,5 +70,9 @@ export class ListPlacesComponent implements OnInit, OnChanges {
 
   centerOnMap(placeLocation: GeoJsonPoint) {
     this.centerOnMapClicked.emit(placeLocation);
+  }
+
+  centerAroundAllPlaces() {
+    this.centerMapAroundPlaces.emit(this.places);
   }
 }
