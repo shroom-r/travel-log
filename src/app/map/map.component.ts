@@ -23,6 +23,7 @@ import { PlaceResponse } from '../places/place-response.model';
 import { PlacesService } from '../places/places.service';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 import { Observable, Subscription } from 'rxjs';
+import { Geolocation } from 'src/utils/geolocation';
 
 @Component({
   selector: 'app-map',
@@ -40,11 +41,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   private showPlaceOnMapSubscription?: Subscription;
   private newSearchSubscription?: Subscription;
   private centerMapAroundPlacesSubscription?: Subscription;
+  private centerMapOnCurrentLocationSubscription?: Subscription;
 
   @Input() centerMapOnLocationObservable?: Observable<GeoJsonPoint>;
   @Input() showPlaceOnMapObservable?: Observable<PlaceResponse>;
   @Input() newSearchObservable?: Observable<void>;
   @Input() centerMapAroundPlacesObservable?: Observable<PlaceResponse[]>;
+  @Input() centerMapOnCurrentLocationObservable?: Observable<void>;
 
   @Output() clickOnMapEmitter: EventEmitter<GeoJsonPoint>;
 
@@ -64,8 +67,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentTrip']) {
       this.getPlaces();
-    } else if (changes['selectedPlaceCoordinates']) {
-      //this.centerMapOnLocation();
     }
   }
 
@@ -87,6 +88,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       this.centerMapAroundPlacesObservable?.subscribe((response) => {
         this.centerMapAroundPlaces(response);
       });
+    this.centerMapOnCurrentLocationSubscription =
+      this.centerMapOnCurrentLocationObservable?.subscribe(() => {
+        this.centerOnCurrentLocation();
+      });
     this.getPlaces();
   }
 
@@ -95,6 +100,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.showPlaceOnMapSubscription?.unsubscribe();
     this.newSearchSubscription?.unsubscribe();
     this.centerMapAroundPlacesSubscription?.unsubscribe();
+    this.centerMapOnCurrentLocationSubscription?.unsubscribe();
   }
 
   onMapReady(map: Map) {
@@ -161,5 +167,16 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     var maxLng = Math.max(...lngArray);
     var bounds = latLngBounds(latLng(minLat, minLng), latLng(maxLat, maxLng));
     this.#map?.fitBounds(bounds, { maxZoom: 13, animate: false });
+  }
+
+  centerOnCurrentLocation() {
+    Geolocation.getCurrentPosition()
+      .then((position) => {
+        console.log(position);
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        this.#map?.setView([lat, lng], 13);
+      })
+      .catch(console.error);
   }
 }
