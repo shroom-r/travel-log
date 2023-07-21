@@ -42,12 +42,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   private newSearchSubscription?: Subscription;
   private centerMapAroundPlacesSubscription?: Subscription;
   private centerMapOnCurrentLocationSubscription?: Subscription;
+  private placeDeletedSubscription?: Subscription;
 
   @Input() centerMapOnLocationObservable?: Observable<GeoJsonPoint>;
   @Input() showPlaceOnMapObservable?: Observable<PlaceResponse>;
   @Input() newSearchObservable?: Observable<void>;
   @Input() centerMapAroundPlacesObservable?: Observable<PlaceResponse[]>;
   @Input() centerMapOnCurrentLocationObservable?: Observable<void>;
+  @Input() placeDeletedObservable?: Observable<void>;
 
   @Output() clickOnMapEmitter: EventEmitter<GeoJsonPoint>;
 
@@ -92,7 +94,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       this.centerMapOnCurrentLocationObservable?.subscribe(() => {
         this.centerOnCurrentLocation();
       });
-    this.getPlaces();
+    this.placeDeletedSubscription = this.placeDeletedObservable?.subscribe(
+      () => {
+        this.getPlaces();
+      }
+    );
+    // this.getPlaces();
   }
 
   ngOnDestroy() {
@@ -101,6 +108,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.newSearchSubscription?.unsubscribe();
     this.centerMapAroundPlacesSubscription?.unsubscribe();
     this.centerMapOnCurrentLocationSubscription?.unsubscribe();
+    this.placeDeletedSubscription?.unsubscribe();
   }
 
   onMapReady(map: Map) {
@@ -124,6 +132,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           this.showPlacesOnMap();
         });
     }
+    
   }
 
   showPlaceOnMap(place: PlaceResponse) {
@@ -140,6 +149,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   showPlacesOnMap() {
+    this.removeAllMarkers();
     for (let place of this.places) {
       this.showPlaceOnMap(place);
     }

@@ -37,10 +37,12 @@ export class ListPlacesComponent implements OnInit, OnChanges {
 
   @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
   @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>;
+  @Output() placeDeleted: EventEmitter<void>;
 
   constructor(private placeService: PlacesService, private router: Router) {
     this.centerOnMapClicked = new EventEmitter();
     this.centerMapAroundPlaces = new EventEmitter();
+    this.placeDeleted = new EventEmitter();
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentTrip']) {
@@ -89,6 +91,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
         this.placeService.deletePlace(placeId).subscribe({
           next: () => {
             this.places = this.places.filter((place) => place.id !== placeId);
+            this.placeDeleted.emit();
           },
           error: (error) => {
             console.log(error);

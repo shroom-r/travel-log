@@ -21,6 +21,7 @@ export class TripDetailPageComponent {
   centerMapAroundPlacesSubject: Subject<PlaceResponse[]> = new Subject<
     PlaceResponse[]
   >();
+  placeDeletedSubject: Subject<void> = new Subject<void>();
   loadingTripState?: string;
 
   constructor(
@@ -70,5 +71,9 @@ export class TripDetailPageComponent {
 
   centerMapAroundPlaces(places: PlaceResponse[]) {
     this.centerMapAroundPlacesSubject.next(places);
+  }
+
+  placeDeleted() {
+    this.placeDeletedSubject.next();
   }
 }
