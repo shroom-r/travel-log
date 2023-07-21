@@ -1,5 +1,6 @@
 <div class="d-flex flex-column" style="height: 100vh; width: 100vw">
   <app-nav-bar></app-nav-bar>
+  <div style="position:absolute; z-index:10000"><button type="button" (click)="centerMapOnCurrentLocation()">Center map</button></div>
   <div
     class="flex-grow-1 p-0 container-fluid d-flex scrollbarDisable"
     style="overflow: auto"
@@ -29,6 +30,7 @@
           [currentTrip]="this.currentTrip"
           [centerMapOnLocationObservable]="selectPlaceToCenter.asObservable()"
           [centerMapAroundPlacesObservable]="centerMapAroundPlacesSubject.asObservable()"
+          [centerMapOnCurrentLocationObservable]="centerMapOnCurrentLocationSubject.asObservable()"
         ></app-map>
       </div>
     </div>
