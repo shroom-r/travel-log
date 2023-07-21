@@ -2,7 +2,15 @@
   <div class="d-flex justify-content-between w-100">
     <div class="d-flex">
       <h3 class="m-0">Places list</h3>
-
+      <button
+        type="button"
+        class="btn btn-primary m-3"
+        [class.btn-warning]="gettingCoordinates"
+        (click)="getCoordinates()"
+      >
+        <span *ngIf="!gettingCoordinates">get click coordinates</span>
+        <em *ngIf="gettingCoordinates">click on map to get coordinates ... </em>
+      </button>
       <button class="btn btn-link btn-sm" (click)="newPlace()">
         <fa-icon
           class="text-primary"

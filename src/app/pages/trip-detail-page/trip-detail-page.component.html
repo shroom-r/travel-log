@@ -19,6 +19,7 @@
           [currentTrip]="this.currentTrip"
           (centerOnMapClicked)="centerPlaceOnMap($event)"
           (centerMapAroundPlaces)="centerMapAroundPlaces($event)"
+          [clickedOnMapObservable]="clickOnMapSubject.asObservable()"
         ></app-list-places>
       </div>
     </div>
@@ -29,6 +30,7 @@
           [currentTrip]="this.currentTrip"
           [centerMapOnLocationObservable]="selectPlaceToCenter.asObservable()"
           [centerMapAroundPlacesObservable]="centerMapAroundPlacesSubject.asObservable()"
+          (clickOnMapEmitter)="clickOnMap($event)"
         ></app-map>
       </div>
     </div>

@@ -21,6 +21,7 @@ export class TripDetailPageComponent {
   centerMapAroundPlacesSubject: Subject<PlaceResponse[]> = new Subject<
     PlaceResponse[]
   >();
+  clickOnMapSubject: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>;
   loadingTripState?: string;
 
   constructor(
@@ -70,5 +71,9 @@ export class TripDetailPageComponent {
 
   centerMapAroundPlaces(places: PlaceResponse[]) {
     this.centerMapAroundPlacesSubject.next(places);
+  }
+
+  clickOnMap(geoJsonObejct: GeoJsonPoint) {
+    this.clickOnMapSubject.next(geoJsonObejct);
   }
 }

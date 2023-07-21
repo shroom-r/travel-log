@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -19,6 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list-places',
@@ -32,18 +34,29 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   faExpand = faExpand;
   faTrash = faTrash;
 
+  gettingCoordinates: boolean = false;
+
   @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
+  @Input() clickedOnMapObservable?: Observable<GeoJsonPoint>;
 
   @Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
   @Output() centerMapAroundPlaces: EventEmitter<PlaceResponse[]>;
 
-  constructor(private placeService: PlacesService, private router: Router) {
+  private clickOnMapSubscription?: Subscription;
+
+  constructor(
+    private placeService: PlacesService,
+    private router: Router,
+    private changeDetector: ChangeDetectorRef
+  ) {
     this.centerOnMapClicked = new EventEmitter();
     this.centerMapAroundPlaces = new EventEmitter();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.getPlaces();
+    if (changes['currentTrip']) {
+      this.getPlaces();
+    }
   }
   ngOnInit(): void {
     this.getPlaces();
@@ -92,5 +105,17 @@ export class ListPlacesComponent implements OnInit, OnChanges {
         });
       }
     }
+  }
+
+  getCoordinates() {
+    this.gettingCoordinates = !this.gettingCoordinates;
+    this.clickOnMapSubscription = this.clickedOnMapObservable?.subscribe(
+      (value) => {
+        this.clickOnMapSubscription?.unsubscribe();
+        this.gettingCoordinates = !this.gettingCoordinates;
+        this.changeDetector.detectChanges();
+        console.log(value);
+      }
+    );
   }
 }
