@@ -36,6 +36,7 @@ export class LoginPageComponent {
   submitButtonText: string;
   changeModeLinkText: string;
   pageTitle: string;
+  userMessage: string = '';
 
   constructor(private auth: AuthService, private registerAccount: RegisterAccount, private router: Router) {
     this.authRequestInput = {};
@@ -73,6 +74,7 @@ export class LoginPageComponent {
     // Since the login$() method requires an AuthRequest param, but
     // our authRequestInput has optional properties, we need to convert it
     // to an new object that matches the AuthRequest type.
+    this.showUserMessage('Loging in');
     this.auth
       .login$({
         password: this.authRequestInput.password ?? "",
@@ -85,15 +87,17 @@ export class LoginPageComponent {
   }
 
   createAccount() {
-    console.log("Account creation request");
+    this.showUserMessage('Creating account');
     this.registerAccount
       .registerAccount$({
         name: this.authRequestInput.username ?? "",
         password: this.authRequestInput.password ?? ""
       })
       .subscribe({
-        next: () => this.router.navigateByUrl("/"),
-        error: (err) => (this.loginError = err.message),
+        next: () => {
+          this.login();
+        },
+        error: (err) => (this.showErrorMessage(err.message)),
       });
   }
 
@@ -110,5 +114,14 @@ export class LoginPageComponent {
       this.pageTitle = "Log in to TravelLog"
     }
 
+  }
+
+  showUserMessage(message:string, time?:number) {
+    this.userMessage = message;
+  }
+
+  showErrorMessage(message: string) {
+    this.userMessage = '';
+    this.loginError = message;
   }
 }

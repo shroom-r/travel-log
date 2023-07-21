@@ -1,30 +1,72 @@
 <div>
-  <div id="loginFormContainer"
-    class="shadow p-3 col-4 col-xl-3 row-3 position-absolute top-50 start-50 translate-middle">
+  <div
+    id="loginFormContainer"
+    class="shadow p-3 col-4 col-xl-3 row-3 position-absolute top-50 start-50 translate-middle"
+  >
     <h2>{{ pageTitle }}</h2>
-    <form class="h-100 w-100" #loginForm="ngForm" (submit)="onSubmit(loginForm)">
+    <form
+      class="h-100 w-100"
+      #loginForm="ngForm"
+      (submit)="onSubmit(loginForm)"
+    >
       <div class="mb-3">
         <label form="username" class="form-label">Username</label>
-        <input class="form-control" type="text" name="username" id="username" #usernameField="ngModel" required
-          [(ngModel)]="authRequestInput.username" />
-        <p class="form-text" *ngIf="usernameField.hasError('required') && usernameField.touched">
+        <input
+          class="form-control"
+          type="text"
+          name="username"
+          id="username"
+          #usernameField="ngModel"
+          minlength="3"
+          maxlength="25"
+          required
+          [(ngModel)]="authRequestInput.username"
+        />
+        <p
+          class="form-text"
+          *ngIf="usernameField.hasError('required') && usernameField.touched"
+        >
           Username is required
         </p>
       </div>
       <div class="mb-3">
         <label form="password" class="form-label">Password</label>
-        <input class="form-control" type="password" name="password" id="passwrod" #passwordField="ngModel" required
-          [(ngModel)]="authRequestInput.password" />
-        <p class="form-text" *ngIf="passwordField.hasError('required') && passwordField.touched">
+        <input
+          class="form-control"
+          type="password"
+          name="password"
+          id="passwrod"
+          #passwordField="ngModel"
+          minlength="4"
+          required
+          [(ngModel)]="authRequestInput.password"
+        />
+        <p
+          class="form-text"
+          *ngIf="passwordField.hasError('required') && passwordField.touched"
+        >
           Password is required
         </p>
       </div>
-
       <div>
-        <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">{{ submitButtonText }}</button>
-        <span class="m-3"><a type="button" href="javascript:void(0)" (click)="switchPageMode()">{{ changeModeLinkText }}</a></span>
-        <p class="form-text" *ngIf="loginError">
-          Unable to log in. See the log for more information.
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="loginForm.invalid"
+        >
+          {{ submitButtonText }}
+        </button>
+        <span class="m-3"
+          ><a
+            type="button"
+            href="javascript:void(0)"
+            (click)="switchPageMode()"
+            >{{ changeModeLinkText }}</a
+          ></span
+        >
+        <p class="form-text m-0 mt-2">
+          <span *ngIf="loginError">An error occured : {{ loginError }}</span>
+          <span *ngIf="userMessage">{{ userMessage }}</span>
         </p>
       </div>
     </form>
