@@ -43,7 +43,9 @@ export class ListPlacesComponent implements OnInit, OnChanges {
     this.centerMapAroundPlaces = new EventEmitter();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    this.getPlaces();
+    if (changes['currentTrip']) {
+      this.getPlaces();
+    }
   }
   ngOnInit(): void {
     this.getPlaces();
