@@ -1,9 +1,11 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -20,7 +22,7 @@ import { TripResponse } from '../trips/trip-response.model';
 import { PlaceResponse } from '../places/place-response.model';
 import { PlacesService } from '../places/places.service';
 import { GeoJsonPoint } from '../places/geoJsonPoint.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscriber, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -38,11 +40,15 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   private showPlaceOnMapSubscription?: Subscription;
   private newSearchSubscription?: Subscription;
   private centerMapAroundPlacesSubscription?: Subscription;
+  private mapClickSubject: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
+  private mapClickSubscription?: Subscription;
 
   @Input() centerMapOnLocationObservable?: Observable<GeoJsonPoint>;
   @Input() showPlaceOnMapObservable?: Observable<PlaceResponse>;
   @Input() newSearchObservable?: Observable<void>;
   @Input() centerMapAroundPlacesObservable?: Observable<PlaceResponse[]>;
+
+  @Output() clickOnMapEmitter: EventEmitter<GeoJsonPoint>;
 
   constructor(private placesService: PlacesService) {
     this.mapOptions = {
@@ -54,6 +60,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       zoom: 13,
       center: latLng(46.778186, 6.641524),
     };
+    this.clickOnMapEmitter = new EventEmitter<GeoJsonPoint>()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -95,11 +102,23 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   onMapReady(map: Map) {
     setTimeout(() => map.invalidateSize(), 10);
     this.#map = map;
-    this.#map.on('moveend', () => {
-      const center = this.#map?.getCenter();
+    //Click event on map to get coordinates
+    this.#map.on('click', (event) => {
+      var lng = event.latlng.lng;
+      var lat = event.latlng.lat;
+      this.clickOnMapEmitter.emit({ type: 'point', coordinates: [lng, lat] });
+      // this.mapClickSubject.next({ type: 'point', coordinates: [lng, lat] });
+      // this.mapClickSubscription?.unsubscribe();
     });
     this.getPlaces();
   }
+
+  // getCoordinatesOnClick() {
+  //   this.mapClickSubscription = this.mapClickSubject.subscribe((object) => {
+  //     console.log(object);
+  //   });
+    
+  // }
 
   getPlaces() {
     if (this.currentTrip) {
@@ -142,7 +161,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   centerMapAroundPlaces(places: PlaceResponse[]) {
     var lngArray = [];
-    var latArray = []
+    var latArray = [];
     for (let place of places) {
       lngArray.push(place.location.coordinates[0]);
       latArray.push(place.location.coordinates[1]);
@@ -152,6 +171,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     var minLng = Math.min(...lngArray);
     var maxLng = Math.max(...lngArray);
     var bounds = latLngBounds(latLng(minLat, minLng), latLng(maxLat, maxLng));
-    this.#map?.fitBounds(bounds, { maxZoom: 13, animate:false });
+    this.#map?.fitBounds(bounds, { maxZoom: 13, animate: false });
   }
 }
