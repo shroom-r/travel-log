@@ -77,7 +77,9 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   centerAroundAllPlaces() {
-    this.centerMapAroundPlaces.emit(this.places);
+    if (this.places.length) {
+      this.centerMapAroundPlaces.emit(this.places);
+    }
   }
 
   deletePlace(placeId: string) {
