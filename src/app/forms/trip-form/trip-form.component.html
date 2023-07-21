@@ -39,7 +39,7 @@
           [disabled]="tripForm.invalid || (tripForm.pristine && formMode==='Modification')"
           (click)="submitForm(tripForm)"
         >
-          Save changes
+          {{ saveButtonText }}
         </button>
         <div>
           <button
