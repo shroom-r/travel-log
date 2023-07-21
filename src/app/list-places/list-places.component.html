@@ -2,7 +2,6 @@
   <div class="d-flex justify-content-between w-100">
     <div class="d-flex">
       <h3 class="m-0">Places list</h3>
-
       <button class="btn btn-link btn-sm" (click)="newPlace()">
         <fa-icon
           class="text-primary"
@@ -29,6 +28,15 @@
     <div
       style="position: absolute; left: 0; top: 0; right: 0; overflow-y: auto"
     >
+      <div>
+        <em>
+          <span *ngIf="tripHasNoPlaces"
+            >You don't have any place in this trip. Click on "plus" to create
+            one</span
+          >
+          <span *ngIf="userMessage">{{ userMessage }}</span>
+        </em>
+      </div>
       <ul class="list-group w-100">
         <li class="list-group-item py-1 px-2" *ngFor="let place of places">
           <div class="w100">

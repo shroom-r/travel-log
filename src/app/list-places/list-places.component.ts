@@ -32,6 +32,9 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   faExpand = faExpand;
   faTrash = faTrash;
 
+  tripHasNoPlaces: boolean = false;
+  userMessage: string = '';
+
   @Input() places: PlaceResponse[] = [];
   @Input() currentTrip?: TripResponse;
 
@@ -54,12 +57,23 @@ export class ListPlacesComponent implements OnInit, OnChanges {
   }
 
   getPlaces() {
+    this.showUserMessage('Loading places ...');
     this.places = [];
     if (this.currentTrip) {
       this.placeService
         .getPlacesOfTrip(this.currentTrip.id)
-        .subscribe((response) => {
-          response.forEach((place) => this.places?.push(place));
+        .subscribe({
+          next : (response) => {
+            this.showUserMessage('');
+            if (!response.length) {
+              this.checkPlacesListLength();
+            } else {
+              response.forEach((place) => this.places?.push(place));
+            }
+          },
+          error: (error) => {
+            this.showUserMessage(`An error occured : ${error.message}`);
+          }
         });
     }
   }
@@ -84,6 +98,18 @@ export class ListPlacesComponent implements OnInit, OnChanges {
     }
   }
 
+  showUserMessage(message:string) {
+    this.userMessage = message;
+  }
+
+  checkPlacesListLength() {
+    if (this.places.length) {
+      this.tripHasNoPlaces = false;
+    } else {
+      this.tripHasNoPlaces = true;
+    }
+  }
+
   deletePlace(placeId: string) {
     var confirmDeletion = confirm('Are you sure you want to delete?');
     if (confirmDeletion) {
@@ -92,6 +118,7 @@ export class ListPlacesComponent implements OnInit, OnChanges {
           next: () => {
             this.places = this.places.filter((place) => place.id !== placeId);
             this.placeDeleted.emit();
+            this.checkPlacesListLength();
           },
           error: (error) => {
             console.log(error);
