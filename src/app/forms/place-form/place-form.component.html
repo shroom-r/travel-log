@@ -1,16 +1,9 @@
-<h1>Create a new place</h1>
-<p>Fill the form and submit</p>
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
-<!-- DIV TO DELETE -->
-<div>
-  Trip ID: {{ tripId }}
-</div>
-
 <div class="form-group">
   <form #placeForm="ngForm">
-    <div classe="input-name">
+    <div class="input-name">
       <label for="placeName">Name: </label>
       <input id="placeName" type="text" [(ngModel)]="placeName" name="placeName" minlength="3" maxlength="100" required>
     </div>

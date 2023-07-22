@@ -16,6 +16,9 @@ export class PlaceDetailPageComponent implements OnDestroy {
   errorMessage?: string;
   private destroy$ = new Subject<void>();
 
+  latitude?: number;
+  longitude?: number;
+
   constructor(
     private route: ActivatedRoute,
     private placeService: PlacesService
@@ -29,6 +32,8 @@ export class PlaceDetailPageComponent implements OnDestroy {
         .subscribe(
           (response) => {
             this.place = response;
+            this.longitude = response.location.coordinates[0];
+            this.latitude = response.location.coordinates[1];
           },
           (error) => {
             this.errorMessage = 'Error fetching place details. Please try again later.';
@@ -37,6 +42,7 @@ export class PlaceDetailPageComponent implements OnDestroy {
         );
     }
   }
+
 
   ngOnDestroy() {
     this.destroy$.next();
