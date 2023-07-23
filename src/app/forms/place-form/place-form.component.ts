@@ -99,7 +99,7 @@ export class PlaceFormComponent {
       const updateRequest: PlaceUpdateRequest = {
         name: this.placeName,
         description: this.placeDescription,
-        location: { type: 'Point', coordinates: [6.66, 6.66] },
+        location: { type: 'Point', coordinates: [6.666, 6.666] },
         tripId: this.tripId,
         pictureUrl: this.picUrl,
       };
