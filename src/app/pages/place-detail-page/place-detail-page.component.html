@@ -12,20 +12,19 @@
 
   <div class="col-md-6">
     <div>
-      <app-place-form></app-place-form>
+      <app-place-form [placeName]="currentPlace?.name" [placeDescription]="currentPlace?.description" [longitude]="longitude" [latitude]="latitude"></app-place-form>
     </div>
-
+    <button class="btn btn-primary mt-3" (click)="goBack()">Back to Trip Detail</button>
     <!-- modifier la présentation pour mettre dans forme. -->
-    <div *ngIf="place">
+ <!--    <div *ngIf="place">
       <h2>{{ place.name }}</h2>
       <p>{{ place.description }}</p>
       <p>{{ place.id }}</p>
       <div *ngIf="place.pictureUrl">
         <img [src]="place.pictureUrl" alt="Place Image" class="img-fluid">
       </div>
+    </div> -->
 
-      
-    </div>
     <!-- colonne gauche -->
   </div>
 
@@ -39,5 +38,5 @@
     </div>
     <!-- colonne droite / map -->
   </div>
-  <button class="btn btn-primary mt-3" (click)="goBack()">Back to Trip Detail</button>
+
 </div>

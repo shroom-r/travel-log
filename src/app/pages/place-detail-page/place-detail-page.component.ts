@@ -12,11 +12,9 @@ import { ErrorMessageComponent } from 'src/app/utils/error-message/error-message
   styleUrls: ['./place-detail-page.component.scss']
 })
 export class PlaceDetailPageComponent implements OnDestroy {
-  place?: PlaceResponse;
+  currentPlace?: PlaceResponse;
   errorMessage?: string;
   private destroy$ = new Subject<void>();
-
-
   latitude?: number;
   longitude?: number;
 
@@ -33,7 +31,7 @@ export class PlaceDetailPageComponent implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (response) => {
-            this.place = response;
+            this.currentPlace = response;
             this.longitude = response.location.coordinates[0];
             this.latitude = response.location.coordinates[1];
           },
@@ -46,8 +44,8 @@ export class PlaceDetailPageComponent implements OnDestroy {
   }
 
   goBack() {
-    if (this.place?.tripId) {
-      this.router.navigate(['tripDetail', this.place.tripId]);
+    if (this.currentPlace?.tripId) {
+      this.router.navigate(['tripDetail', this.currentPlace.tripId]);
     } else {
       console.warn('Unable to navigate back to trip-detail page. Missing tripId.');
     }

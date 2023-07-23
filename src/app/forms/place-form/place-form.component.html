@@ -9,8 +9,13 @@
     </div>
     <div class="input-description">
       <label for="placeDescription">Description: </label>
-      <input id="placeDescription" type="text" [(ngModel)]="placeDescription" name="placeDescription" minlength="5"
-        maxlength="50000" required>
+      <input id="placeDescription" type="text" [(ngModel)]="placeDescription" name="placeDescription" minlength="5" maxlength="50000" required>
+    </div>
+    <div class="input-location">
+      <label for="longitude">Longitude: </label>
+      <input id="longitude" type="text" [(ngModel)]="longitude" name="longitude" required>
+      <label for="latitude">Latitude: </label>
+      <input id="latitude" type="text" [(ngModel)]="latitude" name="latitude" required>
     </div>
     <div class="input-pictureUrl">
       <label for="picUrl">Picture URL: </label>

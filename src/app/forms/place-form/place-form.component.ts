@@ -13,11 +13,12 @@ import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
 })
 export class PlaceFormComponent {
   tripId?: string;
-  @Input() placeName = '';
-  @Input() placeDescription = '';
+  @Input() placeName?: string;
+  @Input() placeDescription?: string;
   @Input() currentPlace?: PlaceResponse;
-  longitude?: number;
-  latitude?: number;
+  // coordinates (lon, lat) by GeoJSON / leaflet (lat, lon) Lat:N Lon:E
+  @Input() longitude?: number;
+  @Input() latitude?: number;
   picUrl?: string;
   errorMessage?: string;
   placeForm?: NgForm;
@@ -99,7 +100,7 @@ export class PlaceFormComponent {
       const updateRequest: PlaceUpdateRequest = {
         name: this.placeName,
         description: this.placeDescription,
-        location: { type: 'Point', coordinates: [6.66, 6.66] },
+        location: { type: 'Point', coordinates: [6.666, 6.666] },
         tripId: this.tripId,
         pictureUrl: this.picUrl,
       };
