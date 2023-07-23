@@ -11,12 +11,11 @@ import { TripResponse } from '../../trips/trip-response.model';
 })
 export class PlaceFormComponent {
   tripId?: string;
-  placeName = '';
-  placeDescription = '';
+ @Input() placeName = '';
+ @Input() placeDescription = '';
   picUrl?: string;
   errorMessage?: string;
 
-  // @Input() tripId?: string;
 
   constructor(
     private placeService: PlacesService,
@@ -62,10 +61,4 @@ export class PlaceFormComponent {
         });
     }
   }
-
-  /*   deletePlace() {
-      console.log("Delete Place");
-      confirm("Are you sur to delete?");
-    }
-   */
 }

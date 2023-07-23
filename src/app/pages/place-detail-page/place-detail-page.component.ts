@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlacesService } from 'src/app/places/places.service';
@@ -16,11 +16,13 @@ export class PlaceDetailPageComponent implements OnDestroy {
   errorMessage?: string;
   private destroy$ = new Subject<void>();
 
+
   latitude?: number;
   longitude?: number;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private placeService: PlacesService
   ) { }
 
@@ -43,9 +45,29 @@ export class PlaceDetailPageComponent implements OnDestroy {
     }
   }
 
+  goBack() {
+    if (this.place?.tripId) {
+      this.router.navigate(['tripDetail', this.place.tripId]);
+    } else {
+      console.warn('Unable to navigate back to trip-detail page. Missing tripId.');
+    }
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  deletePlace(placeId: string) {
+    var confirmDeletion = confirm('Are you sure you want to delete?');
+    if (confirmDeletion) {
+      if (placeId) {
+        this.placeService.deletePlace(placeId).subscribe({
+          error: (error) => {
+            console.log(error);
+          },
+        });
+      }
+    }
   }
 }

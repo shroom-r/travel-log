@@ -1,15 +1,43 @@
 <app-nav-bar></app-nav-bar>
-
 <app-error-message [message]="errorMessage"></app-error-message>
-<app-place-form></app-place-form>
-<div *ngIf="place">
-  <h2>{{ place.name }}</h2>
-  <p>{{ place.description }}</p>
-  <div *ngIf="latitude && longitude">
-    <p>Location: Latitude: {{ latitude }}, Longitude: {{ longitude }}</p>
+<!-- 
+  les events pour la map? 
+(centerOnMapClicked)="centerPlaceOnMap($event)"
+          (centerMapAroundPlaces)="centerMapAroundPlaces($event)"
+          (placeDeleted)="placeDeleted()"
+
+ -->
+
+<div class="d-flex flex-column flex-md-row">
+
+  <div class="col-md-6">
+    <div>
+      <app-place-form></app-place-form>
+    </div>
+
+    <!-- modifier la présentation pour mettre dans forme. -->
+    <div *ngIf="place">
+      <h2>{{ place.name }}</h2>
+      <p>{{ place.description }}</p>
+      <p>{{ place.id }}</p>
+      <div *ngIf="place.pictureUrl">
+        <img [src]="place.pictureUrl" alt="Place Image" class="img-fluid">
+      </div>
+
+      
+    </div>
+    <!-- colonne gauche -->
   </div>
-  <div *ngIf="place.pictureUrl">
-    <img [src]="place.pictureUrl" alt="Place Image">
+
+
+  <div class="col-md-6">
+    <div>
+      <app-map
+      class="p-0"
+
+      ></app-map>
+    </div>
+    <!-- colonne droite / map -->
   </div>
- 
-  </div>
+  <button class="btn btn-primary mt-3" (click)="goBack()">Back to Trip Detail</button>
+</div>
