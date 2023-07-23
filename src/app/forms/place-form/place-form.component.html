@@ -16,6 +16,6 @@
       <label for="picUrl">Picture URL: </label>
       <input id="picUrl" type="text" [(ngModel)]="picUrl" name="picUrl" minlength="10" maxlength="500">
     </div>
-    <button type="submit" [disabled]="placeForm.invalid" (click)="submit()">Submit</button>
+    <button type="submit" [disabled]="placeForm.invalid" (click)="submit(placeForm)">Submit</button>
   </form>
 </div>
