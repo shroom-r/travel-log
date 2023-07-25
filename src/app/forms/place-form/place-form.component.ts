@@ -56,12 +56,11 @@ export class PlaceFormComponent {
     if (this.placeName && this.placeDescription) {
       if (this.currentPlace) {
         this.updatePlace(form);
-      };
+      }
     } else {
       this.createPlace();
     }
   }
-
 
   createPlace() {
     if (this.placeName && this.placeDescription) {
@@ -94,29 +93,39 @@ export class PlaceFormComponent {
     }
   }
 
-
   updatePlace(form: NgForm) {
-    if (this.placeId && this.placeName && this.placeDescription) {
-      const updateRequest: PlaceUpdateRequest = {
-        name: this.placeName,
-        description: this.placeDescription,
-        location: { type: 'Point', coordinates: [6.666, 6.666] },
-        tripId: this.tripId,
-        pictureUrl: this.picUrl,
-      };
-      this.placeService
-        .updatePlace(this.placeId)
-/*         .subscribe({
-          next: (response) => {
-            this.router.navigate(['placeDetail/' + response.id]);
+    if (
+      this.placeName &&
+      this.placeDescription &&
+      this.latitude &&
+      this.longitude
+    ) {
+      if (this.currentPlace) {
+        const updateRequest: PlaceUpdateRequest = {
+          name: this.placeName,
+          description: this.placeDescription,
+          location: {
+            type: 'Point',
+            coordinates: [this.longitude, this.latitude],
           },
-          error: (error) => {
-            console.error('Error occurred while updating the place:', error);
-            this.errorMessage =
-              'An error occurred while updating the place. Please try again later.' +
-              error;
-          },
-        }); */
+          tripId: this.currentPlace.tripId,
+          pictureUrl: this.picUrl,
+        };
+        this.placeService
+          .updatePlace(this.currentPlace.id, updateRequest)
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+              this.router.navigate(['tripDetail/' + this.currentPlace?.tripId]);
+            },
+            error: (error) => {
+              console.error('Error occurred while updating the place:', error);
+              this.errorMessage =
+                'An error occurred while updating the place. Please try again later.' +
+                error;
+            },
+          });
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { PlaceCreationRequest } from './place-creation-request.model';
 import { PlaceResponse } from './place-response.model';
 import { environment } from 'src/environments/environment';
+import { PlaceUpdateRequest } from './place-update-request.model';
 // import { PlaceUpdateRequest } from './place-update-request.model';
 
 @Injectable({
@@ -33,8 +34,17 @@ export class PlacesService {
     );
   }
 
-  updatePlace(placeId: string) {
-    console.log('update place');
+  updatePlace(
+    placeId: string,
+    placeUpdate: PlaceUpdateRequest
+  ): Observable<PlaceResponse> {
+    return this.http
+      .patch<PlaceResponse>(this.apiUrlPlaces + `/${placeId}`, placeUpdate)
+      .pipe(
+        tap((response) => {
+          return response;
+        })
+      );
   }
 
   getPlace(placeId: string): Observable<PlaceResponse> {

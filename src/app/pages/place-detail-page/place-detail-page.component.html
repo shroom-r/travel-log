@@ -12,7 +12,7 @@
 
   <div class="col-md-6">
     <div>
-      <app-place-form [placeName]="currentPlace?.name" [placeDescription]="currentPlace?.description" [longitude]="longitude" [latitude]="latitude"></app-place-form>
+      <app-place-form [currentPlace]="currentPlace" [placeName]="currentPlace?.name" [placeDescription]="currentPlace?.description" [longitude]="longitude" [latitude]="latitude"></app-place-form>
     </div>
     <button class="btn btn-primary mt-3" (click)="goBack()">Back to Trip Detail</button>
     <!-- modifier la présentation pour mettre dans forme. -->
