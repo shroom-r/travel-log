@@ -6,6 +6,7 @@ import { PlaceResponse } from 'src/app/places/place-response.model';
 import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
 import { Observable, Subscription } from 'rxjs';
 import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
+import { faMapPin } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-place-form',
@@ -13,9 +14,12 @@ import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
   styleUrls: ['./place-form.component.scss'],
 })
 export class PlaceFormComponent {
+  faTrash = faMapPin;
+
   tripId?: string;
   formTitle: string = 'Place form';
   gettingCoordinates: boolean = false;
+  stateMessage: string = '';
   @Input() placeName?: string;
   @Input() placeDescription?: string;
   @Input() currentPlace?: PlaceResponse;
@@ -75,6 +79,7 @@ export class PlaceFormComponent {
       this.latitude &&
       this.longitude
     ) {
+      this.showStateMessage('Updating place...');
       this.placeService
         .createPlace({
           name: this.placeName,
@@ -91,6 +96,7 @@ export class PlaceFormComponent {
             this.router.navigate(['tripDetail/' + response.tripId]);
           },
           error: (error) => {
+            this.showStateMessage('');
             console.error('Error occurred while creating the place:', error);
             if (error.status === 422) {
               this.errorMessage =
@@ -114,6 +120,7 @@ export class PlaceFormComponent {
       this.longitude
     ) {
       if (this.currentPlace) {
+        this.showStateMessage('Updating place...');
         const updateRequest: PlaceUpdateRequest = {
           name: this.placeName,
           description: this.placeDescription,
@@ -131,6 +138,7 @@ export class PlaceFormComponent {
               this.router.navigate(['tripDetail/' + this.currentPlace?.tripId]);
             },
             error: (error) => {
+              this.showStateMessage('');
               console.error('Error occurred while updating the place:', error);
               this.errorMessage =
                 'An error occurred while updating the place. Please try again later.' +
@@ -152,5 +160,14 @@ export class PlaceFormComponent {
         this.changeDetector.detectChanges();
       }
     );
+  }
+
+  showStateMessage(message: string, time?: number) {
+    this.stateMessage = message;
+    if (time) {
+      setTimeout(() => {
+        this.stateMessage = '';
+      }, time);
+    }
   }
 }
