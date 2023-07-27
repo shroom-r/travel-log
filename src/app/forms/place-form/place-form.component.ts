@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { PlacesService } from 'src/app/places/places.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TripResponse } from '../../trips/trip-response.model';
 import { PlaceResponse } from 'src/app/places/place-response.model';
 import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
 
@@ -56,20 +55,27 @@ export class PlaceFormComponent {
     if (this.placeName && this.placeDescription) {
       if (this.currentPlace) {
         this.updatePlace(form);
+      } else {
+        this.createPlace();
       }
-    } else {
-      this.createPlace();
     }
   }
 
   createPlace() {
-    if (this.placeName && this.placeDescription) {
-      console.log('It is functioning weri vell');
+    if (
+      this.placeName &&
+      this.placeDescription &&
+      this.latitude &&
+      this.longitude
+    ) {
       this.placeService
         .createPlace({
           name: this.placeName,
           description: this.placeDescription,
-          location: { type: 'Point', coordinates: [-71.218, 46.801] },
+          location: {
+            type: 'Point',
+            coordinates: [this.longitude, this.latitude],
+          },
           tripId: this.tripId,
           pictureUrl: this.picUrl,
         })
@@ -115,7 +121,6 @@ export class PlaceFormComponent {
           .updatePlace(this.currentPlace.id, updateRequest)
           .subscribe({
             next: (response) => {
-              console.log(response);
               this.router.navigate(['tripDetail/' + this.currentPlace?.tripId]);
             },
             error: (error) => {
