@@ -1,2 +1,21 @@
-<app-nav-bar></app-nav-bar>
-<app-place-form></app-place-form>
+<div class="d-flex flex-column" style="height: 100vh; width: 100vw">
+  <app-nav-bar></app-nav-bar>
+  <div
+    class="flex-grow-1 p-0 container-fluid d-flex scrollbarDisable"
+    style="overflow: auto"
+  >
+    <div class="col-4 my-2 px-2 scrollbarDisable" style="overflow: auto">
+      <div>
+        <app-place-form [clickOnMapObservable]="clickOnMapSubject.asObservable()"></app-place-form>
+      </div>
+    </div>
+    <div class="my-2 px-2 col-8">
+      <div class="h-100 w-100">
+        <app-map
+            (clickOnMapEmitter)="clickOnMap($event)"
+          class="p-0"
+        ></app-map>
+      </div>
+    </div>
+  </div>
+</div>

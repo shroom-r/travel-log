@@ -1,26 +1,87 @@
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div>
-<div class="form-group">
-  <form #placeForm="ngForm">
-    <div class="input-name">
-      <label for="placeName">Name: </label>
-      <input id="placeName" type="text" [(ngModel)]="placeName" name="placeName" minlength="3" maxlength="100" required>
+<div class="h-100 d-flex flex-column">
+  <h3>{{ formTitle }}</h3>
+  <div class="align-items-center d-flex">
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
     </div>
-    <div class="input-description">
-      <label for="placeDescription">Description: </label>
-      <input id="placeDescription" type="text" [(ngModel)]="placeDescription" name="placeDescription" minlength="5" maxlength="50000" required>
-    </div>
-    <div class="input-location">
-      <label for="longitude">Longitude: </label>
-      <input id="longitude" type="text" [(ngModel)]="longitude" name="longitude" required>
-      <label for="latitude">Latitude: </label>
-      <input id="latitude" type="text" [(ngModel)]="latitude" name="latitude" required>
-    </div>
-    <div class="input-pictureUrl">
-      <label for="picUrl">Picture URL: </label>
-      <input id="picUrl" type="text" [(ngModel)]="picUrl" name="picUrl" minlength="10" maxlength="500">
-    </div>
-    <button type="submit" [disabled]="placeForm.invalid" (click)="submit(placeForm)">Submit</button>
-  </form>
+
+    <form #placeForm="ngForm" class="w-100">
+      <div class="form-group">
+        <div class="input-name">
+          <label for="placeName">Name</label>
+          <input
+            class="form-control"
+            id="placeName"
+            type="text"
+            [(ngModel)]="placeName"
+            name="placeName"
+            minlength="3"
+            maxlength="100"
+            required
+          />
+        </div>
+
+        <div class="input-description">
+          <label for="placeDescription">Description</label>
+          <input
+            class="form-control"
+            id="placeDescription"
+            type="text"
+            [(ngModel)]="placeDescription"
+            name="placeDescription"
+            minlength="5"
+            maxlength="50000"
+            required
+          />
+        </div>
+        <div class="d-flex">
+          <div class="input-location col-6 pe-2">
+            <label for="longitude">Longitude</label>
+            <input
+              class="form-control"
+              id="longitude"
+              type="text"
+              [(ngModel)]="longitude"
+              name="longitude"
+              required
+            />
+          </div>
+          <div class="input-location col-6 ps-2">
+            <label for="latitude">Latitude</label>
+            <input
+              class="form-control"
+              id="latitude"
+              type="text"
+              [(ngModel)]="latitude"
+              name="latitude"
+              required
+            />
+          </div>
+        </div>
+        <div class="input-pictureUrl">
+          <label for="picUrl">Picture URL</label>
+          <input
+            class="form-control"
+            id="picUrl"
+            type="text"
+            [(ngModel)]="picUrl"
+            name="picUrl"
+            minlength="10"
+            maxlength="500"
+          />
+        </div>
+        <div class="mt-2">
+          <button
+            type="submit"
+            class="btn btn-primary flex-shrink-0"
+            [disabled]="placeForm.invalid"
+            (click)="submit(placeForm)"
+          >
+            Submit
+          </button>
+          <button (click)="getCoordinates()">Get coordinates</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { PlacesService } from 'src/app/places/places.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlaceResponse } from 'src/app/places/place-response.model';
 import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
+import { Observable, Subscription } from 'rxjs';
+import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
 
 @Component({
   selector: 'app-place-form',
@@ -12,12 +14,16 @@ import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
 })
 export class PlaceFormComponent {
   tripId?: string;
+  formTitle: string = 'Place form';
+  gettingCoordinates: boolean = false;
   @Input() placeName?: string;
   @Input() placeDescription?: string;
   @Input() currentPlace?: PlaceResponse;
   // coordinates (lon, lat) by GeoJSON / leaflet (lat, lon) Lat:N Lon:E
   @Input() longitude?: number;
   @Input() latitude?: number;
+  @Input() clickOnMapObservable?: Observable<GeoJsonPoint>;
+  private clickOnMapSubscription?: Subscription;
   picUrl?: string;
   errorMessage?: string;
   placeForm?: NgForm;
@@ -26,7 +32,8 @@ export class PlaceFormComponent {
   constructor(
     private placeService: PlacesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.initTripId();
   }
@@ -132,5 +139,18 @@ export class PlaceFormComponent {
           });
       }
     }
+  }
+
+  getCoordinates() {
+    this.gettingCoordinates = !this.gettingCoordinates;
+    this.clickOnMapSubscription = this.clickOnMapObservable?.subscribe(
+      (value) => {
+        this.clickOnMapSubscription?.unsubscribe();
+        this.gettingCoordinates = !this.gettingCoordinates;
+        this.longitude = value.coordinates[0];
+        this.latitude = value.coordinates[1];
+        this.changeDetector.detectChanges();
+      }
+    );
   }
 }
