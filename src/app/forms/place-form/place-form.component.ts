@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { PlacesService } from 'src/app/places/places.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,20 +14,30 @@ import { PlaceResponse } from 'src/app/places/place-response.model';
 import { PlaceUpdateRequest } from 'src/app/places/place-update-request.model';
 import { Observable, Subscription } from 'rxjs';
 import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
-import { faMapPin } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLocationCrosshairs,
+  faMapPin,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-place-form',
   templateUrl: './place-form.component.html',
   styleUrls: ['./place-form.component.scss'],
 })
-export class PlaceFormComponent {
-  faTrash = faMapPin;
+export class PlaceFormComponent implements OnInit, OnDestroy {
+  faMapPin = faMapPin;
+  faLocationCrossHair = faLocationCrosshairs;
 
   tripId?: string;
   formTitle: string = 'Place form';
   gettingCoordinates: boolean = false;
   stateMessage: string = '';
+
+  private markerSetOnCurrentPositionSubscription?: Subscription;
+  private errorSubscription?: Subscription;
+
+  @Output() coordinatesAdded: EventEmitter<GeoJsonPoint>;
+  @Output() setCoordinatesOnCurrentPositionEmitter: EventEmitter<void>;
   @Input() placeName?: string;
   @Input() placeDescription?: string;
   @Input() currentPlace?: PlaceResponse;
@@ -27,6 +45,8 @@ export class PlaceFormComponent {
   @Input() longitude?: number;
   @Input() latitude?: number;
   @Input() clickOnMapObservable?: Observable<GeoJsonPoint>;
+  @Input() markerSetOnCurrentPositionObservable?: Observable<GeoJsonPoint>;
+  @Input() errorObservable?: Observable<any>;
   private clickOnMapSubscription?: Subscription;
   picUrl?: string;
   errorMessage?: string;
@@ -39,6 +59,9 @@ export class PlaceFormComponent {
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef
   ) {
+    this.coordinatesAdded = new EventEmitter<GeoJsonPoint>();
+    this.setCoordinatesOnCurrentPositionEmitter = new EventEmitter<void>();
+
     this.initTripId();
   }
 
@@ -50,9 +73,30 @@ export class PlaceFormComponent {
 
   // initalize the form if update mode
   ngOnInit() {
+    this.markerSetOnCurrentPositionSubscription =
+      this.markerSetOnCurrentPositionObservable?.subscribe({
+        next: (geoJsonPoint) => {
+          this.showStateMessage(
+            'Coordinates currently set on current position',
+            2000
+          );
+          this.setCoordinates(geoJsonPoint);
+        },
+        error: (error) => {
+          this.showStateMessage('An error occured: ' + error.message);
+        },
+      });
+    this.errorSubscription = this.errorObservable?.subscribe((error) => {
+      this.showStateMessage('An error occured : ' + error.message);
+    });
     if (this.currentPlace) {
       this.initForm();
     }
+  }
+
+  ngOnDestroy() {
+    this.markerSetOnCurrentPositionSubscription?.unsubscribe();
+    this.errorSubscription?.unsubscribe();
   }
 
   initForm() {
@@ -150,16 +194,48 @@ export class PlaceFormComponent {
   }
 
   getCoordinates() {
-    this.gettingCoordinates = !this.gettingCoordinates;
+    if (!this.gettingCoordinates) {
+      this.startGettingCoordinates();
+    } else {
+      this.stopGettingCoordinates();
+    }
+  }
+
+  startGettingCoordinates() {
+    try {
+      var map = document.getElementsByClassName('leaflet-map')[0];
+      map.classList.add('cursor-crosshair');
+    } catch (err) {}
+    this.gettingCoordinates = true;
     this.clickOnMapSubscription = this.clickOnMapObservable?.subscribe(
       (value) => {
-        this.clickOnMapSubscription?.unsubscribe();
-        this.gettingCoordinates = !this.gettingCoordinates;
-        this.longitude = value.coordinates[0];
-        this.latitude = value.coordinates[1];
-        this.changeDetector.detectChanges();
+        this.stopGettingCoordinates();
+        this.setCoordinates(value);
+        this.addMarkerOnClick(value);
       }
     );
+    this.changeDetector.detectChanges();
+  }
+
+  stopGettingCoordinates() {
+    try {
+      var map = document.getElementsByClassName('leaflet-map')[0];
+      map.classList.remove('cursor-crosshair');
+    } catch (err) {}
+    this.clickOnMapSubscription?.unsubscribe();
+    this.gettingCoordinates = false;
+    this.changeDetector.detectChanges();
+  }
+
+  setCoordinates(geoJsonPoint: GeoJsonPoint) {
+    this.longitude = geoJsonPoint.coordinates[0];
+    this.latitude = geoJsonPoint.coordinates[1];
+    this.changeDetector.detectChanges();
+  }
+
+  setCoordinatesOnCurrentPosition() {
+    this.showStateMessage('Setting coordinates on current position...');
+    this.setCoordinatesOnCurrentPositionEmitter.emit();
   }
 
   showStateMessage(message: string, time?: number) {
@@ -168,6 +244,18 @@ export class PlaceFormComponent {
       setTimeout(() => {
         this.stateMessage = '';
       }, time);
+    }
+  }
+
+  addMarkerOnClick(geoJsonPoint: GeoJsonPoint) {
+    this.coordinatesAdded.emit(geoJsonPoint);
+  }
+
+  coordinatesChanged() {
+    if (this.latitude && this.longitude) {
+      var lat = this.latitude;
+      var lng = this.longitude;
+      this.addMarkerOnClick({ type: 'point', coordinates: [lng, lat] });
     }
   }
 }

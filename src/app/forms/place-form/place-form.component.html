@@ -14,12 +14,15 @@
             type="text"
             [(ngModel)]="placeName"
             name="placeName"
+            #nameField="ngModel"
             minlength="3"
             maxlength="100"
             required
           />
         </div>
-
+        <p *ngIf="nameField.invalid && nameField.touched" class="form-text">
+          Name is required and length must be between 3 and a 100 characters
+        </p>
         <div class="input-description">
           <label for="placeDescription">Description</label>
           <input
@@ -28,22 +31,34 @@
             type="text"
             [(ngModel)]="placeDescription"
             name="placeDescription"
+            #descriptionField="ngModel"
             minlength="5"
             maxlength="50000"
             required
           />
         </div>
+        <p
+          *ngIf="descriptionField.invalid && descriptionField.touched"
+          class="form-text"
+        >
+          Description is required and length must be between 5 and 50'000
+          characters
+        </p>
         <div class="d-flex">
-          <div class="d-flex col-11">
+          <div class="d-flex col-10">
             <div class="input-location col-6 pe-2">
               <label for="longitude">Longitude</label>
               <input
                 class="form-control"
                 id="longitude"
-                type="text"
+                type="number"
                 [(ngModel)]="longitude"
                 name="longitude"
+                #longitudeField="ngModel"
                 required
+                min="-180"
+                max="180"
+                (input)="coordinatesChanged()"
               />
             </div>
             <div class="input-location col-6 ps-2">
@@ -51,27 +66,56 @@
               <input
                 class="form-control"
                 id="latitude"
-                type="text"
+                type="number"
                 [(ngModel)]="latitude"
                 name="latitude"
+                #latitudeField="ngModel"
                 required
+                min="-90"
+                max="90"
+                (input)="coordinatesChanged()"
               />
             </div>
           </div>
           <div class="col-1 d-flex align-items-end justify-content-center">
             <button class="btn btn-link btn-sm p-0" (click)="getCoordinates()">
               <fa-icon
-                class="btn-primary"
                 [class.btn-primary]="!gettingCoordinates"
                 [class.text-warning]="gettingCoordinates"
-                [icon]="faTrash"
+                [icon]="faMapPin"
                 style="font-size: 25px"
                 title="Click on map to get coordinates"
                 alt="Click on map to get coordinates"
               ></fa-icon>
             </button>
           </div>
+          <div class="col-1 d-flex align-items-end justify-content-center">
+            <button
+              class="btn btn-link btn-sm p-0"
+              (click)="setCoordinatesOnCurrentPosition()"
+            >
+              <fa-icon
+                class="btn-primary"
+                [icon]="faLocationCrossHair"
+                style="font-size: 25px"
+                title="Set coordinates on current position"
+                alt="Set coordinates on current position"
+              ></fa-icon>
+            </button>
+          </div>
         </div>
+        <p
+          *ngIf="longitudeField.invalid && longitudeField.touched"
+          class="form-text"
+        >
+          Longitude must be a number between -180 and 180
+        </p>
+        <p
+          *ngIf="latitudeField.invalid && latitudeField.touched"
+          class="form-text"
+        >
+          Latitude must be a number between -90 and 90
+        </p>
         <div class="input-pictureUrl">
           <label for="picUrl">Picture URL</label>
           <input

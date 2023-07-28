@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -43,6 +44,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   private centerMapAroundPlacesSubscription?: Subscription;
   private centerMapOnCurrentLocationSubscription?: Subscription;
   private placeDeletedSubscription?: Subscription;
+  private addMarkerSubscription?: Subscription;
+  private setCoordinatesOnCurrentPositionSubscription?: Subscription;
 
   @Input() centerMapOnLocationObservable?: Observable<GeoJsonPoint>;
   @Input() showPlaceOnMapObservable?: Observable<PlaceResponse>;
@@ -50,20 +53,29 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() centerMapAroundPlacesObservable?: Observable<PlaceResponse[]>;
   @Input() centerMapOnCurrentLocationObservable?: Observable<void>;
   @Input() placeDeletedObservable?: Observable<void>;
+  @Input() addMarkerObservable?: Observable<GeoJsonPoint>;
+  @Input() setCoordinatesOnCurrentPositionObservable?: Observable<void>;
 
   @Output() clickOnMapEmitter: EventEmitter<GeoJsonPoint>;
+  @Output() currentPositionEmitter: EventEmitter<GeoJsonPoint>;
+  @Output() errorEmitter: EventEmitter<any>;
 
-  constructor(private placesService: PlacesService) {
+  constructor(
+    private placesService: PlacesService,
+    private changeDetector: ChangeDetectorRef
+  ) {
     this.mapOptions = {
       layers: [
         tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
         }),
       ],
-      zoom: 13,
-      center: latLng(46.778186, 6.641524),
+      zoom: 18,
+      center: latLng(47.14530977472236, 6.988554596900941),
     };
     this.clickOnMapEmitter = new EventEmitter<GeoJsonPoint>();
+    this.currentPositionEmitter = new EventEmitter<GeoJsonPoint>();
+    this.errorEmitter = new EventEmitter<any>();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -75,7 +87,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.centerMapEventSubscription =
       this.centerMapOnLocationObservable?.subscribe((response) => {
-        this.centerMapOnLocation(response);
+        this.centerMapOnLocation(response, 13);
       });
     this.showPlaceOnMapSubscription = this.showPlaceOnMapObservable?.subscribe(
       (response) => {
@@ -99,6 +111,15 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         this.getPlaces();
       }
     );
+    this.addMarkerSubscription = this.addMarkerObservable?.subscribe(
+      (geoJsonPoint) => {
+        this.addMarkerOnClick(geoJsonPoint);
+      }
+    );
+    this.setCoordinatesOnCurrentPositionSubscription =
+      this.setCoordinatesOnCurrentPositionObservable?.subscribe(() => {
+        this.setMarkerOnCurrentPosition();
+      });
     // this.getPlaces();
   }
 
@@ -109,6 +130,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.centerMapAroundPlacesSubscription?.unsubscribe();
     this.centerMapOnCurrentLocationSubscription?.unsubscribe();
     this.placeDeletedSubscription?.unsubscribe();
+    this.addMarkerSubscription?.unsubscribe();
+    this.setCoordinatesOnCurrentPositionSubscription?.unsubscribe();
   }
 
   onMapReady(map: Map) {
@@ -132,7 +155,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           this.showPlacesOnMap();
         });
     }
-    
   }
 
   showPlaceOnMap(place: PlaceResponse) {
@@ -155,11 +177,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  centerMapOnLocation(location: GeoJsonPoint) {
+  centerMapOnLocation(location: GeoJsonPoint, zoom?: number) {
     if (location) {
       var lng = location.coordinates[0];
       var lat = location.coordinates[1];
-      this.#map?.setView([lat, lng], 13);
+      this.#map?.setView([lat, lng], zoom);
       this.selectedPlaceCoordinates = undefined;
     }
   }
@@ -188,5 +210,37 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         this.#map?.setView([lat, lng], 13);
       })
       .catch(console.error);
+  }
+
+  addMarkerOnClick(geoJsonObject: GeoJsonPoint) {
+    this.mapMarkers = [];
+    var lng = geoJsonObject.coordinates[0];
+    var lat = geoJsonObject.coordinates[1];
+    this.mapMarkers.push(marker([lat, lng], { icon: defaultIcon }));
+    this.centerMapOnLocation(geoJsonObject);
+    this.changeDetector.detectChanges();
+  }
+
+  setMarkerOnCurrentPosition() {
+    
+    Geolocation.getCurrentPosition()
+      .then((position) => {
+        this.mapMarkers = [];
+
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var geoJsonPoint = {
+          type: 'point',
+          coordinates: [lng, lat],
+        };
+        this.currentPositionEmitter.emit(geoJsonPoint);
+        this.mapMarkers.push(marker([lat, lng], { icon: defaultIcon }));
+        this.centerMapOnLocation(geoJsonPoint);
+        this.changeDetector.detectChanges();
+      })
+      .catch((error) => {
+        this.errorEmitter.emit(error);
+        console.error(error.message);
+      });
   }
 }
