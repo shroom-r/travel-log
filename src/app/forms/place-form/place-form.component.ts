@@ -3,9 +3,12 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { PlacesService } from 'src/app/places/places.service';
@@ -18,13 +21,14 @@ import {
   faLocationCrosshairs,
   faMapPin,
 } from '@fortawesome/free-solid-svg-icons';
+import { FormMode } from '../form-mode.model';
 
 @Component({
   selector: 'app-place-form',
   templateUrl: './place-form.component.html',
   styleUrls: ['./place-form.component.scss'],
 })
-export class PlaceFormComponent implements OnInit, OnDestroy {
+export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
   faMapPin = faMapPin;
   faLocationCrossHair = faLocationCrosshairs;
 
@@ -32,25 +36,26 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
   formTitle: string = 'Place form';
   gettingCoordinates: boolean = false;
   stateMessage: string = '';
+  formMode?: FormMode;
+  placeName?: string;
+  placeDescription?: string;
+  longitude?: number;
+  latitude?: number;
 
   private markerSetOnCurrentPositionSubscription?: Subscription;
   private errorSubscription?: Subscription;
 
   @Output() coordinatesAdded: EventEmitter<GeoJsonPoint>;
   @Output() setCoordinatesOnCurrentPositionEmitter: EventEmitter<void>;
-  @Input() placeName?: string;
-  @Input() placeDescription?: string;
   @Input() currentPlace?: PlaceResponse;
-  // coordinates (lon, lat) by GeoJSON / leaflet (lat, lon) Lat:N Lon:E
-  @Input() longitude?: number;
-  @Input() latitude?: number;
   @Input() clickOnMapObservable?: Observable<GeoJsonPoint>;
   @Input() markerSetOnCurrentPositionObservable?: Observable<GeoJsonPoint>;
   @Input() errorObservable?: Observable<any>;
+  @Input() loadingPlaceState?: string;
   private clickOnMapSubscription?: Subscription;
   picUrl?: string;
   errorMessage?: string;
-  placeForm?: NgForm;
+  @ViewChild('placeForm') placeForm?: NgForm;
   placeId?: string;
 
   constructor(
@@ -61,14 +66,18 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
   ) {
     this.coordinatesAdded = new EventEmitter<GeoJsonPoint>();
     this.setCoordinatesOnCurrentPositionEmitter = new EventEmitter<void>();
-
-    this.initTripId();
+    this.tripId = this.route.snapshot.queryParams['tripId'];
   }
-
-  initTripId() {
-    this.route.queryParams.subscribe((params) => {
-      this.tripId = params['tripId'];
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentPlace']) {
+      this.initForm();
+      if (this.loadingPlaceState) {
+        this.showStateMessage(this.loadingPlaceState);
+      } else {
+        this.showStateMessage('');
+      }
+    }
+    this.changeDetector.detectChanges();
   }
 
   // initalize the form if update mode
@@ -77,7 +86,7 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
       this.markerSetOnCurrentPositionObservable?.subscribe({
         next: (geoJsonPoint) => {
           this.showStateMessage(
-            'Coordinates currently set on current position',
+            'Coordinates successfully set on current position',
             2000
           );
           this.setCoordinates(geoJsonPoint);
@@ -89,9 +98,7 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
     this.errorSubscription = this.errorObservable?.subscribe((error) => {
       this.showStateMessage('An error occured : ' + error.message);
     });
-    if (this.currentPlace) {
-      this.initForm();
-    }
+    this.initForm();
   }
 
   ngOnDestroy() {
@@ -101,8 +108,43 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
 
   initForm() {
     if (this.currentPlace) {
-      this.placeName = this.currentPlace.name;
-      this.placeDescription = this.currentPlace.description;
+      this.initializeMode(FormMode.Modification);
+      // this.placeName = this.currentPlace.name;
+      // this.placeDescription = this.currentPlace.description;
+    } else {
+      this.initializeMode(FormMode.New);
+    }
+  }
+
+  initializeMode(formMode: FormMode) {
+    this.formMode = formMode;
+    switch (formMode) {
+      case FormMode.New:
+        this.placeName = '';
+        this.placeDescription = '';
+        this.formTitle = 'Create a new place';
+        // this.saveButtonText = 'Save';
+        break;
+      case FormMode.Modification:
+        this.placeName = this.currentPlace?.name;
+        this.placeDescription = this.currentPlace?.description;
+        this.longitude = this.currentPlace?.location.coordinates[0];
+        this.latitude = this.currentPlace?.location.coordinates[1];
+        this.picUrl = this.currentPlace?.pictureUrl;
+        this.formTitle = 'Place details';
+
+        // EMIT VALUE TO CENTER MAP ON PLACE LOCATION AND ADD MARKER
+        if (this.latitude && this.longitude) {
+          this.coordinatesAdded.emit({
+            type: 'Point',
+            coordinates: [this.longitude, this.latitude],
+          });
+        }
+
+        // this.saveButtonText = 'Save changes';
+        break;
+      default:
+        break;
     }
   }
 
@@ -228,8 +270,12 @@ export class PlaceFormComponent implements OnInit, OnDestroy {
   }
 
   setCoordinates(geoJsonPoint: GeoJsonPoint) {
-    this.longitude = geoJsonPoint.coordinates[0];
-    this.latitude = geoJsonPoint.coordinates[1];
+      this.placeForm?.controls['longitude'].setValue(
+        geoJsonPoint.coordinates[0]
+      );
+      this.placeForm?.controls['latitude'].setValue(
+        geoJsonPoint.coordinates[1]
+      );
     this.changeDetector.detectChanges();
   }
 

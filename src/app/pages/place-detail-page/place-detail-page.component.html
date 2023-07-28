@@ -1,6 +1,7 @@
-<app-nav-bar></app-nav-bar>
-<app-error-message [message]="errorMessage"></app-error-message>
-<!-- 
+<div class="d-flex flex-column" style="height: 100vh; width: 100vw">
+  <app-nav-bar></app-nav-bar>
+  <app-error-message [message]="errorMessage"></app-error-message>
+  <!-- 
   les events pour la map? 
 (centerOnMapClicked)="centerPlaceOnMap($event)"
           (centerMapAroundPlaces)="centerMapAroundPlaces($event)"
@@ -8,35 +9,50 @@
 
  -->
 
-<div class="d-flex flex-column flex-md-row">
-
-  <div class="col-md-6">
-    <div>
-      <app-place-form [currentPlace]="currentPlace" [placeName]="currentPlace?.name" [placeDescription]="currentPlace?.description" [longitude]="longitude" [latitude]="latitude"></app-place-form>
+  <div
+    class="flex-grow-1 p-0 container-fluid d-flex scrollbarDisable"
+    style="overflow: auto"
+  >
+    <div class="col-4 my-2 px-2 scrollbarDisable" style="overflow: auto">
+      <div>
+        <app-place-form
+          [currentPlace]="currentPlace"
+          [loadingPlaceState]="loadingPlaceState"
+          [clickOnMapObservable]="clickOnMapSubject.asObservable()"
+          (coordinatesAdded)="addMarkerOnMap($event)"
+          (setCoordinatesOnCurrentPositionEmitter)="
+            setCoordinatesOnCurrentPosition()
+          "
+          [markerSetOnCurrentPositionObservable]="markerSetOnCurrentPositionSubject.asObservable()"
+          [errorObservable]="errorSubject.asObservable()"
+        ></app-place-form>
+        <button class="btn btn-primary mt-3" (click)="goBack()">
+          Back to Trip Detail
+        </button>
+      </div>
     </div>
-    <button class="btn btn-primary mt-3" (click)="goBack()">Back to Trip Detail</button>
     <!-- modifier la présentation pour mettre dans forme. -->
- <!--    <div *ngIf="place">
+    <!--    <div *ngIf="place">
       <h2>{{ place.name }}</h2>
       <p>{{ place.description }}</p>
       <p>{{ place.id }}</p>
       <div *ngIf="place.pictureUrl">
         <img [src]="place.pictureUrl" alt="Place Image" class="img-fluid">
       </div>
-    </div> -->
+      </div> -->
 
     <!-- colonne gauche -->
-  </div>
-
-
-  <div class="col-md-6">
-    <div>
-      <app-map
-      class="p-0"
-
-      ></app-map>
+    <div class="my-2 px-2 col-8">
+      <div class="h-100 w-100">
+        <app-map (clickOnMapEmitter)="clickOnMap($event)"
+        [addMarkerObservable]="addMarkerSubject.asObservable()"
+        [setCoordinatesOnCurrentPositionObservable]="
+          setCoorindatesOnCurrentPositionSubject.asObservable()
+        "
+        (currentPositionEmitter)="markerSetOnCurrentPosition($event)"
+        class="p-0"
+        (errorEmitter)="mapError($event)" class="p-0"></app-map>
+      </div>
     </div>
-    <!-- colonne droite / map -->
   </div>
-
 </div>

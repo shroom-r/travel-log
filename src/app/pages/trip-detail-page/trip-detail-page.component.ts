@@ -30,11 +30,9 @@ export class TripDetailPageComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.route.paramMap.subscribe((params) => {
-      this.routeTripId = params.get('tripId');
-      this.getTrip();
-      this.getPlaces();
-    });
+    this.routeTripId = this.route.snapshot.paramMap.get('tripId');
+    this.getTrip();
+    this.getPlaces();
   }
 
   getTrip() {
@@ -46,8 +44,8 @@ export class TripDetailPageComponent {
           this.loadingTripState = '';
         },
         error: (err) => {
-          alert(`Le trip ID ${this.routeTripId} n'existe pas.`);
-          this.router.navigate(['tripDetail/']);
+          alert(`Trip ${this.routeTripId} can not be fetched. You will be redirected.`);
+          this.router.navigate(['allMyTrips']);
         },
       });
     }
