@@ -23,6 +23,8 @@ export class TripDetailPageComponent {
   >();
   placeDeletedSubject: Subject<void> = new Subject<void>();
   loadingTripState?: string;
+  placesImagesUrl?: string[] = [];
+  currentImgUrl?: string;
 
   constructor(
     private tripService: TripService,
@@ -44,7 +46,9 @@ export class TripDetailPageComponent {
           this.loadingTripState = '';
         },
         error: (err) => {
-          alert(`Trip ${this.routeTripId} can not be fetched. You will be redirected.`);
+          alert(
+            `Trip ${this.routeTripId} can not be fetched. You will be redirected.`
+          );
           this.router.navigate(['allMyTrips']);
         },
       });
@@ -58,7 +62,11 @@ export class TripDetailPageComponent {
         .subscribe((response) => {
           for (let place of response) {
             this.places.push(place);
+            if (place.pictureUrl) {
+              this.placesImagesUrl?.push(place.pictureUrl);
+            }
           }
+          this.showImages();
         });
     }
   }
@@ -73,5 +81,20 @@ export class TripDetailPageComponent {
 
   placeDeleted() {
     this.placeDeletedSubject.next();
+  }
+
+  showImages(imgNum?: number) {
+    if (this.placesImagesUrl) {
+      if (typeof(imgNum)==='undefined') {
+        imgNum = 0;
+      } else {
+        imgNum += 1;
+      }
+      if (imgNum > this.placesImagesUrl?.length - 1) {
+        imgNum = 0;
+      }
+      this.currentImgUrl = this.placesImagesUrl[imgNum];
+      setTimeout(() => {this.showImages(imgNum);}, 2000);
+    }
   }
 }

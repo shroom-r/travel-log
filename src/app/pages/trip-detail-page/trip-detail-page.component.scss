@@ -8,3 +8,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.imageContainer {
+  transition: all 1s ease-in-out;
+}
