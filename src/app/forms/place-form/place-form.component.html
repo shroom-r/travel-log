@@ -27,19 +27,21 @@
         <p *ngIf="nameField.invalid && nameField.touched" class="form-text">
           Name is required and length must be between 3 and a 100 characters
         </p>
-        <div class="input-description">
+        <div class="input-description form-group">
           <label for="placeDescription">Description</label>
-          <input
-            class="form-control"
+          <textarea
+            class="form-control text-break"
             id="placeDescription"
             type="text"
             [(ngModel)]="placeDescription"
             name="placeDescription"
             #descriptionField="ngModel"
+            rows="3"
             minlength="5"
             maxlength="50000"
             required
-          />
+            style="white-space: pre-wrap;"
+          ></textarea>
         </div>
         <p
           *ngIf="descriptionField.invalid && descriptionField.touched"
@@ -137,7 +139,7 @@
             <button
               type="submit"
               class="btn btn-primary flex-shrink-0"
-              [disabled]="placeForm.invalid"
+              [disabled]="placeForm.invalid || (placeForm.pristine && formMode==='Modification')"
               (click)="submit(placeForm)"
             >
               Save
