@@ -56,7 +56,7 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
   picUrl?: string;
   errorMessage?: string;
   @ViewChild('placeForm') placeForm?: NgForm;
-  placeId?: string;
+  placeId: string | null;
 
   constructor(
     private placeService: PlacesService,
@@ -67,6 +67,7 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
     this.coordinatesAdded = new EventEmitter<GeoJsonPoint>();
     this.setCoordinatesOnCurrentPositionEmitter = new EventEmitter<void>();
     this.tripId = this.route.snapshot.queryParams['tripId'];
+    this.placeId = this.route.snapshot.paramMap.get('placeId');
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentPlace']) {
@@ -107,10 +108,8 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   initForm() {
-    if (this.currentPlace) {
+    if (this.placeId) {
       this.initializeMode(FormMode.Modification);
-      // this.placeName = this.currentPlace.name;
-      // this.placeDescription = this.currentPlace.description;
     } else {
       this.initializeMode(FormMode.New);
     }
@@ -123,7 +122,6 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
         this.placeName = '';
         this.placeDescription = '';
         this.formTitle = 'Create a new place';
-        // this.saveButtonText = 'Save';
         break;
       case FormMode.Modification:
         this.placeName = this.currentPlace?.name;
@@ -141,7 +139,6 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
           });
         }
 
-        // this.saveButtonText = 'Save changes';
         break;
       default:
         break;
@@ -270,12 +267,8 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setCoordinates(geoJsonPoint: GeoJsonPoint) {
-      this.placeForm?.controls['longitude'].setValue(
-        geoJsonPoint.coordinates[0]
-      );
-      this.placeForm?.controls['latitude'].setValue(
-        geoJsonPoint.coordinates[1]
-      );
+    this.placeForm?.controls['longitude'].setValue(geoJsonPoint.coordinates[0]);
+    this.placeForm?.controls['latitude'].setValue(geoJsonPoint.coordinates[1]);
     this.changeDetector.detectChanges();
   }
 

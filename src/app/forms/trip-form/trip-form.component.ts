@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormMode } from '../form-mode.model';
 import { TripService } from '../../trips/trip.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TripResponse } from '../../trips/trip-response.model';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NgForm } from '@angular/forms';
@@ -29,8 +29,11 @@ export class TripFormComponent implements OnInit, OnChanges {
   saveButtonText?: string;
   stateMessage?: string;
   tripForm?: NgForm;
+  tripId: string | null;
 
-  constructor(private tripService: TripService, private router: Router) {}
+  constructor(private tripService: TripService, private route: ActivatedRoute, private router: Router) {
+    this.tripId = this.route.snapshot.paramMap.get('tripId');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initForm();
@@ -46,7 +49,7 @@ export class TripFormComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    if (this.currentTrip) {
+    if (this.tripId) {
       this.initializeMode(FormMode.Modification);
     } else {
       this.initializeMode(FormMode.New);
