@@ -4,7 +4,8 @@
     {{ errorMessage }}
   </div>
   <div class="d-flex justify-content-center" style="height: 12rem">
-    <img style="object-fit: contain" src="{{ picUrl }}" />
+    <img *ngIf="picUrl" style="object-fit: contain" src="{{ picUrl }}"/>
+    <p *ngIf="!picUrl">No picture for this place, you can add on by setting the picture URL field</p>
   </div>
   <div class="align-items-center d-flex">
     <form #placeForm="ngForm" class="w-100">
@@ -143,7 +144,7 @@
             </button>
           </div>
           <em *ngIf="gettingCoordinates" class="ps-2"
-            >Getting coordinates ...</em
+            >Getting coordinates, click on map to set longitude & latitude ...</em
           >
           <em *ngIf="stateMessage" class="ps-2">{{ stateMessage }}</em>
         </div>

@@ -33,7 +33,7 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
   faLocationCrossHair = faLocationCrosshairs;
 
   tripId?: string;
-  formTitle: string = 'Place form';
+  formTitle: string = '';
   gettingCoordinates: boolean = false;
   stateMessage: string = '';
   formMode?: FormMode;

@@ -1,9 +1,15 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { TripResponse } from '../../../trips/trip-response.model';
 import { PlaceResponse } from '../../../places/place-response.model';
 import { TripService } from '../../../trips/trip.service';
 import { AuthService } from '../../../auth/auth.service';
 import { Router } from '@angular/router';
+import { PlacesService } from 'src/app/places/places.service';
+
+type tripWithImages = {
+  trip: TripResponse;
+  imagesUrl: string[];
+};
 
 @Component({
   selector: 'app-tile',
@@ -19,11 +25,13 @@ export class TileComponent {
   tripDescription: string;
   tripsList: TripResponse[] = [];
   placesList: PlaceResponse[] = [];
+  tripsWithImages: tripWithImages[] = [];
 
   loading: boolean = true;
 
   constructor(
     private tripService: TripService,
+    private placesService: PlacesService,
     private auth: AuthService,
     private router: Router
   ) {
@@ -35,7 +43,7 @@ export class TileComponent {
   seeDetail(tripId?: string) {
     this.router.navigate(['tripDetail/' + tripId]);
   }
-  
+
   getTripsList() {
     this.showUserMessage('Getting trips...');
     this.auth.getUserId().subscribe((userId) => {
@@ -43,15 +51,35 @@ export class TileComponent {
         this.tripService.getUserTrips(userId).subscribe({
           next: (trips) => {
             this.showUserMessage('');
+
             this.tripsList = trips;
             if (!trips.length) {
               this.userHasNoTrips = true;
+            } else {
+              for (let trip of trips) {
+                this.tripsWithImages.push({trip: trip, imagesUrl:[]});
+                this.getImagesByTrip(trip.id);
+              }
             }
           },
           error: (error) => {
             this.showUserMessage(`An error occured: ${error.message}`);
           },
         });
+      }
+    });
+  }
+
+  getImagesByTrip(tripId: string) {
+    // this.imagesByTrips.push({ tripId: tripId, imagesUrl: [] });
+    this.placesService.getPlacesOfTrip(tripId).subscribe((response) => {
+      let index = Object.values(
+        this.tripsWithImages.map((el) => el.trip.id)
+      ).indexOf(tripId);
+      for (let place of response) {
+        if (place.pictureUrl) {
+          this.tripsWithImages[index].imagesUrl.push(place.pictureUrl);
+        }
       }
     });
   }
