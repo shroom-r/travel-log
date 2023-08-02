@@ -1,4 +1,4 @@
-# travel-log
+# Travel-log
 
 MAS-RAD | CAS-DAR | Développement front-end avancé
 
@@ -8,7 +8,7 @@ MAS-RAD | CAS-DAR | Développement front-end avancé
 - [Site pages](#site-pages)
 - [Features](#features)
   - [Create user & login](#create-user--log-in)
-  - [Consulter sa liste de trip](#consulter-sa-liste-de-trip)
+  - [Consulter sa liste de trip](#list-of-trips)
   - [Create a trip](#create-a-trip)
   - [Update or delete trip](#update-or-delete-a-trip)
 
@@ -74,7 +74,7 @@ Lors de la connection, l'app s'ouvre directement à la page "All my trips".
 
 Si on est connecté, il est possible à tout moment de se déconnecter. Pour celà, il suffit de cliquer sur le bouton "Logout" présent dans la barre de navigation.
 
-### Consulter sa liste de trip
+### List of trips
 
 Pour consulter sa liste de trips, il suffit de cliquer sur "All my trips" dans la barre de navigation.
 La page affiche alors tous les trip liés au compte connecté.
@@ -91,29 +91,54 @@ Pour modifier ou supprimer un trip, il faut aller sur sa page de détails. Pour 
 
 Pour modifier les informations du trip, il faut modifier les informations dans les champs de texte et cliquer ensuite sur "Save changes". Un message informe lorsque la modification a été enregistrée.
 
-Pour supprimer un trip, il faut cliquer sur l'icône poubelle à côté du bouton "Save changes". Un message de confirmation apparaît. La suppression peut alors être annulée ou confirmée.
-
-Depuis cette page "Trip detail" il est également possible de :
-- [Ajouter une nouvelle place au trip](#create-place)
-- [Modifier une place existante](#update-place)
-- [Supprimer une place existante](#delete-place)
-- [Centrer la map sur une place](#center-map-on-existing-place)
-- [Centrer la map autour de plusieurs places](#center-map-around-many-places)
+Pour supprimer un trip, il faut cliquer sur l'icône poubelle à côté du bouton "Save changes". Un message de confirmation apparaît. La suppression peut alors être confirmée ou annulée.
 
 ### Create place
 
+Pour créer une place, il faut aller sur la page trip detail du trip auquel on veut l'ajouter. Il faut ensuite cliquer sur le bouton "plus" à côté de "Places list".
+
+Pour créer une place, il faut lui donner un nom, une description, une latitude et une longitude. Si on souhaite y ajouter une image, il faut indiquer l'URL de l'image souhaitée.
+
+La latitude et la longitude peuvent être définies manuellement mais elles peuvent également l'être à l'aide des deux fonctionnalités : [définir les coordonnées en cliquant sur la map](#set-coordinates-clicking-on-map) et [définir les coordonnées sur la position actuelle](#set-coordinates-on-current-position) (géolocalisation).
+
 ### Update place
+
+Pour modifier une place, il faut cliquer sur l'icône "crayon" de la place en question. Celle-ci peut être cliquée depuis la liste des places lorsqu'on consulte les détails d'un trip ou depuis les résutats d'une recherche.
+
+Les fonctionnalités sont les mêmes que pour [créer une place](#create-place).
 
 ### Delete place
 
+Pour supprimer une place, il faut ouvrir le trip qui contient la place en question puis, dans la partie places list, cliquer sur l'icône supprimer de la place correspondante. Un message de confirmation permet de confirmer ou annuler la suppression.
+
 ### Center map on existing place
+
+Cette fonctionnalité permet de centrer la map sur une place. Elle est accessible depuis la page trip detail ou depuis les résultats de recherche. Il faut alors cliquer sur l'icône "cible".
 
 ### Center map around many places
 
+Pour activer cette fonctionnalité, il faut cliquer sur l'icône <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z"/></svg>.
+
+Cette fonctionnalité permet de centrer la map autour de plusieurs places. Elle est accessible sur la page trip detail, où la map se centrera autour de toutes les places du trip ou depuis les résultats de recherches où elle se centrera autour d'un ensemble de places d'un même trip (corresponsant au résultats de recherche) ou autour de toutes les places de la recherche (pouvant donc couvrir plusieurs trips).
+
 ### See trip on map
+
+Pour voir un trip sur la map, il suffit de naviguer vers la page de détails d'un trip (trip detail) depuis la page "All my trips" ou depuis le résultat de recherches. Sur cette page, toutes les places du trip en question seront affichées sur la map.
 
 ### Set coordinates clicking on map
 
+Lors de la création ou la modification d'une place, il est possible de définir les coordonées en cliquant sur la map. Pour cela, il faut cliquer sur l'icône "épingle". Celle-ci devient alors jaune et un message indique qu'un click sur la map est attendu. En cliquant sur la map, les coordonnées seront alors définies à l'endroit du clique et un marqueur ajouté.
+
+La fonction peut-être annulée en recliquant sur l'icône <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>.
+
 ### Set coordinates on current position
 
+Lors de la création ou la modification d'une place, il est possible de définir les coordonnées à la position actuelle (géolocalisation). Pour cela, il faut cliquer sur l'icône "cible". Si la géolocalisation n'est pas activée, il faut alors l'activer. Les coordonnées seront alors définies à la position actuelle et un marqueur sera ajouté.
+
 ### Search trips or places
+
+Une fois connecté, une recherche peut être effectuée depuis n'importe quelle page du site. Pour cela, il faut inscrire les mots recherchés dans la barre de navigation et cliquer sur la loupe.
+
+Une fois la recherche demandée, le site est redirigé vers la page trips on a map où la recherche est alors lancée. La fonction de recherche va récupérer tous les trips et toutes les places correspondant aux termes recherchés. Le résultat de recherche sera affiché dans une liste à gauche de la page. Cette liste affiche toujours les places sous le trip auquel elles appartiennent.
+
+Depuis le résultat de recherche il est possible d'accéder au pages de modification d'[un trip](#update-or-delete-a-trip) ou d'[une place](#update-place). Il est également possible de [centrer la map sur une place](#center-map-on-existing-place) ou de [centrer la map autour des résultats de recherche](#center-map-around-many-places).
