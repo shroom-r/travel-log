@@ -1,5 +1,5 @@
 # Projet Travel-log
-MAS-RAD - Développement front-end avancé
+MAS-RAD | CAS-DAR | Développement front-end avancé
 
 Alexander Mussitelli & Rafael Teixeira
 
