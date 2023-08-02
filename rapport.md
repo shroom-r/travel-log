@@ -6,7 +6,7 @@ Alexander Mussitelli & Rafael Teixeira
 ## Introduction
 
 
-#OLD README :
+# OLD README :
 # travel-log
 Projet MA-RAD | CAS-DAR | DFA
 
