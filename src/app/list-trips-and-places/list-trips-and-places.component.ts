@@ -139,7 +139,7 @@ export class ListTripsAndPlacesComponent implements OnInit {
               .indexOf(this.placesList[0].id);
             this.placesList.splice(indexPlacesList, 1);
           }
-          break;
+          continue;
         } else {
           if (!this.placesByTrip[index].places) {
             this.placesByTrip[index].places = [];
