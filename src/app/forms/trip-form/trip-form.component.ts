@@ -149,7 +149,7 @@ export class TripFormComponent implements OnInit, OnChanges {
           },
           error: (error) => {
             this.showStateMessage(
-              `An error occured. Trip changes could not be saved. Error message: ${error.error.message}`
+              `An error occured. Trip changes could not be deleted. Error message: ${error.error.message}`
             );
           },
         });

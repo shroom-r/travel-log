@@ -145,6 +145,19 @@ export class PlaceFormComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  cancel() {
+    if (this.tripId) {
+      let confirmCancel = confirm("Are you sure to cancel and go back to your trip?")
+      if (confirmCancel) {
+        this.router.navigate(['tripDetail', this.tripId]); 
+      }
+    } else {
+      console.warn(
+        'Unable to navigate back to trip-detail page. Missing tripId.'
+      );
+    }
+  }
+
   submit(form: NgForm) {
     if (this.placeName && this.placeDescription) {
       if (this.currentPlace) {

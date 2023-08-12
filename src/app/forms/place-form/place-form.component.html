@@ -144,6 +144,14 @@
             >
               Save
             </button>
+            <button
+              *ngIf="(formMode==='New')"
+              type="button"
+              class="btn btn-warning"
+              (click)="cancel()"        
+            >
+              Cancel
+            </button>
           </div>
           <em *ngIf="gettingCoordinates" class="ps-2"
             >Getting coordinates, click on map to set longitude & latitude ...</em

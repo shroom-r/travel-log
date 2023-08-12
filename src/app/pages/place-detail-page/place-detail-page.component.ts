@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlacesService } from 'src/app/places/places.service';
 import { PlaceResponse } from 'src/app/places/place-response.model';
-import { ErrorMessageComponent } from 'src/app/utils/error-message/error-message.component';
 import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';
 
 @Component({
@@ -32,7 +31,7 @@ export class PlaceDetailPageComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private placeService: PlacesService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.placeId = this.route.snapshot.paramMap.get('placeId');
@@ -63,7 +62,10 @@ export class PlaceDetailPageComponent implements OnDestroy {
 
   goBack() {
     if (this.currentPlace?.tripId) {
-      this.router.navigate(['tripDetail', this.currentPlace.tripId]);
+      let confirmBack = confirm("Are you sure to go back?");
+      if (confirmBack) {
+        this.router.navigate(['tripDetail', this.currentPlace.tripId]);
+      }
     } else {
       console.warn(
         'Unable to navigate back to trip-detail page. Missing tripId.'
