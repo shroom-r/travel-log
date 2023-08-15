@@ -1,62 +1,87 @@
 # Projet Travel-log
+
 MAS-RAD | CAS-DAR | Développement front-end avancé
 
 Alexander Mussitelli & Rafael Teixeira
 
+## Table des matières
+
+- [Introduction](#introduction)
+- [Problèmes rencontrés](#problèmes-rencontrés)
+  - [Architecture](#architecture)
+  - [Faire communiquer deux component enfants d'un même component parent](#faire-communiquer-deux-component-enfants-dun-m%C3%AAme-component-parent)
+- [Conclusion](#conclusion)
+
 ## Introduction
 
+Ce rapport a pour but de décrire les problématiques rencontrées dans la réalisation du projet et des solutions utilisées pour les résoudre.
 
-# OLD README :
-# travel-log
-Projet MA-RAD | CAS-DAR | DFA
+## Problèmes rencontrés
 
+### Architecture
 
-### page all-my-trips
+Nous sommes partis dans l'optique de ne pas utiliser les modules car le sujet est encore un peu abstrait même si nous en comprenons l'idée. Dans une optique de performance ou si le projet est plus grand et complexe, les modules apporteraient surement une grande aide au niveau de la structure du projet.
 
-- Afficher le titre du trip et afficher la description du trip
-  - (1) Lazyloading? ou (2) un get pour afficher tous les trips? vote pour le (2).
-- En option afficher une image de la place qui existe
-- lier les boutons des tuiles
-  - l'id du trip
-  - la page trip-detail
-- CSS des tuiles
-- Reprendre CSS des pages pour l'affichage général
-- afficher la tuile en attendant le chargement de la photo (asynchrone)
+En revanche, notre projet a vite compris beaucoup de components et pour s'y retrouver il a été utile de créer une structude de dossiers adéquate.
 
+### Faire communiquer deux component enfants d'un même component parent
 
-### page trip-detail
+Nous avons vu en cours comme faire descendre les données d'un component parent vers un component enfant, à l'aide du décorateur @Input. Nous avons également vu comment faire passer des données dans le sens opposé à l'aide du décorateur @Output et des EventEmitter.
 
-- ~~bouton ajouter une place~~ -> ok
-- bouton modifier un place -> Not ok
+La difficulté rencontrée dans le projet a été de faire passer des données entre deux component enfants du même parent, voir imbriqués dans d'autres components. La même problématique a été rencontrée dans l'implémentation de nombreuses fonctionnalités (centrer la map sur une place, définir les coordonnées en cliquant sur la map, etc.). A chaque fois, la même solution a été utilisée.
 
+La solution consiste à utiliser les output EventEmitter avec des Observables et des Subscriptions. Si on regarde comment la données est transmise d'un component à l'autre : Elle est d'abord émise du component enfant vers le component parent dans l'EventEmitter. Le component parent récupère cette donnée et l'émet à travers l'observable passé en input au deuxième component enfant. Enfin, dans ce component enfant, une subscription à l'observable passé par le parent permet de déclencher une fonction lorsqu'une nouvelle valeur arrive.
 
-### place form
+Pour avoir un exemple de code, on peut prendre l'exemple de la fonction "centrer place sur la map" de la page "trip detail" :
 
-- **Not ok**
-- formulaire fonctionne
-- problème avec submit. tripId n'est pas envoyé car pas connu. **TODO**  créer service pour avoir la response de trip et récupérer l'id du trip
+Dans le component 'list-places', l'event emitter suivant émet une objet de type 'GeoJsonPoint' lorsqu'on clique sur l'icone "centrer" :
 
-fait un formulaire reactiv selon doc angular. En fait pas si facile, le template est plus adapté pour nous. A la lecture de la doc, cela sembler le contraire.
- 
+```ts
+@Output() centerOnMapClicked: EventEmitter<GeoJsonPoint>;
 
-## architecture
+centerOnMap(placeLocation: GeoJsonPoint) {
+  this.centerOnMapClicked.emit(placeLocation);
+}
+```
 
-Nous sommes partis dans l'optique de ne pas utiliser de modules car encore un peu abstrait même si nous en comprenons l'idée. Dans une optique de performance ou si le projet est plus grand et complexe, on ne pourrait y échapper.
+Cet event est récupéré dans le component parent 'trip-detail-page' et déclenche la fonction centerPlaceOnMap() :
 
-En revanche, nous avons vu qu'il y a vite beaucoup de composants et que pour se retrouver, il est utile d'avoir différents dossier.
+```html
+<app-list-places
+  (centerOnMapClicked)="centerPlaceOnMap($event)"
+></app-list-places>
+```
 
-### utils
+Cette fonction fait émettre une nouvelle valeur au Subject 'selectPlaceToCenter' :
 
-pour des composants utilisés partout tels les messages d'erreurs.
-- ajouter un service pour partager la response de trip **TODO**
-- ajouter un service pour partager la response de place **TODO**
+```ts
+selectPlaceToCenter: Subject<GeoJsonPoint> = new Subject<GeoJsonPoint>();
 
-### auth
+centerPlaceOnMap(location: GeoJsonPoint) {
+  this.selectPlaceToCenter.next(location);
+}
+```
 
-pour gérer l'authentification et la connexion à l'API
+Subject qui est lui même passé dans le component enfant 'map' comme observable à l'input 'centerMapOnLocationObservable' :
 
-### pages
+```html
+<app-map
+  [centerMapOnLocationObservable]="selectPlaceToCenter.asObservable()"
+></app-map>
+```
 
-pour les composants qui concernent les pages de notre application
+Enfin, une subscription réalisée à l'initalisation du component permer de déclencher la fonction 'centerMapOnLocation' du component 'map' à chaque fois que l'observable émet une valeur :
 
-### etc ...
+```ts
+@Input() centerMapOnLocationObservable?: Observable<GeoJsonPoint>;
+
+this.centerMapOnLocationObservable?.subscribe((response) => {
+  this.centerMapOnLocation(response, 13);
+});
+
+centerMapOnLocation(location: GeoJsonPoint, zoom?: number) {
+  //Code to center map on given location
+}
+```
+
+## Conclusion
