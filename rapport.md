@@ -11,6 +11,7 @@ Alexander Mussitelli & Rafael Teixeira
   - [Architecture](#architecture)
   - [Faire communiquer deux component enfants d'un même component parent](#faire-communiquer-deux-component-enfants-dun-m%C3%AAme-component-parent)
   - [Gérer l'ordre d'exécution du code lors du chargement de la page](#g%C3%A9rer-lordre-dexecution-du-code-lors-du-chargement-de-la-page)
+  - [Filtrer les données retournées par l'API dans la fonction de recherche](#filtrer-les-données-retournées-par-lapi-dans-la-fonction-de-recherche)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -96,6 +97,8 @@ ngOnChanges(changes: SimpleChanges): void {
   }
 }
 ```
+### Filtrer les données retournées par l'API dans la fonction de recherche
+
 
 ## Conclusion
 

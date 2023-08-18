@@ -81,7 +81,7 @@ Page permettant d'afficher les résultats de la [fonction de recherche](#recherc
 
 ### Création d'utilisateur et login
 
-Pour créer un compte, il faut être déconnecté. L'app s'ouvre alors sur la page de login où il faut cliquer sur le lien "Create account". La passe alors en mode création de compte. Pour créer un compte il faut inscrire un _Username_ et un _Password_. Un fois que l'acompte a été créé, on est automatiquement connecté.
+Pour créer un compte, il faut être déconnecté. L'app s'ouvre alors sur la page de login où il faut cliquer sur le lien "Create account". La page passe alors en mode création de compte. Pour créer un compte il faut inscrire un _Username_ et un _Password_. Un fois que l'acompte a été créé, on est automatiquement connecté.
 
 Si un compte existe déjà, il faut inscrire le _Username_ et _Password_ pour se connecter.
 
@@ -89,18 +89,18 @@ Lors de la connection, l'app s'ouvre directement à la page "All my trips".
 
 ### Logout
 
-Si on est connecté, il est possible à tout moment de se déconnecter. Pour celà, il suffit de cliquer sur le bouton "Logout" présent dans la barre de navigation.
+Si on est connecté, il est possible à tout moment de se déconnecter. Pour cela, il faut cliquer sur le bouton "Logout" présent dans la barre de navigation.
 
 ### Consulter sa liste de trips
 
-Pour consulter sa liste de trips, il suffit de cliquer sur "All my trips" dans la barre de navigation.
-La page affiche alors tous les trip liés au compte connecté.
+Pour consulter sa liste de trips, il faut de cliquer sur "All my trips" dans la barre de navigation.
+La page affiche alors tous les trips liés au compte connecté.
 
 ### Créer un nouveau trip
 
 Pour créer un nouveau trip, il faut cliquer sur le bouton "New trip" dans la barre de navigation ou sur le lien "... Click here ..." lorsqu'on n'a encore aucun trip.
 
-Il faut ensuite donner un titre au trip ainsi qu'une description puis cliquer sur le bouton "Save". Un fois le trip créé, on est redirigé automatiquement vers la page Trip detail du trip qu'on vient de créer.
+Il faut ensuite donner un titre au trip ainsi qu'une description puis cliquer sur le bouton "Save". Un fois le trip créé, on est redirigé automatiquement vers la page Trip detail du trip qui vient d'être créé.
 
 ### Modifier ou supprimer un trip
 
@@ -120,7 +120,7 @@ La latitude et la longitude peuvent être définies manuellement mais elles peuv
 
 ### Modifier une place
 
-Pour modifier une place, il faut cliquer sur l'icône "modifier" <img src="images/pencil-solid.svg" height="20px" /> de la place en question. Celle-ci peut être cliquée depuis la liste des places lorsqu'on consulte les détails d'un trip ou depuis les résutats d'une recherche.
+Pour modifier une place, il faut cliquer sur l'icône "modifier" <img src="images/pencil-solid.svg" height="20px" /> de la place en question. Celle-ci peut être cliquée depuis la liste des places lorsqu'on consulte les détails d'un trip ou depuis les résultats d'une recherche.
 
 Les fonctionnalités sont les mêmes que pour [créer une place](#cr%C3%A9er-une-nouvelle-place).
 
@@ -136,7 +136,7 @@ Cette fonctionnalité permet de centrer la map sur une place. Elle est accessibl
 
 Pour activer cette fonctionnalité, il faut cliquer sur l'icône "cadrer" <img src="images/expand-solid.svg" height="20px" />.
 
-Cette fonctionnalité permet de centrer la map autour de plusieurs places. Elle est accessible sur la page trip detail, où la map se centrera autour de toutes les places du trip ou depuis les résultats de recherches où elle se centrera autour d'un ensemble de places d'un même trip (corresponsant au résultats de recherche) ou autour de toutes les places de la recherche (pouvant donc couvrir plusieurs trips).
+Cette fonctionnalité permet de centrer la map autour de plusieurs places. Elle est accessible sur la page trip detail, où la map se centrera autour de toutes les places du trip, ou depuis les résultats de recherches où elle se centrera autour d'un ensemble de places d'un même trip (correspondant au résultats de recherche) ou autour de toutes les places de la recherche (pouvant donc couvrir plusieurs trips).
 
 ### Voir un trip sur la map
 
@@ -144,7 +144,7 @@ Pour voir un trip sur la map, il suffit de naviguer vers la page de détails d'u
 
 ### Définir les coordonnées en cliquant sur la map
 
-Lors de la création ou la modification d'une place, il est possible de définir les coordonées en cliquant sur la map. Pour cela, il faut cliquer sur l'icône "épingler" <img src="images/map-pin-solid.svg" height="20px" />. Celle-ci devient alors jaune et un message indique qu'un click sur la map est attendu. En cliquant sur la map, les coordonnées seront alors définies à l'endroit du clique et un marqueur ajouté.
+Lors de la création ou la modification d'une place, il est possible de définir les coordonnées en cliquant sur la map. Pour cela, il faut cliquer sur l'icône "épingler" <img src="images/map-pin-solid.svg" height="20px" />. Celle-ci devient alors jaune et un message indique qu'un click sur la map est attendu. En cliquant sur la map, les coordonnées seront alors définies à l'endroit du clique et un marqueur ajouté.
 
 La fonction peut-être annulée en recliquant sur l'icône <img src="images/map-pin-solid.svg" height="20px" />.
 
