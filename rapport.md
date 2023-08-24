@@ -24,7 +24,7 @@ Ce rapport a pour but de décrire les problématiques rencontrées dans la réal
 
 Nous sommes partis dans l'optique de ne pas utiliser les modules car le sujet est encore un peu abstrait même si nous en comprenons l'idée. Dans une optique de performance ou si le projet est plus grand et complexe, les modules apporteraient sûrement une grande aide au niveau de la structure du projet.
 
-En revanche, notre projet a vite compris beaucoup de components et pour s'y retrouver il a été utile de créer une structure de dossiers adéquate.
+En revanche, notre projet a vite eu beaucoup de components et que pour s'y retrouver il a été utile de créer une structure de dossiers adéquate.
 
 ### Faire communiquer deux component enfants d'un même component parent
 
@@ -32,7 +32,7 @@ Nous avons vu en cours comme faire descendre les données d'un component parent 
 
 La difficulté rencontrée dans le projet a été de faire passer des données entre deux component enfants du même parent, voir imbriqués dans d'autres components. La même problématique a été rencontrée dans l'implémentation de nombreuses fonctionnalités (centrer la map sur une place, définir les coordonnées en cliquant sur la map, etc.). A chaque fois, la même solution a été utilisée.
 
-La solution consiste à utiliser les output EventEmitter avec des Observables et des Subscriptions. Si on regarde comment la données est transmise d'un component à l'autre : Elle est d'abord émise du component enfant vers le component parent dans l'EventEmitter. Le component parent récupère cette donnée et l'émet à travers l'observable passé en input au deuxième component enfant. Enfin, dans ce component enfant, une subscription à l'observable passé par le parent permet de déclencher une fonction lorsqu'une nouvelle valeur arrive.
+La solution consiste à utiliser les output EventEmitter avec des Observables et des Subscriptions. Si on regarde comment la donnée est transmise d'un component à l'autre : Elle est d'abord émise du component enfant vers le component parent dans l'EventEmitter. Le component parent récupère cette donnée et l'émet à travers l'observable passé en input au deuxième component enfant. Enfin, dans ce component enfant, une subscription à l'observable passé par le parent permet de déclencher une fonction lorsqu'une nouvelle valeur arrive.
 
 Pour avoir un exemple de code, on peut prendre l'exemple de la fonction "centrer place sur la map" de la page "trip detail" :
 
@@ -106,4 +106,4 @@ Le projet travel-log a constitué une charge de travail importante. Le projet a 
 
 Il nous paraît évident que l'optimisation de l'application nécessiterait encore des heures de travail. Cet effort supplémentaire permettrait également d'apporter de la finesse à certaines feature et de peaufiner l'aspect visuel de l'app (notamment sa responsiveness). Cependant, l'app est fonctionnelle et toutes les features ont pu être implémentées.
 
-Ce projet a permis d'avoir une utilisation concrète des connaissances acquises pendant le cours et le fait d'avoir un site fonctionnel constitue accomplissement satisfaisant.
+Ce projet a permis d'avoir une utilisation concrète des connaissances acquises pendant le cours et le fait d'avoir un site fonctionnel constitue un accomplissement satisfaisant.
