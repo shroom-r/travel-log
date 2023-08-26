@@ -99,6 +99,11 @@ ngOnChanges(changes: SimpleChanges): void {
 ```
 ### Filtrer les données retournées par l'API dans la fonction de recherche
 
+En réalisant la fonction de recherche, nous nous sommes aperçus qu'il n'était pas possible de filtrer la recherche par utilisateur. Cela veut dire que lorsque nous utilisions notre service de recherche, les résultats comprenaient des données n'appartenant pas à l'utilisateur qui utilise l'app.
+
+Comme nous avons fait le choix que notre app se concentre autour d'un seul utilisateur, nous avons donc dû trouver comment gérer cela. Nous avons simplement opté pour la solution suivante : Passer au travers des résultats de la recherche et supprimer ceux qui ne correspondent pas à l'utilisateur connecté.
+
+Cette solution ne nous semble pas idéal. En effet, pour garder l'app telle qu'elle est, c'est à dire centrée sur un seul utilisateur, la meilleure solution aurait été de modifier l'API afin de pouvoir filtrer les résultats de la recherche par l'utilisateur.
 
 ## Conclusion
 
