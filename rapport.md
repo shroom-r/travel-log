@@ -109,6 +109,6 @@ Cette solution ne nous semble pas idéal. En effet, pour garder l'app telle qu'e
 
 Le projet travel-log a constitué une charge de travail importante. Le projet a permis de mobiliser une grande partie des connaissances acquises lors du cours et ces dernières couvraient la plupart des besoins du projet. A l'aide de la documentation officielle ainsi que des différentes informations présentes sur les forums dédiés aux outils d'angular, il a été possible de trouver des solutions aux problèmes rencontrés.
 
-Il nous paraît évident que l'optimisation de l'application nécessiterait encore des heures de travail. Cet effort supplémentaire permettrait également d'apporter de la finesse à certaines feature et de peaufiner l'aspect visuel de l'app (notamment sa responsiveness). Cependant, l'app est fonctionnelle et toutes les features ont pu être implémentées.
+Il nous paraît évident que l'optimisation de l'application nécessiterait encore des heures de travail. Cet effort supplémentaire permettrait également d'apporter de la finesse à certaines features et de peaufiner l'aspect visuel de l'app (notamment sa responsiveness). Cependant, l'app est fonctionnelle et toutes les features ont pu être implémentées.
 
 Ce projet a permis d'avoir une utilisation concrète des connaissances acquises pendant le cours et le fait d'avoir un site fonctionnel constitue un accomplissement satisfaisant.

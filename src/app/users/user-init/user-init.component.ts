@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { UserApiService } from "../users/user-api.service";
+import { Component, OnInit } from '@angular/core';
+import { UserApiService } from '../user-api.service';
 
 @Component({
-  selector: "app-dummy-page",
-  templateUrl: "./dummy-page.component.html",
-  styleUrls: ["./dummy-page.component.scss"],
+  selector: 'app-user-init',
+  templateUrl: './user-init.component.html',
+  styleUrls: ['./user-init.component.scss']
 })
-export class DummyPageComponent implements OnInit {
+export class UserInitComponent implements OnInit {
   constructor(private readonly userApi: UserApiService) {}
 
   ngOnInit(): void {

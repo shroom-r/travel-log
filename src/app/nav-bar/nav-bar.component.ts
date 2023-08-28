@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { TripResponse } from '../trips/trip-response.model';
+
 
 @Component({
   selector: 'app-nav-bar',

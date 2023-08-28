@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthModule } from './auth/auth.module';
-import { DummyPageComponent } from './dummy-page/dummy-page.component';
 import { ApiTokenInterceptorService } from "./auth/api-token-interceptor.service";
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TripsOnMapPageComponent } from './pages/trips-on-map-page/trips-on-map-page.component';
@@ -27,11 +26,11 @@ import { PlaceFormComponent } from './forms/place-form/place-form.component';
 import { CreatePlacePageComponent } from './pages/create-place-page/create-place-page.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ErrorMessageComponent } from './utils/error-message/error-message.component';
+import { UserInitComponent } from './users/user-init/user-init.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DummyPageComponent,
     NavBarComponent,
     TripsOnMapPageComponent,
     AllMyTripsPageComponent,
@@ -48,6 +47,7 @@ import { ErrorMessageComponent } from './utils/error-message/error-message.compo
     CreatePlacePageComponent,
     SearchBarComponent,
     ErrorMessageComponent,
+    UserInitComponent,
   ],
   imports: [
     BrowserModule,
