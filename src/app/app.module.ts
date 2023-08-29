@@ -26,7 +26,6 @@ import { PlaceFormComponent } from './forms/place-form/place-form.component';
 import { CreatePlacePageComponent } from './pages/create-place-page/create-place-page.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ErrorMessageComponent } from './utils/error-message/error-message.component';
-import { UserInitComponent } from './users/user-init/user-init.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,6 @@ import { UserInitComponent } from './users/user-init/user-init.component';
     CreatePlacePageComponent,
     SearchBarComponent,
     ErrorMessageComponent,
-    UserInitComponent,
   ],
   imports: [
     BrowserModule,
