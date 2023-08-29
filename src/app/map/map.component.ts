@@ -222,7 +222,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setMarkerOnCurrentPosition() {
-    
+
     Geolocation.getCurrentPosition()
       .then((position) => {
         this.mapMarkers = [];

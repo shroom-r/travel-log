@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TripService } from '../../trips/trip.service';
 import { TripResponse } from '../../trips/trip-response.model';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Subject, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { PlacesService } from 'src/app/places/places.service';
 import { PlaceResponse } from 'src/app/places/place-response.model';
 import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';

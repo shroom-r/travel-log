@@ -1,8 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TripService } from '../../trips/trip.service';
-import { AuthService } from '../../auth/auth.service';
-import { TripResponse } from '../../trips/trip-response.model';
-import { PlacesService } from '../../places/places.service';
+import { Component} from '@angular/core';
 import { PlaceResponse } from '../../places/place-response.model';
 import { Subject } from 'rxjs';
 import { GeoJsonPoint } from 'src/app/places/geoJsonPoint.model';

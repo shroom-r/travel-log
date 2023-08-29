@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RegisterAccountRequest } from './register-account-request.model';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from '../users/user.model';
 import { HttpClient } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
